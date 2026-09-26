@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiet Luxury Colour Check</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#FAF8F4; --panel:#FFFFFF; --ink:#26241F; --ink-soft:#6E6A61;
+    --ink-faint:#A49E93; --line:#E3DED4; --accent:#8A7659;
+    --good:#5C7A5E; --warn:#A8873F; --bad:#9C5A50;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"Helvetica Neue",-apple-system,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;
+    font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:40px 28px 90px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px;
+    display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .htext{flex:1;min-width:280px}
+  h1{font-family:Georgia,"Songti TC","Noto Serif TC",serif;font-weight:400;font-size:30px;
+     letter-spacing:.01em;margin:0 0 6px}
+  .sub{color:var(--ink-soft);font-size:13.5px;max-width:660px;margin:0}
+  .langs{display:flex;gap:1px;border:1px solid var(--line);background:#fff}
+  .langs button{appearance:none;border:none;background:none;font-family:inherit;font-size:12px;
+    letter-spacing:.06em;padding:7px 11px;cursor:pointer;color:var(--ink-faint)}
+  .langs button.on{background:var(--ink);color:#fff}
+  .langs button:not(.on):hover{color:var(--ink)}
+  .tabs{display:flex;gap:2px;margin-bottom:26px;border-bottom:1px solid var(--line)}
+  .tab{appearance:none;background:none;border:none;border-bottom:2px solid transparent;
+    padding:10px 18px;font-size:14px;color:var(--ink-soft);cursor:pointer;font-family:inherit;letter-spacing:.02em}
+  .tab:hover{color:var(--ink)}
+  .tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+  .panel{background:var(--panel);border:1px solid var(--line);padding:24px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .qgrid{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"slots out" "pal out";
+    gap:26px;align-items:start}
+  .p-slots{grid-area:slots} .p-out{grid-area:out} .p-pal{grid-area:pal}
+  .pal-note{font-size:11.5px;color:var(--ink-faint);line-height:1.5;margin:0 0 8px;max-width:480px}
+  #mbar{display:none}
+  h2{font-family:Georgia,"Songti TC",serif;font-weight:400;font-size:19px;margin:0 0 4px}
+  h3{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin:0 0 10px}
+  .hint{font-size:12.5px;color:var(--ink-faint);margin:0 0 16px}
+  .slots{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+  .slot{display:flex;align-items:center;gap:12px;padding:9px 12px;border:1px solid var(--line);
+    background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+  .slot:hover{border-color:var(--ink-faint)}
+  .slot.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+  .chip{width:42px;height:42px;flex:0 0 42px;border:1px solid rgba(0,0,0,.14);
+    background-image:linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%),
+    linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%);
+    background-size:10px 10px;background-position:0 0,5px 5px}
+  .slot-meta{flex:1;min-width:0}
+  .slot-cat{font-size:13.5px}
+  .slot-col{font-size:12px;color:var(--ink-soft)}
+  .slot-opt{font-size:11px;color:var(--ink-faint)}
+  select,input[type=text]{font-family:inherit;font-size:12.5px;padding:5px 7px;
+    border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:0}
+  .xbtn{appearance:none;border:none;background:none;color:var(--ink-faint);cursor:pointer;
+    font-size:16px;line-height:1;padding:4px 6px;font-family:inherit}
+  .xbtn:hover{color:var(--bad)}
+  .pal-group{margin-bottom:14px}
+  .pal-label{font-size:11px;letter-spacing:.09em;color:var(--ink-faint);margin-bottom:6px;text-transform:uppercase}
+  .pal-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:6px}
+  .sw{cursor:pointer;text-align:center}
+  .sw i{display:block;height:44px;border:1px solid rgba(0,0,0,.13)}
+  .sw:hover i{outline:1px solid var(--accent);outline-offset:1px}
+  .sw span{display:block;font-size:10.5px;color:var(--ink-soft);margin-top:3px;line-height:1.3}
+  .look{border:1px solid var(--line);background:#fff}
+  .look-row{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+  .look-row:last-child{border-bottom:none}
+  .look-col{width:132px;flex:0 0 132px}
+  .look-txt{padding:10px 14px;flex:1;min-width:0}
+  .look-cat{font-size:11px;letter-spacing:.09em;color:var(--ink-faint);text-transform:uppercase}
+  .look-name{font-size:14px}
+  .look-num{font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .score-head{display:flex;align-items:baseline;gap:14px;margin:22px 0 4px}
+  .score-num{font-family:Georgia,serif;font-size:44px;line-height:1}
+  .score-verdict{font-size:14px;letter-spacing:.04em}
+  .rule{border-top:1px solid var(--line);padding:11px 0}
+  .rule-top{display:flex;align-items:center;gap:9px}
+  .dot{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+  .rule-name{font-size:13px;flex:1}
+  .rule-w{font-size:11px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .rule-txt{font-size:12.5px;color:var(--ink-soft);margin:4px 0 0 16px}
+  .fix{background:#F5F1E9;border-left:2px solid var(--accent);padding:12px 14px;margin-top:18px;font-size:13px}
+  .fix b{font-weight:600;letter-spacing:.06em;font-size:11px;text-transform:uppercase;
+    color:var(--accent);display:block;margin-bottom:4px}
+  .notes{margin-top:14px;font-size:12.5px;color:var(--ink-soft)}
+  .notes div{padding:3px 0}
+  .addrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+  .items{border-top:1px solid var(--line)}
+  .item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .item i{width:26px;height:26px;flex:0 0 26px;border:1px solid rgba(0,0,0,.14)}
+  .item .nm{flex:1;min-width:0}
+  .item .fb{font-size:11.5px;color:var(--ink-faint)}
+  button.act{appearance:none;font-family:inherit;font-size:13px;letter-spacing:.03em;
+    background:var(--ink);color:#fff;border:1px solid var(--ink);padding:8px 18px;cursor:pointer}
+  button.act:hover{background:#000}
+  button.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+  button.ghost:hover{background:#F4F1EB}
+  .combo{border:1px solid var(--line);background:#fff;margin-bottom:10px}
+  .combo-head{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer}
+  .combo-bars{display:flex;flex:0 0 auto}
+  .combo-bars i{width:30px;height:30px;border:1px solid rgba(0,0,0,.12);border-right:none}
+  .combo-bars i:last-child{border-right:1px solid rgba(0,0,0,.12)}
+  .combo-title{flex:1;min-width:0;font-size:13px}
+  .combo-sc{font-family:Georgia,serif;font-size:20px;font-variant-numeric:tabular-nums}
+  .combo-body{display:none;border-top:1px solid var(--line);padding:16px 14px}
+  .combo.open .combo-body{display:block}
+  .empty{color:var(--ink-faint);font-size:13px;padding:18px 0}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;align-items:center}
+  details.method{margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  details.method summary{cursor:pointer;font-size:13px;color:var(--ink-soft)}
+  details.method p{font-size:12.5px;color:var(--ink-soft);max-width:780px}
+  .hide{display:none}
+
+  /* ---------- style selector ---------- */
+  .stylerow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 20px}
+  .stylab{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .styles{display:flex;gap:1px;border:1px solid var(--line);background:#fff}
+  .styles button{appearance:none;border:none;background:none;font-family:inherit;font-size:12.5px;
+    padding:7px 13px;cursor:pointer;color:var(--ink-soft);white-space:nowrap}
+  .styles button.on{background:var(--accent);color:#fff}
+  .styles button:not(.on):hover{color:var(--ink)}
+  .blurb{font-size:12px;color:var(--ink-faint);flex:1 1 300px;min-width:0;line-height:1.5}
+
+  /* ---------- wardrobe ---------- */
+  .wgrid{display:grid;grid-template-columns:1.1fr .9fr;
+    grid-template-areas:"build list" "build gen" "out out";gap:22px;align-items:start}
+  .p-build{grid-area:build} .p-list{grid-area:list} .p-gen{grid-area:gen}
+  .wgrid .p-out{grid-area:out}
+  .catpick,.modes{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+  .catpick button,.modes button{appearance:none;font-family:inherit;font-size:12.5px;
+    padding:7px 14px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer}
+  .catpick button:hover,.modes button:hover{border-color:var(--ink-faint);color:var(--ink)}
+  .catpick button.on,.modes button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .catpick button .n{font-size:11px;opacity:.55;margin-left:6px;font-variant-numeric:tabular-nums}
+  .listhead{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .listhead h2{margin:0}
+  .cnt{font-size:11.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .items{max-height:none}
+  .item.off{opacity:.4}
+  .item.pinned{box-shadow:inset 2px 0 0 var(--accent)}
+  .item.pinned .nm{padding-left:7px}
+  .ibtn{appearance:none;border:1px solid var(--line);background:#fff;font-family:inherit;
+    font-size:10.5px;letter-spacing:.04em;padding:3px 7px;cursor:pointer;color:var(--ink-faint)}
+  .ibtn:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .ibtn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .item select{font-size:11.5px;padding:3px 4px;max-width:112px}
+  .dayslabel{font-size:12.5px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:7px}
+  .dayslabel.hide{display:none}
+  .pack{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;margin-top:4px}
+  .pkg{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:6px 9px;font-size:12.5px}
+  .pkg i{width:22px;height:22px;flex:0 0 22px;border:1px solid rgba(0,0,0,.14)}
+  .pkg span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .wsec{margin-top:18px}
+  .lowlist{margin-top:6px}
+  .justadd{font-size:12px;color:var(--ink-soft);min-height:22px;margin:-4px 0 12px;
+    display:flex;gap:8px;align-items:center}
+  .justadd i{width:16px;height:16px;flex:0 0 16px;border:1px solid rgba(0,0,0,.14)}
+  .justadd button{appearance:none;border:none;background:none;font-family:inherit;font-size:12px;
+    color:var(--accent);text-decoration:underline;cursor:pointer;padding:0}
+  .sw.added i{outline:2px solid var(--accent);outline-offset:1px}
+
+  /* ---------- mobile ---------- */
+  @media(max-width:880px){
+    .wrap{padding:22px 15px 74px}
+    header{gap:14px;padding-bottom:18px;margin-bottom:20px}
+    h1{font-size:23px}
+    .sub{font-size:12.5px}
+    .langs{align-self:flex-start}
+    .grid2{grid-template-columns:1fr;gap:16px}
+    .qgrid{grid-template-columns:1fr;grid-template-areas:"slots" "out" "pal";gap:16px}
+    .wgrid{grid-template-columns:1fr;grid-template-areas:"build" "list" "gen" "out";gap:16px}
+    .stylerow{gap:8px;margin-bottom:14px}
+    .styles{width:100%}
+    .styles button{flex:1;padding:8px 6px;font-size:12px}
+    .blurb{flex:1 1 100%;font-size:11.5px}
+    .catpick button,.modes button{flex:1 1 auto;padding:8px 10px;font-size:12px}
+    .item select{max-width:none;flex:1 1 92px}
+    .pack{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+    .panel{padding:16px 14px}
+    .tabs{margin-bottom:18px}
+    .tab{padding:9px 12px;font-size:13px;flex:1}
+    .pal-row{grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:5px}
+    .sw i{height:40px}
+    .sw span{font-size:9.5px}
+    .look-col{width:74px;flex:0 0 74px}
+    .look-txt{padding:8px 10px}
+    .score-num{font-size:36px}
+    .slot{flex-wrap:wrap;gap:9px;padding:8px 10px}
+    .slot-meta{flex:1 1 120px}
+    .chip{width:36px;height:36px;flex:0 0 36px}
+    select,input[type=text]{font-size:12px;padding:6px 6px;min-height:32px}
+    .addrow input[type=text]{flex:1 1 110px;width:auto!important}
+    .addrow select{flex:1 1 120px}
+    button.act{padding:9px 14px;font-size:12.5px;flex:1 1 auto}
+    .bar{gap:6px}
+    .combo-head{flex-wrap:wrap;gap:8px;padding:10px}
+    .combo-title{flex:1 1 100%;order:3}
+    .combo-bars i{width:26px;height:26px}
+    .combo-body{padding:12px 10px}
+    .rule-txt{margin-left:0}
+    details.method p{font-size:12px}
+    /* live score follows you down the colour card */
+    #mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;
+      background:rgba(255,255,255,.97);border-top:1px solid var(--line);
+      padding:7px 12px;align-items:center;gap:10px;
+      box-shadow:0 -2px 10px rgba(0,0,0,.05)}
+    #mbar.show{display:flex}
+    .mbar-chips{display:flex;flex:0 0 auto}
+    .mbar-chips i{width:22px;height:30px;border:1px solid rgba(0,0,0,.12);border-right:none}
+    .mbar-chips i:last-child{border-right:1px solid rgba(0,0,0,.12)}
+    .mbar-txt{flex:1;min-width:0;font-size:11.5px;color:var(--ink-soft);line-height:1.3}
+    .mbar-sc{font-family:Georgia,serif;font-size:22px;font-variant-numeric:tabular-nums}
+  }
+  @media(max-width:400px){
+    .pal-row{grid-template-columns:repeat(auto-fill,minmax(46px,1fr))}
+    .sw i{height:36px}
+    .look-col{width:60px;flex:0 0 60px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="htext">
+    <h1 id="t-title"></h1>
+    <p class="sub" id="t-sub"></p>
+  </div>
+  <div class="langs" id="langs">
+    <button data-l="zh">中文</button><button data-l="en">EN</button>
+    <button data-l="es">ES</button><button data-l="fr">FR</button>
+  </div>
+</header>
+
+<div class="stylerow">
+  <span class="stylab" id="t-style"></span>
+  <div class="styles" id="styles"></div>
+  <span class="blurb" id="t-blurb"></span>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-tab="quick" id="t-tab1"></button>
+  <button class="tab" data-tab="ward" id="t-tab2"></button>
+</div>
+
+<section id="tab-quick">
+<div class="qgrid">
+  <div class="panel p-slots">
+    <h2 id="t-h-look"></h2>
+    <p class="hint" id="t-hint-look"></p>
+    <div class="slots" id="slots"></div>
+  </div>
+  <div class="panel p-out" id="quick-out"></div>
+  <div class="panel p-pal">
+    <h3 id="t-h-pal1"></h3>
+    <div id="pal-quick"></div>
+  </div>
+</div>
+</section>
+
+<section id="tab-ward" class="hide">
+<div class="wgrid">
+  <div class="panel p-build">
+    <h2 id="t-h-build"></h2>
+    <p class="hint" id="t-hint-build"></p>
+    <div class="catpick" id="catpick"></div>
+    <div class="justadd" id="w-just"></div>
+    <div id="pal-ward"></div>
+    <div class="bar">
+      <button class="act ghost" id="w-demo"></button>
+      <button class="act ghost" id="w-exp"></button>
+      <button class="act ghost" id="w-imp"></button>
+      <button class="act ghost" id="w-clr"></button>
+    </div>
+    <input type="file" id="w-file" accept=".json" class="hide">
+  </div>
+  <div class="panel p-list">
+    <div class="listhead"><h2 id="t-h-list"></h2><span class="cnt" id="w-cnt"></span></div>
+    <div class="items" id="w-items"></div>
+  </div>
+  <div class="panel p-gen">
+    <div class="modes" id="modes"></div>
+    <p class="hint" id="t-hint-mode"></p>
+    <div class="bar">
+      <label class="dayslabel" id="lbl-days"><span id="t-days"></span>
+        <select id="w-days"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>7</option></select>
+      </label>
+      <button class="act" id="w-gen"></button>
+    </div>
+  </div>
+  <div class="p-out" id="w-out"></div>
+</div>
+</section>
+
+<details class="method">
+<summary id="t-method-s"></summary>
+<p id="t-method-p"></p>
+</details>
+</div>
+<div id="mbar"><div class="mbar-chips" id="mbar-chips"></div>
+  <div class="mbar-txt"><span id="mbar-v"></span></div><div class="mbar-sc" id="mbar-sc"></div></div>
+
+<script>
+"use strict";
+
+/* ===================== i18n ===================== */
+const LANGS=["zh","en","es","fr"];
+const GROUPS=[
+ {zh:"暖中性",en:"Warm neutrals",es:"Neutros cálidos",fr:"Neutres chauds"},
+ {zh:"冷中性",en:"Cool neutrals",es:"Neutros fríos",fr:"Neutres froids"},
+ {zh:"冷色",en:"Cool tones",es:"Tonos fríos",fr:"Tons froids"},
+ {zh:"沉調點綴",en:"Muted accents",es:"Acentos apagados",fr:"Accents sourds"},
+ {zh:"鮮豔色 · 高彩度",en:"Bright colours · high chroma",
+  es:"Colores vivos · croma alto",fr:"Couleurs vives · chroma élevé"}
+];
+
+/* ---- style profiles: the six rules, parameterised ----
+   Every rule below reads its thresholds and weights from here, so a new style is
+   a data change, not a code change. */
+const STYLES=[
+ {key:"quiet",
+  name:{zh:"靜奢",en:"Quiet luxury",es:"Quiet luxury",fr:"Quiet luxury"},
+  blurb:{zh:"低彩度、明度分層、質料取代顏色做變化。彩度是第一個破功的地方。",
+   en:"Low chroma, layered lightness, fabric doing the work colour would. Chroma is the first thing to break it.",
+   es:"Croma bajo, luminosidad estratificada, el tejido hace lo que haría el color. El croma es lo primero que lo rompe.",
+   fr:"Chroma bas, clarté étagée, la matière fait ce que la couleur ferait. Le chroma est le premier point de rupture."},
+  chroma:{good:16,ok:26,high:36,meanWarn:14,meanBad:18},
+  light:{good:25,thin:15,monoMaxC:16,midLo:40,midHi:68},
+  hue:{two:0.7,many:0.2,bareMult:0.62},
+  temp:{prefer:null},
+  w:{chroma:25,light:25,hue:20,temp:15,shoe:15}},
+ {key:"french",
+  name:{zh:"法式簡約",en:"French minimal",es:"Minimalismo francés",fr:"Minimalisme français"},
+  blurb:{zh:"允許一件說話的顏色,但要求明暗對比明確。中間調堆疊是這個風格最大的敵人。",
+   en:"One piece is allowed to speak, but the light-dark contrast has to be decisive. Mid-tone stacking is this style's worst enemy.",
+   es:"Una prenda puede hablar, pero el contraste claro-oscuro debe ser decidido. El apilado de tonos medios es el peor enemigo de este estilo.",
+   fr:"Une pièce peut parler, mais le contraste clair-foncé doit être net. L'empilement de demi-teintes est le pire ennemi de ce style."},
+  chroma:{good:20,ok:34,high:48,meanWarn:17,meanBad:23},
+  light:{good:30,thin:20,monoMaxC:10,midLo:42,midHi:66},
+  hue:{two:0.85,many:0.3,bareMult:0.8},
+  temp:{prefer:null},
+  w:{chroma:18,light:30,hue:17,temp:15,shoe:20}},
+ {key:"urban",
+  name:{zh:"都會極簡",en:"Urban minimal",es:"Minimalismo urbano",fr:"Minimalisme urbain"},
+  blurb:{zh:"接近無彩色,單一色相,靠剪裁和明度說話。任何一個彩色都要付代價。",
+   en:"Near-achromatic, one hue at most, carried by cut and lightness. Any colour at all costs you something.",
+   es:"Casi acromático, un tono como máximo, sostenido por el corte y la luminosidad. Cualquier color tiene un coste.",
+   fr:"Quasi achromatique, une teinte au maximum, porté par la coupe et la clarté. Toute couleur a un coût."},
+  chroma:{good:10,ok:18,high:28,meanWarn:9,meanBad:13},
+  light:{good:22,thin:12,monoMaxC:10,midLo:38,midHi:70},
+  hue:{two:0.5,many:0.15,bareMult:0.7},
+  temp:{prefer:null},
+  w:{chroma:32,light:28,hue:22,temp:5,shoe:13}},
+ {key:"warm",
+  name:{zh:"暖調自然",en:"Warm natural",es:"Natural cálido",fr:"Naturel chaud"},
+  blurb:{zh:"米駝棕橄欖為主,容許較高的土性彩度,但冷色進來就要付代價。",
+   en:"Cream, camel, brown and olive lead. Earthy chroma is allowed to run higher, but cool colours cost you.",
+   es:"Crema, camel, marrón y oliva al mando. El croma terroso puede subir más, pero los fríos tienen un coste.",
+   fr:"Crème, camel, brun et olive dominent. Le chroma terreux peut monter plus haut, mais le froid a un coût."},
+  chroma:{good:22,ok:32,high:44,meanWarn:20,meanBad:26},
+  light:{good:22,thin:14,monoMaxC:22,midLo:40,midHi:68},
+  hue:{two:0.75,many:0.25,bareMult:0.75},
+  temp:{prefer:"warm"},
+  w:{chroma:20,light:22,hue:18,temp:25,shoe:15}}
+];
+let STK="quiet";
+try{ STK=localStorage.getItem("ql_style")||"quiet"; }catch(e){}
+if(!STYLES.some(s=>s.key===STK)) STK="quiet";
+const ST=()=>STYLES.find(s=>s.key===STK);
+const PALETTE=[
+ {gi:0,c:[
+  ["#F3EDE3","奶油白","Cream","Crema","Crème"],
+  ["#EDE4D4","象牙","Ivory","Marfil","Ivoire"],
+  ["#E0D5C2","燕麥","Oatmeal","Avena","Avoine"],
+  ["#D6C6AC","沙色","Sand","Arena","Sable"],
+  ["#C9B294","淺駝","Light camel","Camel claro","Camel clair"],
+  ["#B39877","駝色","Camel","Camel","Camel"],
+  ["#9A8770","灰褐","Taupe","Topo","Taupe"],
+  ["#7E6A55","摩卡","Mocha","Moca","Moka"],
+  ["#5C4A3A","咖啡棕","Coffee brown","Café","Café"],
+  ["#3B302A","深巧克力","Dark chocolate","Chocolate oscuro","Chocolat foncé"]]},
+ {gi:1,c:[
+  ["#F7F7F5","純白","Pure white","Blanco puro","Blanc pur"],
+  ["#DCDCD8","淺灰","Light grey","Gris claro","Gris clair"],
+  ["#C2C3C0","銀灰","Silver grey","Gris plata","Gris argent"],
+  ["#9B9C99","中灰","Mid grey","Gris medio","Gris moyen"],
+  ["#77797A","石板灰","Slate grey","Gris pizarra","Gris ardoise"],
+  ["#4A4C4D","炭灰","Charcoal","Gris carbón","Anthracite"],
+  ["#2A2B2B","近黑","Off-black","Casi negro","Presque noir"],
+  ["#17181A","黑","Black","Negro","Noir"]]},
+ {gi:2,c:[
+  ["#A8B4BE","霧藍","Mist blue","Azul niebla","Bleu brume"],
+  ["#7A8B99","鋼藍","Steel blue","Azul acero","Bleu acier"],
+  ["#2E3A4C","藏青","Navy","Azul marino","Marine"],
+  ["#1E2532","午夜藍","Midnight blue","Azul medianoche","Bleu nuit"]]},
+ {gi:3,c:[
+  ["#A3AA96","鼠尾草綠","Sage","Verde salvia","Sauge"],
+  ["#7A7A5E","橄欖","Olive","Oliva","Olive"],
+  ["#3A4A40","墨綠","Deep green","Verde oscuro","Vert profond"],
+  ["#B08574","陶土","Terracotta","Terracota","Terre cuite"],
+  ["#6B3B3E","酒紅","Wine","Vino","Rouge vin"],
+  ["#4A2A2E","勃根地","Burgundy","Borgoña","Bourgogne"]]},
+ {gi:4,bright:true,c:[
+  ["#C8102E","正紅","Red","Rojo","Rouge"],
+  ["#E2542C","橘紅","Orange red","Rojo naranja","Rouge orangé"],
+  ["#F08A24","亮橘","Orange","Naranja","Orange"],
+  ["#F5D020","亮黃","Yellow","Amarillo","Jaune"],
+  ["#D9A521","芥末黃","Mustard","Mostaza","Moutarde"],
+  ["#E8579A","亮粉","Hot pink","Rosa fuerte","Rose vif"],
+  ["#F2C4CE","淺粉","Pale pink","Rosa pálido","Rose pâle"],
+  ["#1F4FA8","寶藍","Royal blue","Azul rey","Bleu roi"],
+  ["#4FA3D9","天藍","Sky blue","Azul cielo","Bleu ciel"],
+  ["#3E5A7A","牛仔藍","Denim blue","Azul vaquero","Bleu jean"],
+  ["#4CA64C","草綠","Grass green","Verde hierba","Vert prairie"],
+  ["#7FD1B9","薄荷綠","Mint","Menta","Menthe"],
+  ["#6B4FA0","紫","Purple","Violeta","Violet"],
+  ["#C9BFD8","藕紫","Lilac","Lila","Lilas"]]}
+];
+// candidates for substitution: everything except the bright group
+const QUIET=[];
+PALETTE.forEach(g=>{ if(!g.bright) g.c.forEach(r=>QUIET.push(r[0])); });
+const CNAME={};
+PALETTE.forEach(g=>g.c.forEach(r=>{CNAME[r[0]]={zh:r[1],en:r[2],es:r[3],fr:r[4]};}));
+
+const CATS=[
+ {k:"outer",zh:"外套",en:"Outer",es:"Abrigo",fr:"Veste"},
+ {k:"top",zh:"上衣",en:"Top",es:"Parte superior",fr:"Haut"},
+ {k:"bottom",zh:"下身",en:"Bottom",es:"Pantalón",fr:"Bas"},
+ {k:"shoe",zh:"鞋",en:"Shoes",es:"Zapatos",fr:"Chaussures"}
+];
+const FABRICS=[
+ {k:"wool",zh:"羊毛",en:"Wool",es:"Lana",fr:"Laine"},
+ {k:"cash",zh:"喀什米爾",en:"Cashmere",es:"Cachemir",fr:"Cachemire"},
+ {k:"knit",zh:"針織",en:"Knit",es:"Punto",fr:"Maille"},
+ {k:"cotton",zh:"棉/府綢",en:"Cotton / poplin",es:"Algodón / popelina",fr:"Coton / popeline"},
+ {k:"linen",zh:"亞麻",en:"Linen",es:"Lino",fr:"Lin"},
+ {k:"flannel",zh:"法蘭絨",en:"Flannel",es:"Franela",fr:"Flanelle"},
+ {k:"silk",zh:"絲/緞",en:"Silk / satin",es:"Seda / satén",fr:"Soie / satin"},
+ {k:"leather",zh:"皮革",en:"Leather",es:"Piel",fr:"Cuir"},
+ {k:"denim",zh:"丹寧",en:"Denim",es:"Denim",fr:"Denim"},
+ {k:"cord",zh:"燈芯絨",en:"Corduroy",es:"Pana",fr:"Velours côtelé"},
+ {k:"suede",zh:"麂皮",en:"Suede",es:"Ante",fr:"Daim"}
+];
+
+const UI={
+ title:{zh:s=>`${s}配色判讀`,en:s=>`${s} colour check`,
+  es:s=>`Comprobador de color · ${s}`,fr:s=>`Vérificateur de couleurs · ${s}`},
+ sub:{zh:s=>`選顏色,不拍照。工具按${s}的六條可檢核規則算分並說明理由:彩度上限、明度層次、色相家族數、冷暖一致、鞋的收束、質料層次。換風格就換一整組門檻和權重,同一批顏色會得到不同的分數。`,
+      en:s=>`Pick colours, no photos. Scored against six checkable ${s} rules — chroma ceiling, lightness range, hue families, warm/cool consistency, how the shoes anchor the look, and fabric layering. Switching style swaps the whole set of thresholds and weights, so the same colours score differently.`,
+      es:s=>`Elige colores, sin fotos. Se puntúa con seis reglas verificables de ${s}: límite de croma, rango de luminosidad, familias de tono, coherencia cálido/frío, el anclaje del calzado y la mezcla de tejidos. Cambiar de estilo cambia todos los umbrales y pesos, así que los mismos colores puntúan distinto.`,
+      fr:s=>`Choisissez des couleurs, sans photo. Noté selon six règles vérifiables de ${s} : plafond de chroma, écart de clarté, familles de teintes, cohérence chaud/froid, ancrage des chaussures et superposition des matières. Changer de style change tous les seuils et poids : les mêmes couleurs obtiennent une autre note.`},
+ styleLab:{zh:"風格",en:"Style",es:"Estilo",fr:"Style"},
+ tab1:{zh:"快速試配",en:"Quick check",es:"Prueba rápida",fr:"Test rapide"},
+ tab2:{zh:"我的衣櫃 · 產生建議",en:"My wardrobe · suggestions",es:"Mi armario · sugerencias",fr:"Ma garde-robe · suggestions"},
+ hLook:{zh:"這一套",en:"This outfit",es:"Este conjunto",fr:"Cette tenue"},
+ hintLook:{zh:"點一格,再從下面色卡選色。外套和鞋可留空。",
+   en:"Click a slot, then pick from the colour card below. Outer and shoes are optional.",
+   es:"Haz clic en una casilla y elige del muestrario. Abrigo y zapatos son opcionales.",
+   fr:"Cliquez sur un emplacement puis choisissez une couleur. Veste et chaussures facultatives."},
+ hPal:{zh:"色卡",en:"Colour card",es:"Muestrario",fr:"Nuancier"},
+ brightNote:{zh:s=>`這些你可能本來就有。選了會照樣算分,並告訴你最接近的${s}替代色——低分不等於這件衣服不好,只是不在這個風格的色域裡。`,
+  en:s=>`You probably already own some of these. They still get scored, and the tool names the closest ${s} substitute — a low score doesn't mean the garment is bad, only that it sits outside this style's colour range.`,
+  es:s=>`Probablemente ya tengas algunos. Se puntúan igual y la herramienta indica el sustituto de ${s} más cercano: una nota baja no significa que la prenda sea mala, solo que está fuera de la gama de este estilo.`,
+  fr:s=>`Vous en possédez probablement déjà. Elles sont notées normalement et l'outil indique le substitut ${s} le plus proche — une note basse ne signifie pas que le vêtement est mauvais, seulement qu'il sort de la gamme de ce style.`},
+ hRead:{zh:"判讀",en:"Reading",es:"Lectura",fr:"Lecture"},
+ hintRead:{zh:"上下順序就是身上的位置,明度分布看這一條。",
+   en:"Top to bottom is how it sits on the body — read the lightness distribution down this strip.",
+   es:"De arriba a abajo es como se lleva puesto: lee la luminosidad en esta franja.",
+   fr:"De haut en bas comme sur le corps — lisez la clarté le long de cette bande."},
+ needTwo:{zh:"選滿上衣和下身就會出結果。",en:"Pick a top and a bottom to get a result.",
+   es:"Elige una parte superior y un pantalón para ver el resultado.",fr:"Choisissez un haut et un bas pour obtenir un résultat."},
+ optional:{zh:"可留空",en:"optional",es:"opcional",fr:"facultatif"},
+ noColour:{zh:"未選色",en:"no colour",es:"sin color",fr:"aucune couleur"},
+ fabricPH:{zh:"質料",en:"Fabric",es:"Tejido",fr:"Matière"},
+ fabricOpt:{zh:"質料(可留空)",en:"Fabric (optional)",es:"Tejido (opcional)",fr:"Matière (facultatif)"},
+ namePH:{zh:"名稱(可留空)",en:"Name (optional)",es:"Nombre (opcional)",fr:"Nom (facultatif)"},
+ hBuild:{zh:"建立衣櫃",en:"Build your wardrobe",es:"Crea tu armario",fr:"Constituez votre garde-robe"},
+ hintBuild:{zh:"先點類別,再點色卡上的顏色,點一下就直接加進清單,不用再按確認。質料可以之後在清單裡補。資料只存在這台瀏覽器。",
+   en:"Tap a category, then tap a colour — one tap adds it, no confirm button. Fabric can be filled in later from the list. Data stays in this browser only.",
+   es:"Toca una categoría y luego un color: un toque lo añade, sin botón de confirmar. El tejido se puede rellenar después en la lista. Los datos se quedan solo en este navegador.",
+   fr:"Touchez une catégorie puis une couleur : un seul geste l'ajoute, sans bouton de confirmation. La matière peut être renseignée ensuite dans la liste. Les données restent dans ce navigateur."},
+ hList:{zh:"清單",en:"Items",es:"Prendas",fr:"Pièces"},
+ cntItems:{zh:(n,off)=>off?`${n} 件,其中 ${off} 件已停用`:`${n} 件`,
+   en:(n,off)=>off?`${n} items, ${off} skipped`:`${n} items`,
+   es:(n,off)=>off?`${n} prendas, ${off} excluidas`:`${n} prendas`,
+   fr:(n,off)=>off?`${n} pièces, dont ${off} exclues`:`${n} pièces`},
+ days:{zh:"幾天",en:"Days",es:"Días",fr:"Jours"},
+ gen:{zh:"產生建議",en:"Generate",es:"Generar",fr:"Générer"},
+ demo:{zh:"載入範例衣櫃",en:"Load sample wardrobe",es:"Cargar armario de ejemplo",fr:"Charger un exemple"},
+ exp:{zh:"匯出 JSON",en:"Export JSON",es:"Exportar JSON",fr:"Exporter JSON"},
+ imp:{zh:"匯入",en:"Import",es:"Importar",fr:"Importer"},
+ clr:{zh:"清空",en:"Clear",es:"Vaciar",fr:"Vider"},
+ emptyWard:{zh:"還沒有衣服。上面選類別,然後點色卡上的顏色。或者直接載入範例衣櫃試看看。",
+   en:"Nothing here yet. Pick a category above, then tap a colour. Or load the sample wardrobe to see how it works.",
+   es:"Aún no hay nada. Elige una categoría arriba y toca un color. O carga el armario de ejemplo para verlo funcionar.",
+   fr:"Rien pour l'instant. Choisissez une catégorie ci-dessus puis touchez une couleur. Ou chargez l'exemple pour voir."},
+ confirmClear:{zh:"清空整個衣櫃?",en:"Clear the whole wardrobe?",es:"¿Vaciar todo el armario?",fr:"Vider toute la garde-robe ?"},
+ confirmDemo:{zh:"載入範例會蓋掉現在的清單,要繼續嗎?",en:"Loading the sample will replace your current list. Continue?",
+   es:"Cargar el ejemplo reemplazará tu lista actual. ¿Continuar?",fr:"Charger l'exemple remplacera votre liste actuelle. Continuer ?"},
+ needTB:{zh:"至少要有一件上衣和一件下身(而且沒被停用)。",en:"You need at least one top and one bottom that aren't skipped.",
+   es:"Necesitas al menos una parte superior y un pantalón que no estén excluidos.",fr:"Il faut au moins un haut et un bas non exclus."},
+ mToday:{zh:"今天穿什麼",en:"What to wear today",es:"Qué ponerme hoy",fr:"Quoi porter aujourd'hui"},
+ mTrip:{zh:"打包出差",en:"Pack for a trip",es:"Hacer la maleta",fr:"Faire sa valise"},
+ mRank:{zh:"全部排名",en:"Rank everything",es:"Clasificar todo",fr:"Tout classer"},
+ hintToday:{zh:"從清單裡算出最高分的三套。想固定某一件,在清單按「指定」;今天不想碰的按「停用」。",
+   en:"The three highest-scoring outfits from your list. Pin a piece in the list to force it in, or skip the ones you don't feel like wearing.",
+   es:"Los tres conjuntos con mejor nota de tu lista. Fija una prenda en la lista para forzarla, o excluye lo que no te apetezca.",
+   fr:"Les trois tenues les mieux notées de votre liste. Épinglez une pièce pour l'imposer, excluez celles dont vous ne voulez pas."},
+ hintTrip:{zh:"用一件外套加一雙鞋撐完整趟行程,每天換上衣下身。工具會挑出讓整趟總分最高的那一組外套和鞋,並列出行李清單。",
+   en:"One jacket and one pair of shoes for the whole trip, changing tops and bottoms each day. The tool picks the jacket-and-shoe pair that scores best across all days and gives you a packing list.",
+   es:"Una chaqueta y un par de zapatos para todo el viaje, cambiando arriba y abajo cada día. La herramienta elige la pareja que mejor puntúa en todos los días y te da la lista de equipaje.",
+   fr:"Une veste et une paire de chaussures pour tout le voyage, en changeant haut et bas chaque jour. L'outil choisit la paire qui obtient la meilleure note sur l'ensemble et fournit la liste de bagage."},
+ hintRank:{zh:"所有組合由高到低。上面是可以穿的,下面那幾套就是別再一起穿的。",
+   en:"Every combination, best to worst. The top is what you can wear; the bottom is what to stop putting together.",
+   es:"Todas las combinaciones, de mejor a peor. Arriba lo que puedes llevar; abajo lo que no deberías volver a combinar.",
+   fr:"Toutes les combinaisons, de la meilleure à la pire. En haut ce qui se porte, en bas ce qu'il faut arrêter d'associer."},
+ hToday:{zh:"今天的三個選擇",en:"Three options for today",es:"Tres opciones para hoy",fr:"Trois options pour aujourd'hui"},
+ hDays:{zh:d=>`${d} 天,${d} 套`,en:d=>`${d} days, ${d} outfits`,es:d=>`${d} días, ${d} conjuntos`,fr:d=>`${d} jours, ${d} tenues`},
+ hintDays:{zh:(n,p)=>`從 ${n} 種可能裡挑出 ${p} 套,盡量不重複上衣與下身。點開看理由。`,
+   en:(n,p)=>`${p} outfits chosen from ${n} possible combinations, avoiding repeating the same top or bottom. Click to expand.`,
+   es:(n,p)=>`${p} conjuntos elegidos entre ${n} combinaciones posibles, evitando repetir prenda. Haz clic para ver el detalle.`,
+   fr:(n,p)=>`${p} tenues choisies parmi ${n} combinaisons, en évitant de répéter une pièce. Cliquez pour le détail.`},
+ hintTop:{zh:n=>`從 ${n} 種可能裡算出來的。點開看每一條規則怎麼判的。`,
+   en:n=>`Worked out from ${n} possible combinations. Click to see how each rule scored.`,
+   es:n=>`Calculado sobre ${n} combinaciones posibles. Haz clic para ver cada regla.`,
+   fr:n=>`Calculé sur ${n} combinaisons possibles. Cliquez pour voir chaque règle.`},
+ outfitN:{zh:n=>`第 ${n} 套`,en:n=>`Outfit ${n}`,es:n=>`Conjunto ${n}`,fr:n=>`Tenue ${n}`},
+ dayN:{zh:n=>`第 ${n} 天`,en:n=>`Day ${n}`,es:n=>`Día ${n}`,fr:n=>`Jour ${n}`},
+ hPack:{zh:"行李清單",en:"Packing list",es:"Lista de equipaje",fr:"Liste de bagage"},
+ hintPack:{zh:d=>`這 ${d} 天實際需要帶的件數。外套和鞋各一,其餘按天替換。`,
+   en:d=>`Everything you actually need for ${d} days — one jacket, one pair of shoes, the rest rotating.`,
+   es:d=>`Todo lo que necesitas para ${d} días: una chaqueta, un par de zapatos y el resto rotando.`,
+   fr:d=>`Tout ce qu'il faut pour ${d} jours — une veste, une paire de chaussures, le reste en rotation.`},
+ hRankGood:{zh:n=>`70 分以上:${n} 套`,en:n=>`Scoring 70 or above: ${n}`,
+   es:n=>`70 o más: ${n}`,fr:n=>`70 et plus : ${n}`},
+ hRankBad:{zh:"最低分的幾套",en:"Lowest scoring",es:"Las peores notas",fr:"Les moins bien notées"},
+ noneGood:{zh:"這批衣服在目前的風格下沒有 70 分以上的組合。換個風格試試,或看下面哪一條規則一直過不了。",
+   en:"Nothing in this wardrobe reaches 70 under the current style. Try another style, or look below at which rule keeps failing.",
+   es:"Nada en este armario llega a 70 con el estilo actual. Prueba otro estilo o mira abajo qué regla falla siempre.",
+   fr:"Rien n'atteint 70 dans le style actuel. Essayez un autre style, ou regardez ci-dessous quelle règle échoue systématiquement."},
+ pinned:{zh:"指定",en:"Pin",es:"Fijar",fr:"Épingler"},
+ skipped:{zh:"停用",en:"Skip",es:"Excluir",fr:"Exclure"},
+ justAdded:{zh:(c,n)=>`已加入 ${c}・${n}`,en:(c,n)=>`Added ${c.toLowerCase()} · ${n}`,
+   es:(c,n)=>`Añadido ${c.toLowerCase()} · ${n}`,fr:(c,n)=>`Ajouté ${c.toLowerCase()} · ${n}`},
+ undo:{zh:"撤回",en:"Undo",es:"Deshacer",fr:"Annuler"},
+ tooMany:{zh:"件數太多,只算前面的組合。刪掉幾件或用「停用」縮小範圍會更準。",
+   en:"Too many items to evaluate them all — only the first batch of combinations was scored. Delete or skip a few for a cleaner answer.",
+   es:"Demasiadas prendas para evaluarlas todas: solo se puntuó el primer lote. Borra o excluye algunas para un resultado más limpio.",
+   fr:"Trop de pièces pour tout évaluer — seul le premier lot a été noté. Supprimez ou excluez quelques pièces."},
+ copy:{zh:"複製成文字",en:"Copy as text",es:"Copiar como texto",fr:"Copier en texte"},
+ copied:{zh:"已複製",en:"Copied",es:"Copiado",fr:"Copié"},
+ copyFail:{zh:"複製失敗",en:"Copy failed",es:"Error al copiar",fr:"Échec de la copie"},
+ fixLabel:{zh:"怎麼改",en:"How to fix",es:"Cómo corregirlo",fr:"Comment corriger"},
+ weight:{zh:"權重",en:"weight",es:"peso",fr:"poids"},
+ suggestion:{zh:"建議",en:"Fix",es:"Corrección",fr:"Correction"},
+ readErr:{zh:"檔案讀不出來。",en:"Could not read that file.",es:"No se pudo leer el archivo.",fr:"Fichier illisible."},
+ rChroma:{zh:"彩度上限",en:"Chroma ceiling",es:"Límite de croma",fr:"Plafond de chroma"},
+ rLight:{zh:"明度層次",en:"Lightness range",es:"Rango de luminosidad",fr:"Écart de clarté"},
+ rHue:{zh:"色相家族數",en:"Hue families",es:"Familias de tono",fr:"Familles de teintes"},
+ rTemp:{zh:"冷暖一致",en:"Warm / cool",es:"Cálido / frío",fr:"Chaud / froid"},
+ rShoe:{zh:"鞋的收束",en:"Shoe anchor",es:"Anclaje del calzado",fr:"Ancrage des chaussures"},
+ methodS:{zh:"判斷依據是什麼",en:"How the scoring works",es:"Cómo funciona la puntuación",fr:"Comment le calcul fonctionne"},
+ methodP:{
+  zh:p=>`所有顏色先從 sRGB 轉到 CIELAB,再取 LCH 的明度 L 與彩度 C。以下的數字是「${p.st}」這一組門檻,換風格數字就會換。彩度:整套最高 C 值在 ${p.c.good} 以下最穩、${p.c.ok} 以內可接受、超過 ${p.c.high} 就離開這個風格的語彙;另外全套平均 C 超過 ${p.c.meanBad} 會再打折,因為那表示不只一件在說話。明度:最亮與最暗之差至少 ${p.l.good},低於 ${p.l.thin} 就算層次太薄,並避免每件都落在 L ${p.l.midLo}–${p.l.midHi} 的中間帶,那是糊掉的主因;鞋不算進這個跨度,免得白鞋憑空製造出對比。若全套最高彩度在 ${p.l.monoMaxC} 以下,同色調堆疊可以成立,但層次必須靠質料差異補回來。色相家族:C 值 10 以上算有彩色,色相相差 40 度內視為同家族,家族數超過 2 就超出範圍;若有兩個家族又沒有一件 C 8 以下的近無彩色當底,會再扣一次。冷暖:色相 115 度以下與 335 度以上算暖,150–310 度算冷,兩者同時出現時需要近無彩色橋接。${p.prefer?"這個風格另外以暖調為骨架,整套走冷會扣分。":"這個風格不偏好特定色溫,只要求一致。"}鞋:明度應等於或低於上下身。質料層次為提示而非計分。分數是各規則的加權平均(彩度 ${p.w.chroma}、明度 ${p.w.light}、色相 ${p.w.hue}、冷暖 ${p.w.temp}、鞋 ${p.w.shoe}),沒有鞋時該權重按比例分給其餘規則;另外任何一條嚴重不過,總分會被壓在 58 或 72 以下,避免一條大錯被四條小對平均掉。這是一套明確的規則判斷,不是品味的定論——規則說不行而你穿起來好看,以你為準。`,
+  en:p=>`Every colour is converted from sRGB to CIELAB, then read as LCH lightness (L) and chroma (C). The numbers below belong to "${p.st}" and change with the style. Chroma: the highest C in the outfit is safest below ${p.c.good}, acceptable up to ${p.c.ok}, and past ${p.c.high} it has left this style's vocabulary; an outfit-wide mean above ${p.c.meanBad} takes a further cut, because that means more than one piece is talking. Lightness: aim for at least ${p.l.good} between lightest and darkest, treat anything under ${p.l.thin} as thin layering, and avoid having every piece land in the L ${p.l.midLo}–${p.l.midHi} middle band, the main cause of a look going muddy; shoes are excluded from this span so white trainers can't invent contrast that the clothes don't have. If the outfit's highest chroma stays under ${p.l.monoMaxC}, tonal stacking is legitimate, but the layering then has to come from fabric. Hue families: C 10 and above counts as chromatic, hues within 40 degrees are one family, more than two is out of range, and two families with no near-neutral under C 8 underneath is penalised again. Warm/cool: hue up to 115 and above 335 reads warm, 150–310 reads cool, and both together need a near-neutral bridge. ${p.prefer?"This style is also built on warmth, so a fully cool outfit loses points.":"This style has no temperature preference — it only asks for consistency."} Shoes should sit at or below the lightness of top and bottom. Fabric layering is advice, not scored. The total is a weighted average (chroma ${p.w.chroma}, lightness ${p.w.light}, hue ${p.w.hue}, temperature ${p.w.temp}, shoes ${p.w.shoe}); with no shoes that weight is redistributed, and any badly failing rule caps the total at 58 or 72 so one real mistake can't be averaged away by four passes. This is an explicit rule check, not a verdict on taste — if a rule says no and it looks good on you, trust yourself.`,
+  es:p=>`Cada color se convierte de sRGB a CIELAB y se lee como luminosidad (L) y croma (C) en LCH. Las cifras siguientes corresponden a "${p.st}" y cambian con el estilo. Croma: el C más alto del conjunto es más seguro por debajo de ${p.c.good}, aceptable hasta ${p.c.ok}, y por encima de ${p.c.high} sale del vocabulario de este estilo; una media superior a ${p.c.meanBad} resta otra vez, porque significa que habla más de una prenda. Luminosidad: busca al menos ${p.l.good} entre la prenda más clara y la más oscura, por debajo de ${p.l.thin} la estratificación es débil, y evita que todas caigan en la banda media L ${p.l.midLo}–${p.l.midHi}. El calzado queda fuera de ese cálculo para que unas deportivas blancas no inventen un contraste que la ropa no tiene. Si el croma máximo se queda por debajo de ${p.l.monoMaxC}, el apilado tonal es válido, pero las capas deben venir del tejido. Familias de tono: desde C 10 es cromático, tonos a menos de 40 grados son una familia, más de dos queda fuera, y dos familias sin una prenda casi neutra por debajo de C 8 se penaliza otra vez. Cálido/frío: tono hasta 115 y por encima de 335 es cálido, 150–310 frío, y ambos juntos necesitan un puente neutro. ${p.prefer?"Este estilo se construye además sobre la calidez, así que un conjunto totalmente frío pierde puntos.":"Este estilo no prefiere ninguna temperatura, solo pide coherencia."} El calzado debe ser igual o más oscuro que arriba y abajo. La mezcla de tejidos es consejo, no puntúa. El total es una media ponderada (croma ${p.w.chroma}, luminosidad ${p.w.light}, tono ${p.w.hue}, temperatura ${p.w.temp}, calzado ${p.w.shoe}); sin zapatos ese peso se redistribuye, y cualquier regla que falle claramente limita el total a 58 o 72, para que un error real no se diluya. Esto es una comprobación de reglas, no un veredicto sobre el gusto: si una regla dice que no y a ti te queda bien, hazte caso.`,
+  fr:p=>`Chaque couleur est convertie du sRGB vers CIELAB, puis lue en LCH comme clarté (L) et chroma (C). Les chiffres ci-dessous appartiennent à « ${p.st} » et changent avec le style. Chroma : le C le plus élevé est le plus sûr sous ${p.c.good}, acceptable jusqu'à ${p.c.ok}, et au-delà de ${p.c.high} on sort du vocabulaire de ce style ; une moyenne supérieure à ${p.c.meanBad} pénalise encore, car cela signifie que plusieurs pièces parlent. Clarté : viser au moins ${p.l.good} d'écart, sous ${p.l.thin} la superposition est trop faible, et éviter que toutes les pièces tombent dans la bande médiane L ${p.l.midLo}–${p.l.midHi}. Les chaussures sont exclues de cet écart, pour qu'une paire blanche n'invente pas un contraste absent des vêtements. Si le chroma maximal reste sous ${p.l.monoMaxC}, l'empilement ton sur ton est valable, mais la superposition doit venir de la matière. Familles de teintes : à partir de C 10 une couleur est chromatique, des teintes séparées de moins de 40 degrés font une famille, plus de deux sort de la plage, et deux familles sans pièce quasi neutre sous C 8 sont pénalisées une seconde fois. Chaud/froid : teinte jusqu'à 115 et au-delà de 335 se lit chaude, 150–310 froide, et les deux ensemble exigent un pont neutre. ${p.prefer?"Ce style repose en outre sur la chaleur : une tenue entièrement froide perd des points.":"Ce style n'a pas de préférence de température, il demande seulement de la cohérence."} Les chaussures doivent être d'une clarté égale ou inférieure au haut et au bas. La superposition des matières est un conseil, sans note. Le total est une moyenne pondérée (chroma ${p.w.chroma}, clarté ${p.w.light}, teinte ${p.w.hue}, température ${p.w.temp}, chaussures ${p.w.shoe}) ; sans chaussures ce poids est redistribué, et toute règle nettement en échec plafonne le total à 58 ou 72, afin qu'une vraie erreur ne soit pas noyée. Il s'agit d'une vérification de règles, pas d'un verdict sur le goût — si une règle dit non et que cela vous va bien, faites-vous confiance.`}
+};
+
+const V={
+ v1:{zh:"很穩,可以直接穿",en:"Solid — wear it",es:"Sólido, puedes usarlo",fr:"Solide, portez-la"},
+ v2:{zh:"成立,細節可微調",en:"Works, minor tweaks",es:"Funciona, ajustes menores",fr:"Ça marche, ajustements mineurs"},
+ v3:{zh:"有風險,建議換一件",en:"Risky — swap one piece",es:"Arriesgado, cambia una prenda",fr:"Risqué, changez une pièce"},
+ v4:{zh:"不建議這樣穿",en:"Don't wear this",es:"No lo recomiendo",fr:"À éviter"}
+};
+
+/* rule messages: id -> per-language function(p) */
+const MSG={
+ chroma_good:{zh:p=>`整套最高彩度 C ${p.c},落在${p.st}最穩的區間。顏色不搶話,質料才有機會被看見。`,
+  en:p=>`Highest chroma in the outfit is C ${p.c}, right in the safe band. Nothing shouts, so the fabric gets to do the talking.`,
+  es:p=>`El croma más alto es C ${p.c}, dentro de la banda segura. Ningún color grita, así que el tejido habla.`,
+  fr:p=>`Le chroma le plus élevé est C ${p.c}, dans la zone sûre. Aucune couleur ne crie, la matière peut s'exprimer.`},
+ chroma_ok:{zh:p=>`最高彩度來自${p.cat}的${p.name}(C ${p.c})。還在可接受範圍,但它會是全身的視覺重心,其餘必須更安靜。`,
+  en:p=>`The loudest piece is the ${p.cat.toLowerCase()} in ${p.name} (C ${p.c}). Still acceptable, but it becomes the focal point, so everything else has to stay quieter.`,
+  es:p=>`La prenda más llamativa es ${p.cat.toLowerCase()} en ${p.name} (C ${p.c}). Aceptable, pero será el centro visual y el resto debe callarse.`,
+  fr:p=>`La pièce la plus vive est ${p.cat.toLowerCase()} en ${p.name} (C ${p.c}). Acceptable, mais elle devient le point focal ; le reste doit rester discret.`},
+ chroma_high:{zh:p=>`${p.cat}的${p.name}彩度 C ${p.c} 偏高,已經開始超出${p.st}的容忍度。`,
+  en:p=>`The ${p.cat.toLowerCase()} in ${p.name} is at C ${p.c} — high enough to start pushing past what ${p.st} tolerates.`,
+  es:p=>`${p.cat} en ${p.name} está en C ${p.c}: lo bastante alto para empezar a salirse de lo que ${p.st} tolera.`,
+  fr:p=>`${p.cat} en ${p.name} atteint C ${p.c} — assez haut pour commencer à dépasser ce que ${p.st} tolère.`},
+ chroma_bad:{zh:p=>`${p.cat}的${p.name}彩度 C ${p.c},已經超出${p.st}的色彩範圍。`,
+  en:p=>`The ${p.cat.toLowerCase()} in ${p.name} sits at C ${p.c}, outside the ${p.st} range entirely.`,
+  es:p=>`${p.cat} en ${p.name} está en C ${p.c}, fuera del rango de ${p.st}.`,
+  fr:p=>`${p.cat} en ${p.name} est à C ${p.c}, hors de la plage de ${p.st}.`},
+ chroma_mean:{zh:p=>`而且不只一件在說話——全套平均彩度 C ${p.mean},缺少讓眼睛休息的地方。`,
+  en:p=>`And it is not just one piece talking — average chroma across the outfit is C ${p.mean}, leaving the eye nowhere to rest.`,
+  es:p=>`Y no es solo una prenda: el croma medio del conjunto es C ${p.mean}, sin un punto donde descanse la vista.`,
+  fr:p=>`Et ce n'est pas une seule pièce — le chroma moyen de la tenue est C ${p.mean}, l'œil n'a nulle part où se reposer.`},
+ hue_bare:{zh:()=>`而且全套沒有一件近無彩色可以當底,兩個家族直接對話。`,
+  en:()=>`There is also no near-neutral piece to sit underneath, so the two families talk to each other directly.`,
+  es:()=>`Además no hay ninguna prenda casi neutra como base, así que las dos familias dialogan directamente.`,
+  fr:()=>`De plus, aucune pièce quasi neutre ne sert de base : les deux familles se parlent directement.`},
+ light_mid:{zh:p=>`每一件都落在中間調(L ${p.min}–${p.max}),沒有明確的明暗主從,整體會糊成一片。`,
+  en:p=>`Every piece lands in the middle band (L ${p.min}–${p.max}). With no clear light-dark hierarchy the whole thing blurs together.`,
+  es:p=>`Todas las prendas caen en la banda media (L ${p.min}–${p.max}). Sin jerarquía de claro-oscuro, todo se difumina.`,
+  fr:p=>`Toutes les pièces tombent dans la bande médiane (L ${p.min}–${p.max}). Sans hiérarchie clair-foncé, tout se confond.`},
+ light_good:{zh:p=>`明度跨度 ${p.r}(最亮 ${p.lcat}${p.lname} L ${p.max},最深 ${p.dcat}${p.dname} L ${p.min}),層次分明。`,
+  en:p=>`Lightness spans ${p.r} — lightest is the ${p.lcat.toLowerCase()} in ${p.lname} at L ${p.max}, darkest the ${p.dcat.toLowerCase()} in ${p.dname} at L ${p.min}. Clear layering.`,
+  es:p=>`La luminosidad abarca ${p.r}: lo más claro es ${p.lcat.toLowerCase()} en ${p.lname} (L ${p.max}), lo más oscuro ${p.dcat.toLowerCase()} en ${p.dname} (L ${p.min}). Buena estratificación.`,
+  fr:p=>`La clarté couvre ${p.r} : le plus clair est ${p.lcat.toLowerCase()} en ${p.lname} (L ${p.max}), le plus foncé ${p.dcat.toLowerCase()} en ${p.dname} (L ${p.min}). Superposition nette.`},
+ light_thin:{zh:p=>`明度跨度只有 ${p.r},層次偏薄。能穿,但照片上會顯得平。`,
+  en:p=>`Lightness only spans ${p.r}, so the layering is thin. Wearable, but it will photograph flat.`,
+  es:p=>`La luminosidad solo abarca ${p.r}: la estratificación es débil. Se puede llevar, pero en foto saldrá plano.`,
+  fr:p=>`La clarté ne couvre que ${p.r} : la superposition est faible. Portable, mais plat en photo.`},
+ light_mono:{zh:p=>`明度跨度 ${p.r},屬於同色調堆疊。這在${p.st}裡是成立的做法,但成敗完全押在質料差異上。`,
+  en:p=>`Lightness spans ${p.r} — this is tonal stacking. A legitimate move in ${p.st}, but it lives or dies on fabric contrast.`,
+  es:p=>`La luminosidad abarca ${p.r}: es apilado tonal. Es una jugada válida en ${p.st}, pero depende del contraste de tejidos.`,
+  fr:p=>`La clarté couvre ${p.r} : c'est un empilement ton sur ton. Un choix valable en ${p.st}, mais tout repose sur le contraste des matières.`},
+ light_flat:{zh:p=>`明度跨度只有 ${p.r},幾件顏色深淺太接近,輪廓會消失。`,
+  en:p=>`Lightness only spans ${p.r}. The pieces are too close in depth and the silhouette disappears.`,
+  es:p=>`La luminosidad solo abarca ${p.r}. Las prendas están demasiado próximas y la silueta desaparece.`,
+  fr:p=>`La clarté ne couvre que ${p.r}. Les pièces sont trop proches et la silhouette disparaît.`},
+ hue_none:{zh:()=>`全套皆為無彩或近無彩,色相衝突不存在。`,
+  en:()=>`Everything is neutral or near-neutral, so there is no hue conflict to manage.`,
+  es:()=>`Todo es neutro o casi neutro, así que no hay conflicto de tonos.`,
+  fr:()=>`Tout est neutre ou presque, donc aucun conflit de teintes.`},
+ hue_one:{zh:p=>`只有一個色相家族(${p.list}),其餘為無彩色。這是最安全的結構。`,
+  en:p=>`One hue family only (${p.list}), everything else neutral. This is the safest structure there is.`,
+  es:p=>`Una sola familia de tono (${p.list}), el resto neutro. La estructura más segura.`,
+  fr:p=>`Une seule famille de teintes (${p.list}), le reste neutre. La structure la plus sûre.`},
+ hue_two:{zh:p=>`兩個色相家族:${p.list}。兩個是上限,再加就亂。`,
+  en:p=>`Two hue families: ${p.list}. Two is the ceiling — a third starts to look busy.`,
+  es:p=>`Dos familias de tono: ${p.list}. Dos es el límite; una tercera ya recarga.`,
+  fr:p=>`Deux familles de teintes : ${p.list}. Deux est le plafond ; une troisième surcharge.`},
+ hue_many:{zh:p=>`${p.n} 個色相家族(${p.list}),超出${p.st}容納範圍。`,
+  en:p=>`${p.n} hue families (${p.list}) — beyond what ${p.st} holds together.`,
+  es:p=>`${p.n} familias de tono (${p.list}): más de lo que ${p.st} soporta.`,
+  fr:p=>`${p.n} familles de teintes (${p.list}) — au-delà de ce que ${p.st} supporte.`},
+ temp_bridge:{zh:p=>`暖(${p.warm})和冷(${p.cool})同時出現,但${p.cat}的${p.name}彩度只有 C ${p.c},能當中介把兩邊接起來。`,
+  en:p=>`Warm (${p.warm}) and cool (${p.cool}) both appear, but the ${p.cat.toLowerCase()} in ${p.name} sits at only C ${p.c} and bridges the two.`,
+  es:p=>`Aparecen cálidos (${p.warm}) y fríos (${p.cool}), pero ${p.cat.toLowerCase()} en ${p.name} está en solo C ${p.c} y hace de puente.`,
+  fr:p=>`Chaud (${p.warm}) et froid (${p.cool}) coexistent, mais ${p.cat.toLowerCase()} en ${p.name} n'est qu'à C ${p.c} et fait le lien.`},
+ temp_clash:{zh:p=>`暖(${p.warm})和冷(${p.cool})直接相撞,沒有近無彩色做橋接,會顯得兩截。`,
+  en:p=>`Warm (${p.warm}) meets cool (${p.cool}) with no near-neutral to bridge them — the look splits in two.`,
+  es:p=>`Cálido (${p.warm}) choca con frío (${p.cool}) sin neutro que los una: el conjunto se parte en dos.`,
+  fr:p=>`Le chaud (${p.warm}) heurte le froid (${p.cool}) sans neutre pour relier — la tenue se coupe en deux.`},
+ temp_warm:{zh:p=>`全套暖調一致(${p.list}加無彩色),膚色會被拉亮。`,
+  en:p=>`Consistently warm (${p.list} plus neutrals), which lifts skin tone.`,
+  es:p=>`Cálido de forma coherente (${p.list} más neutros), lo que favorece el tono de piel.`,
+  fr:p=>`Chaud de façon cohérente (${p.list} plus neutres), ce qui éclaire le teint.`},
+ temp_cool:{zh:p=>`全套冷調一致(${p.list}加無彩色),俐落收斂。`,
+  en:p=>`Consistently cool (${p.list} plus neutrals) — sharp and contained.`,
+  es:p=>`Frío de forma coherente (${p.list} más neutros): nítido y contenido.`,
+  fr:p=>`Froid de façon cohérente (${p.list} plus neutres) — net et maîtrisé.`},
+ temp_pref_ok:{zh:p=>`${p.st}要的就是暖調,而${p.list}正好走在這個方向上。`,
+  en:p=>`${p.st} wants warmth, and ${p.list} runs exactly that way.`,
+  es:p=>`${p.st} pide calidez, y ${p.list} va justo en esa dirección.`,
+  fr:p=>`${p.st} demande de la chaleur, et ${p.list} va exactement dans ce sens.`},
+ temp_pref_bad:{zh:p=>`${p.st}以暖調為骨架,但這一套的顏色(${p.list})是冷的。不是不能穿,而是換了風格就該換一套判斷。`,
+  en:p=>`${p.st} is built on warm tones, but this outfit runs cool (${p.list}). Not unwearable — it just belongs to a different style.`,
+  es:p=>`${p.st} se construye sobre tonos cálidos, pero este conjunto es frío (${p.list}). No es imposible de llevar: simplemente pertenece a otro estilo.`,
+  fr:p=>`${p.st} repose sur des tons chauds, mais cette tenue est froide (${p.list}). Pas importable — elle appartient simplement à un autre style.`},
+ temp_pref_none:{zh:p=>`全套是無彩色骨架,${p.st}成立但少了這個風格最想要的暖度。加一件燕麥或駝色就到位。`,
+  en:p=>`The outfit is an achromatic frame. It holds up, but it lacks the warmth ${p.st} is really after — one oatmeal or camel piece would fix it.`,
+  es:p=>`El conjunto es un marco acromático. Funciona, pero le falta la calidez que ${p.st} busca: una prenda avena o camel lo resolvería.`,
+  fr:p=>`La tenue est une structure achromatique. Elle tient, mais il manque la chaleur que ${p.st} recherche — une pièce avoine ou camel suffirait.`},
+ temp_neutral:{zh:()=>`全套無明顯冷暖傾向,不存在色溫衝突。`,
+  en:()=>`No clear warm or cool bias, so there is no temperature conflict.`,
+  es:()=>`Sin sesgo cálido o frío claro, así que no hay conflicto de temperatura.`,
+  fr:()=>`Aucun biais chaud ou froid marqué, donc pas de conflit de température.`},
+ shoe_good:{zh:p=>`鞋(${p.name} L ${p.l})是全身最深或並列最深,重心穩定收在下方。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are the darkest point or tied for it, so the weight settles at the bottom.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) son el punto más oscuro, así que el peso se asienta abajo.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont le point le plus foncé, le poids se pose en bas.`},
+ shoe_ok:{zh:p=>`鞋(${p.name} L ${p.l})比下身亮一些,收束不夠明確但還撐得住。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are a touch lighter than the bottom — the anchor is vague but it holds.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) son algo más claros que el pantalón: el anclaje es débil pero aguanta.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont un peu plus claires que le bas : l'ancrage est flou mais tient.`},
+ shoe_bad:{zh:p=>`鞋(${p.name} L ${p.l})明顯比上下身亮,視線會被往腳邊帶,整體比例往下垮。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are clearly lighter than both top and bottom, pulling the eye to the floor and collapsing the proportions.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) son claramente más claros que el resto: atraen la mirada al suelo y hunden la proporción.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont nettement plus claires que le reste : l'œil descend et les proportions s'effondrent.`},
+ fix_none:{zh:()=>`每一條都過,不需要改。`,en:()=>`Every rule passes. Nothing to change.`,
+  es:()=>`Todas las reglas pasan. Nada que cambiar.`,fr:()=>`Toutes les règles passent. Rien à changer.`},
+ fix_chroma:{zh:p=>`把${p.cat}的${p.name}換成同色系的低彩度版本,或直接換無彩色。彩度是${p.st}最容易破功的一項。`,
+  en:p=>`Swap the ${p.cat.toLowerCase()} in ${p.name} for a duller version of the same hue, or go neutral. Chroma is where ${p.st} breaks first.`,
+  es:p=>`Cambia ${p.cat.toLowerCase()} en ${p.name} por una versión más apagada del mismo tono, o ve a neutro. El croma es lo primero que rompe ${p.st}.`,
+  fr:p=>`Remplacez ${p.cat.toLowerCase()} en ${p.name} par une version plus sourde de la même teinte, ou passez au neutre. Le chroma est le premier point de rupture.`},
+ fix_light_mid:{zh:p=>`每一件都在中間調。挑一件往淺推(奶油白、象牙、淺灰),或把下身換成藏青、炭灰,拉出至少 ${p.tgt} 的明度差。`,
+  en:p=>`Everything is mid-tone. Push one piece light (cream, ivory, light grey) or take the bottom down to navy or charcoal, until the spread reaches ${p.tgt}.`,
+  es:p=>`Todo está en tono medio. Lleva una prenda a claro (crema, marfil, gris claro) o el pantalón a azul marino o carbón, hasta alcanzar ${p.tgt} de diferencia.`,
+  fr:p=>`Tout est en demi-teinte. Éclaircissez une pièce (crème, ivoire, gris clair) ou passez le bas en marine ou anthracite, jusqu'à ${p.tgt} d'écart.`},
+ fix_light:{zh:p=>`把下身換深一階、或上衣換淺一階,目標是全套明度跨度到 ${p.tgt} 以上。`,
+  en:p=>`Take the bottom one step darker or the top one step lighter, aiming for a lightness spread above ${p.tgt}.`,
+  es:p=>`Oscurece el pantalón un paso o aclara la parte superior un paso, buscando más de ${p.tgt} de diferencia.`,
+  fr:p=>`Assombrissez le bas d'un cran ou éclaircissez le haut d'un cran, pour dépasser ${p.tgt} d'écart.`},
+ fix_hue:{zh:p=>`留下最想穿的那一個色相,其餘換成無彩色或米駝系。${p.st}的層次來自質料,不來自多色。`,
+  en:p=>`Keep the one hue you actually want to wear and take the rest to neutrals or the camel family. ${p.st} layers with fabric, not with colour count.`,
+  es:p=>`Quédate con el tono que de verdad quieres y pasa el resto a neutros o a la familia camel. ${p.st} estratifica con tejidos, no con más colores.`,
+  fr:p=>`Gardez la teinte que vous voulez vraiment et passez le reste en neutres ou en camel. ${p.st} superpose par la matière, pas par le nombre de couleurs.`},
+ fix_temp:{zh:()=>`加一件低彩度的中灰或燕麥色當橋接(外套或下身最有效),或把其中一件換成同色溫。`,
+  en:()=>`Add a low-chroma mid grey or oatmeal as a bridge — the outer layer or the bottom works best — or move one piece to match the other's temperature.`,
+  es:()=>`Añade un gris medio u avena de croma bajo como puente (mejor el abrigo o el pantalón), o cambia una prenda a la misma temperatura.`,
+  fr:()=>`Ajoutez un gris moyen ou un avoine peu chromatique comme pont (la veste ou le bas fonctionne mieux), ou alignez une pièce sur la température de l'autre.`},
+ fix_temp_pref:{zh:p=>`${p.st}的底色是暖的。把其中一件換成燕麥、駝色、摩卡或橄欖,整套的調性就會回到這個風格上。`,
+  en:p=>`${p.st} sits on a warm base. Move one piece to oatmeal, camel, mocha or olive and the whole outfit comes back into the style.`,
+  es:p=>`${p.st} se asienta sobre una base cálida. Cambia una prenda a avena, camel, moca u oliva y el conjunto vuelve al estilo.`,
+  fr:p=>`${p.st} repose sur une base chaude. Passez une pièce en avoine, camel, moka ou olive et la tenue revient dans le style.`},
+ fix_shoe:{zh:()=>`鞋換成全套最深的一階——黑、近黑、深巧克力,依上身色溫選。`,
+  en:()=>`Take the shoes to the darkest step in the outfit — black, off-black or dark chocolate, whichever matches the temperature above.`,
+  es:()=>`Lleva los zapatos al paso más oscuro del conjunto: negro, casi negro o chocolate oscuro, según la temperatura de arriba.`,
+  fr:()=>`Passez les chaussures au ton le plus foncé de la tenue — noir, presque noir ou chocolat foncé, selon la température du haut.`},
+ note_same:{zh:p=>`${p.a}和${p.b}同為${p.f}且明度幾乎相同,相疊會失去層次。把其中一件換成不同織法。`,
+  en:p=>`${p.a} and ${p.b} are both ${p.f.toLowerCase()} at almost the same lightness — layered together they lose all definition. Change one to a different weave.`,
+  es:p=>`${p.a} y ${p.b} son ambos ${p.f.toLowerCase()} con casi la misma luminosidad: superpuestos pierden definición. Cambia uno de tejido.`,
+  fr:p=>`${p.a} et ${p.b} sont tous deux en ${p.f.toLowerCase()} avec presque la même clarté : superposés, ils perdent toute définition. Changez le tissage de l'un.`},
+ sub_one:{zh:p=>`${p.cat}的${p.name}(C ${p.c})超出${p.st}色域。同一個位置最接近的替代是${p.alt}——色相相近、明度相當,彩度降到 C ${p.ac}。想保留這件的話就讓它當全身唯一的聲音,其餘全部無彩色。`,
+  en:p=>`The ${p.cat.toLowerCase()} in ${p.name} (C ${p.c}) sits outside the ${p.st} range. The closest substitute in the same position is ${p.alt} — similar hue, similar lightness, chroma down to C ${p.ac}. If you want to keep the original, let it be the only voice in the outfit and take everything else to neutrals.`,
+  es:p=>`${p.cat} en ${p.name} (C ${p.c}) está fuera de la gama de ${p.st}. El sustituto más cercano en la misma posición es ${p.alt}: tono y luminosidad similares, croma reducido a C ${p.ac}. Si quieres conservar la prenda, que sea la única voz del conjunto y deja el resto en neutros.`,
+  fr:p=>`${p.cat} en ${p.name} (C ${p.c}) sort de la gamme de ${p.st}. Le substitut le plus proche à la même place est ${p.alt} — teinte et clarté similaires, chroma ramené à C ${p.ac}. Pour garder la pièce, faites-en la seule voix de la tenue et passez tout le reste en neutres.`},
+ note_fab:{zh:p=>`${p.n} 種質料(${p.list})在低彩度下撐起層次,這正是${p.st}的做法。`,
+  en:p=>`${p.n} different fabrics (${p.list}) carrying the layering at low chroma — exactly how ${p.st} works.`,
+  es:p=>`${p.n} tejidos distintos (${p.list}) sostienen la estratificación con croma bajo: así funciona ${p.st}.`,
+  fr:p=>`${p.n} matières différentes (${p.list}) portent la superposition à faible chroma — c'est précisément le principe de ${p.st}.`}
+};
+
+let L="zh";
+try{ L=localStorage.getItem("ql_lang")||"zh"; }catch(e){}
+if(!LANGS.includes(L)) L="zh";
+const u=k=>UI[k][L];
+const cn=hex=>{const o=CNAME[hex.toUpperCase()];return o?o[L]:hex;};
+const cat=k=>{const o=CATS.find(c=>c.k===k);return o?o[L]:k;};
+const fab=k=>{if(!k)return "";const o=FABRICS.find(f=>f.k===k);return o?o[L]:k;};
+// the style name is injected into every message, so rule text names the active style
+const m=(id,p)=>MSG[id][L](Object.assign({st:ST().name[L]},p||{}));
+
+/* ===================== colour math ===================== */
+function hexToRgb(h){h=h.replace("#","");return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function lin(v){v/=255;return v<=0.04045? v/12.92 : Math.pow((v+0.055)/1.055,2.4);}
+function lch(hex){
+  const [R,G,B]=hexToRgb(hex), r=lin(R),g=lin(G),b=lin(B);
+  const X=r*0.4124564+g*0.3575761+b*0.1804375;
+  const Y=r*0.2126729+g*0.7151522+b*0.0721750;
+  const Z=r*0.0193339+g*0.1191920+b*0.9503041;
+  const f=t=>t>0.008856? Math.cbrt(t) : (7.787*t+16/116);
+  const fx=f(X/0.95047), fy=f(Y/1), fz=f(Z/1.08883);
+  const Lv=116*fy-16, a=500*(fx-fy), bb=200*(fy-fz);
+  let H=Math.atan2(bb,a)*180/Math.PI; if(H<0)H+=360;
+  return {L:+Lv.toFixed(1), C:+Math.sqrt(a*a+bb*bb).toFixed(1), H:+H.toFixed(1)};
+}
+function hueDist(a,b){const d=Math.abs(a-b)%360;return d>180?360-d:d;}
+// closest quiet-luxury colour to a given hex: hold hue and lightness, drop chroma
+function nearestQuiet(hex){
+  const a=lch(hex); let best=null,bd=1e9;
+  QUIET.forEach(h=>{
+    const b=lch(h);
+    let d=1.4*Math.abs(a.L-b.L)+1.0*hueDist(a.H,b.H);
+    // a chromatic garment should be replaced by something that still has a colour,
+    // not flattened straight to grey
+    if(a.C>=25) d+=0.9*Math.max(0,12-b.C);
+    if(d<bd){bd=d;best=h;}
+  });
+  return best;
+}
+function temp(H,C){ if(C<10) return "neutral";
+  return lean(H,C); }
+// temperature *direction*, ignoring the near-neutral cut-off: a cream at C 5.6 still
+// leans warm, which matters for styles that ask for a temperature rather than just consistency
+function lean(H,C){ if(C<3.5) return "none";
+  if(H<=115||H>=335) return "warm";
+  if(H>=150&&H<=310) return "cool";
+  return "mid"; }
+
+/* ===================== scoring ===================== */
+function scoreLook(items){
+  const its=items.map(o=>Object.assign({},o,lch(o.hex),{cname:cn(o.hex),catName:cat(o.cat)}));
+  if(its.length<2) return null;
+  const rules=[], S=ST();   // every threshold and weight below comes from the active style
+  const C=S.chroma, LT=S.light, HU=S.hue, TP=S.temp, W=S.w;
+
+  const maxC=Math.max(...its.map(i=>i.C));
+  const meanC=+(its.reduce((s,i)=>s+i.C,0)/its.length).toFixed(1);
+  const loud=its.slice().sort((a,b)=>b.C-a.C)[0];
+  let r;
+  if(maxC<=C.good) r=[1,"good","chroma_good",{c:maxC}];
+  else if(maxC<=C.ok) r=[0.72,"warn","chroma_ok",{cat:loud.catName,name:loud.cname,c:maxC}];
+  else if(maxC<=C.high) r=[0.4,"warn","chroma_high",{cat:loud.catName,name:loud.cname,c:maxC}];
+  else r=[0.12,"bad","chroma_bad",{cat:loud.catName,name:loud.cname,c:maxC}];
+  let cTxt=m(r[2],r[3]), cRatio=r[0], cV=r[1];
+  if(meanC>C.meanBad){ cRatio=+(cRatio*0.5).toFixed(3); cV="bad";
+    if(maxC<=C.high) cTxt=m("chroma_high",{cat:loud.catName,name:loud.cname,c:maxC});
+    cTxt+=" "+m("chroma_mean",{mean:meanC}); }
+  else if(meanC>C.meanWarn){ cRatio=+(cRatio*0.7).toFixed(3); if(cV==="good")cV="warn"; cTxt+=" "+m("chroma_mean",{mean:meanC}); }
+  rules.push({key:"chroma",name:u("rChroma"),w:W.chroma,ratio:cRatio,v:cV,txt:cTxt});
+
+  // lightness is read from the garments only — shoes anchor the look but must not
+  // be allowed to "create" a lightness range that the clothes themselves don't have
+  let gar=its.filter(i=>i.cat!=="shoe");
+  if(gar.length<2) gar=its;
+  const Ls=gar.map(i=>i.L), maxL=Math.max(...Ls), minL=Math.min(...Ls), range=+(maxL-minL).toFixed(1);
+  const allMid=gar.every(i=>i.L>=LT.midLo&&i.L<=LT.midHi);
+  const lightest=gar.find(i=>i.L===maxL), darkest=gar.find(i=>i.L===minL);
+  if(allMid) r=[0.3,"bad","light_mid",{min:minL,max:maxL}];
+  else if(range>=LT.good) r=[1,"good","light_good",{r:range,lcat:lightest.catName,lname:lightest.cname,max:maxL,dcat:darkest.catName,dname:darkest.cname,min:minL}];
+  else if(range>=LT.thin) r=[0.62,"warn","light_thin",{r:range}];
+  else if(maxC<=LT.monoMaxC) r=[0.55,"warn","light_mono",{r:range}];
+  else r=[0.25,"bad","light_flat",{r:range}];
+  rules.push({key:"light",name:u("rLight"),w:W.light,ratio:r[0],v:r[1],txt:m(r[2],r[3])});
+
+  const chrom=its.filter(i=>i.C>=10), fams=[];
+  chrom.forEach(i=>{const f=fams.find(x=>hueDist(x.H,i.H)<=40); if(f)f.n.push(i); else fams.push({H:i.H,n:[i]});});
+  const famTxt=fams.map(f=>f.n.map(x=>x.cname).join(" / ")).join(" · ");
+  if(fams.length===0) r=[1,"good","hue_none",{}];
+  else if(fams.length===1) r=[1,"good","hue_one",{list:famTxt}];
+  else if(fams.length===2) r=[HU.two,HU.two>=0.8?"good":"warn","hue_two",{list:famTxt}];
+  else r=[HU.many,"bad","hue_many",{n:fams.length,list:famTxt}];
+  let hTxt=m(r[2],r[3]), hRatio=r[0], hV=r[1];
+  const anchors=its.filter(i=>i.C<8).length;
+  if(fams.length>=2&&anchors===0){ hRatio=+(hRatio*HU.bareMult).toFixed(3); hV="bad"; hTxt+=" "+m("hue_bare"); }
+  rules.push({key:"hue",name:u("rHue"),w:W.hue,ratio:hRatio,v:hV,txt:hTxt});
+
+  const ts=its.map(i=>({i,t:temp(i.H,i.C)}));
+  const warms=ts.filter(x=>x.t==="warm").map(x=>x.i), cools=ts.filter(x=>x.t==="cool").map(x=>x.i);
+  const bridge=its.find(i=>i.C<8);
+  const wl=warms.map(x=>x.cname).join(" / "), cl=cools.map(x=>x.cname).join(" / ");
+  let tempPrefMiss=false;
+  if(warms.length&&cools.length){
+    if(bridge) r=[0.72,"warn","temp_bridge",{warm:wl,cool:cl,cat:bridge.catName,name:bridge.cname,c:bridge.C}];
+    else r=[0.35,"bad","temp_clash",{warm:wl,cool:cl}];
+  } else if(warms.length) r=[1,"good","temp_warm",{list:wl}];
+  else if(cools.length) r=[1,"good","temp_cool",{list:cl}];
+  else r=[1,"good","temp_neutral",{}];
+  // styles with a stated temperature preference judge direction, not just consistency.
+  // it reads the hue lean rather than temp(), so a cream at C 5.6 still counts as warm
+  // and a mint at C 30 can't slip through as "neutral"
+  if(TP.prefer==="warm"){
+    const leans=its.map(i=>({i,t:lean(i.H,i.C)}));
+    const warmish=leans.filter(x=>x.t==="warm").map(x=>x.i);
+    const against=leans.filter(x=>(x.t==="cool"||x.t==="mid")&&x.i.C>=8).map(x=>x.i);
+    const al=against.map(x=>x.cname).join(" / "), wl2=warmish.map(x=>x.cname).join(" / ");
+    if(warmish.length&&against.length){
+      if(bridge) r=[0.6,"warn","temp_bridge",{warm:wl2,cool:al,cat:bridge.catName,name:bridge.cname,c:bridge.C}];
+      else r=[0.35,"bad","temp_clash",{warm:wl2,cool:al}];
+    } else if(against.length){ r=[0.3,"bad","temp_pref_bad",{list:al}]; tempPrefMiss=true; }
+    else if(warmish.length) r=[1,"good","temp_pref_ok",{list:wl2}];
+    else { r=[0.68,"warn","temp_pref_none",{}]; tempPrefMiss=true; }
+  }
+  rules.push({key:"temp",name:u("rTemp"),w:W.temp,ratio:r[0],v:r[1],txt:m(r[2],r[3])});
+
+  const shoe=its.find(i=>i.cat==="shoe");
+  if(shoe){
+    const body=its.filter(i=>i.cat==="top"||i.cat==="bottom");
+    const minBody=Math.min(...body.map(i=>i.L));
+    if(shoe.L<=minBody+6) r=[1,"good","shoe_good",{name:shoe.cname,l:shoe.L}];
+    else if(shoe.L<=minBody+18) r=[0.6,"warn","shoe_ok",{name:shoe.cname,l:shoe.L}];
+    else r=[0.25,"bad","shoe_bad",{name:shoe.cname,l:shoe.L}];
+    rules.push({key:"shoe",name:u("rShoe"),w:W.shoe,ratio:r[0],v:r[1],txt:m(r[2],r[3])});
+  }
+
+  const wsum=rules.reduce((s,x)=>s+x.w,0);
+  let total=Math.round(rules.reduce((s,x)=>s+x.ratio*x.w,0)/wsum*100);
+  // one hard failure must not be averaged away by four passes
+  const worstRatio=Math.min(...rules.map(x=>x.ratio));
+  if(worstRatio<=0.3) total=Math.min(total,58);
+  else if(worstRatio<=0.6) total=Math.min(total,72);
+
+  const notes=[];
+  for(let k=0;k<its.length-1;k++){
+    const a=its[k],b=its[k+1];
+    if(a.fabric&&b.fabric&&a.fabric===b.fabric&&Math.abs(a.L-b.L)<12)
+      notes.push(m("note_same",{a:a.catName,b:b.catName,f:fab(a.fabric)}));
+  }
+  const fabs=[...new Set(its.map(i=>i.fabric).filter(Boolean))];
+  if(fabs.length>=3&&maxC<=C.ok) notes.push(m("note_fab",{n:fabs.length,list:fabs.map(fab).join(" / ")}));
+  its.filter(i=>i.C>C.ok).forEach(i=>{
+    const alt=nearestQuiet(i.hex), av=lch(alt);
+    notes.push(m("sub_one",{cat:i.catName,name:i.cname,c:i.C,alt:cn(alt),ac:av.C}));
+  });
+
+  const worst=rules.slice().sort((a,b)=>a.ratio-b.ratio)[0];
+  let fix;
+  if(worst.ratio>=0.95) fix=m("fix_none");
+  else if(worst.key==="chroma") fix=m("fix_chroma",{cat:loud.catName,name:loud.cname});
+  else if(worst.key==="light") fix=allMid?m("fix_light_mid",{tgt:LT.good}):m("fix_light",{tgt:LT.good});
+  else if(worst.key==="hue") fix=m("fix_hue");
+  else if(worst.key==="temp") fix=tempPrefMiss?m("fix_temp_pref"):m("fix_temp");
+  else fix=m("fix_shoe");
+
+  const verdict = total>=85?V.v1[L]:total>=70?V.v2[L]:total>=55?V.v3[L]:V.v4[L];
+  return {items:its,rules,total,verdict,notes,fix};
+}
+
+/* ===================== render helpers ===================== */
+const VC={good:"var(--good)",warn:"var(--warn)",bad:"var(--bad)"};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function renderPalette(el,onPick){
+  el.innerHTML=PALETTE.map(g=>
+    `<div class="pal-group${g.bright?" bright":""}"><div class="pal-label">${GROUPS[g.gi][L]}</div>`+
+    (g.bright?`<div class="pal-note">${esc(UI.brightNote[L](ST().name[L]))}</div>`:"")+`<div class="pal-row">`+
+    g.c.map(r=>`<div class="sw" data-hex="${r[0]}"><i style="background:${r[0]}"></i><span>${esc(cn(r[0]))}</span></div>`).join("")+
+    `</div></div>`).join("");
+  el.querySelectorAll(".sw").forEach(sw=>sw.onclick=()=>onPick(sw.dataset.hex,sw));
+}
+function lookHTML(its){
+  return `<div class="look">`+its.map(i=>`
+    <div class="look-row">
+      <div class="look-col" style="background:${i.hex}"></div>
+      <div class="look-txt">
+        <div class="look-cat">${esc(i.catName)}</div>
+        <div class="look-name">${esc(i.cname)}${i.name?` · ${esc(i.name)}`:""}${i.fabric?` <span class="look-num">/ ${esc(fab(i.fabric))}</span>`:""}</div>
+        <div class="look-num">${i.hex.toUpperCase()} · L ${i.L} · C ${i.C} · H ${i.H}</div>
+      </div>
+    </div>`).join("")+`</div>`;
+}
+function resultHTML(res,withLook){
+  if(!res) return `<div class="empty">${u("needTwo")}</div>`;
+  return (withLook?lookHTML(res.items):"")+
+   `<div class="score-head"><div class="score-num">${res.total}</div><div class="score-verdict">${esc(res.verdict)}</div></div><div>`+
+   res.rules.map(x=>`<div class="rule">
+      <div class="rule-top"><span class="dot" style="background:${VC[x.v]}"></span>
+      <span class="rule-name">${esc(x.name)}</span>
+      <span class="rule-w">${Math.round(x.ratio*100)}% · ${u("weight")} ${x.w}</span></div>
+      <div class="rule-txt">${esc(x.txt)}</div></div>`).join("")+
+   `</div><div class="fix"><b>${u("fixLabel")}</b>${esc(res.fix)}</div>`+
+   (res.notes.length?`<div class="notes">`+res.notes.map(n=>`<div>· ${esc(n)}</div>`).join("")+`</div>`:"");
+}
+
+/* ===================== quick tab ===================== */
+const quick={outer:null,top:null,bottom:null,shoe:null};
+let activeSlot="top";
+
+function drawSlots(){
+  const el=document.getElementById("slots");
+  el.innerHTML=CATS.map(c=>{
+    const v=quick[c.k];
+    const opt=(c.k==="outer"||c.k==="shoe")?`<span class="slot-opt">${u("optional")}</span>`:"";
+    return `<div class="slot ${c.k===activeSlot?"active":""}" data-cat="${c.k}">
+      <span class="chip" style="${v?`background:${v.hex};background-image:none`:""}"></span>
+      <span class="slot-meta"><span class="slot-cat">${esc(c[L])} ${opt}</span><br>
+      <span class="slot-col">${v?`${esc(cn(v.hex))} · ${v.hex.toUpperCase()}`:u("noColour")}</span></span>
+      <select data-fab="${c.k}"><option value="">${u("fabricPH")}</option>${
+        FABRICS.map(f=>`<option value="${f.k}" ${v&&v.fabric===f.k?"selected":""}>${esc(f[L])}</option>`).join("")}</select>
+      ${v?`<button class="xbtn" data-del="${c.k}">&times;</button>`:""}</div>`;
+  }).join("");
+  el.querySelectorAll(".slot").forEach(s=>s.onclick=e=>{
+    if(e.target.tagName==="SELECT"||e.target.dataset.del)return;
+    activeSlot=s.dataset.cat; drawSlots();
+  });
+  el.querySelectorAll("[data-fab]").forEach(sel=>sel.onchange=()=>{
+    const k=sel.dataset.fab; if(quick[k]){quick[k].fabric=sel.value; drawQuick();}
+  });
+  el.querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.stopPropagation();quick[b.dataset.del]=null;drawSlots();drawQuick();});
+}
+let onQuickTab=true;
+function drawQuick(){
+  const its=CATS.filter(c=>quick[c.k]).map(c=>({cat:c.k,hex:quick[c.k].hex,fabric:quick[c.k].fabric||"",name:""}));
+  const res=its.length<2?null:scoreLook(its);
+  document.getElementById("quick-out").innerHTML=
+    `<h2>${u("hRead")}</h2><p class="hint">${u("hintRead")}</p>`+
+    (res?resultHTML(res,true):`<div class="empty">${u("needTwo")}</div>`);
+  // mobile sticky readout so the score stays visible while scrolling the colour card
+  const bar=document.getElementById("mbar");
+  document.getElementById("mbar-chips").innerHTML=its.map(i=>`<i style="background:${i.hex}"></i>`).join("");
+  document.getElementById("mbar-v").textContent=res?res.verdict:u("needTwo");
+  document.getElementById("mbar-sc").textContent=res?res.total:"";
+  bar.classList.toggle("show",onQuickTab&&its.length>0);
+}
+
+/* ===================== wardrobe tab ===================== */
+const KEY="ql_wardrobe_v1";
+const norm=i=>({cat:i.cat,hex:String(i.hex).toUpperCase(),fabric:i.fabric||"",name:i.name||"",
+  pin:!!i.pin,skip:!!i.skip});
+let ward=[];
+try{ const d=JSON.parse(localStorage.getItem(KEY)||"[]");
+  if(Array.isArray(d)) ward=d.filter(i=>i&&i.hex&&i.cat).map(norm); }catch(e){ ward=[]; }
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(ward));}catch(e){}};
+
+let addCat="top";        // the category the next colour tap lands in
+let wmode="today";       // today | trip | rank
+try{ wmode=localStorage.getItem("ql_mode")||"today"; }catch(e){}
+if(!["today","trip","rank"].includes(wmode)) wmode="today";
+
+const MODES=[{k:"today",t:"mToday",h:"hintToday"},{k:"trip",t:"mTrip",h:"hintTrip"},{k:"rank",t:"mRank",h:"hintRank"}];
+const SAMPLE=[
+ {cat:"outer",hex:"#2E3A4C",fabric:"wool"},  {cat:"outer",hex:"#9A8770",fabric:"cotton"},
+ {cat:"top",hex:"#F3EDE3",fabric:"cotton"},  {cat:"top",hex:"#E0D5C2",fabric:"knit"},
+ {cat:"top",hex:"#4A4C4D",fabric:"cash"},    {cat:"top",hex:"#A3AA96",fabric:"linen"},
+ {cat:"bottom",hex:"#3B302A",fabric:"wool"}, {cat:"bottom",hex:"#77797A",fabric:"wool"},
+ {cat:"bottom",hex:"#D6C6AC",fabric:"cotton"},
+ {cat:"shoe",hex:"#2A2B2B",fabric:"leather"},{cat:"shoe",hex:"#5C4A3A",fabric:"suede"}
+];
+
+function drawCatPick(){
+  const el=document.getElementById("catpick");
+  el.innerHTML=CATS.map(c=>{
+    const n=ward.filter(i=>i.cat===c.k).length;
+    return `<button data-ac="${c.k}" class="${c.k===addCat?"on":""}">${esc(c[L])}<span class="n">${n}</span></button>`;
+  }).join("");
+  el.querySelectorAll("[data-ac]").forEach(b=>b.onclick=()=>{addCat=b.dataset.ac;drawCatPick();});
+}
+function showJust(it){
+  const el=document.getElementById("w-just");
+  if(!it){el.innerHTML="";return;}
+  el.innerHTML=`<i style="background:${it.hex}"></i><span>${esc(UI.justAdded[L](cat(it.cat),cn(it.hex)))}</span>`+
+    `<button id="w-undo">${u("undo")}</button>`;
+  document.getElementById("w-undo").onclick=()=>{
+    const k=ward.lastIndexOf(it); if(k>=0) ward.splice(k,1);
+    save(); drawCatPick(); drawWard(); showJust(null);
+  };
+}
+function drawWard(){
+  const el=document.getElementById("w-items"), n=ward.length, off=ward.filter(i=>i.skip).length;
+  document.getElementById("w-cnt").textContent=n?UI.cntItems[L](n,off):"";
+  if(!n){el.innerHTML=`<div class="empty">${u("emptyWard")}</div>`;return;}
+  el.innerHTML=CATS.filter(c=>ward.some(i=>i.cat===c.k)).map(c=>
+    `<div class="wsec"><h3>${esc(c[L])}</h3></div>`+
+    ward.map((i,idx)=>i.cat!==c.k?"":`<div class="item${i.skip?" off":""}${i.pin?" pinned":""}">
+      <i style="background:${i.hex}"></i>
+      <span class="nm">${esc(cn(i.hex))} <span class="fb">L ${lch(i.hex).L}</span></span>
+      <select data-fb="${idx}"><option value="">${u("fabricPH")}</option>${
+        FABRICS.map(f=>`<option value="${f.k}"${i.fabric===f.k?" selected":""}>${esc(f[L])}</option>`).join("")}</select>
+      <button class="ibtn${i.pin?" on":""}" data-pin="${idx}">${u("pinned")}</button>
+      <button class="ibtn${i.skip?" on":""}" data-skip="${idx}">${u("skipped")}</button>
+      <button class="xbtn" data-rm="${idx}">&times;</button></div>`).join("")).join("");
+  el.querySelectorAll("[data-fb]").forEach(s=>s.onchange=()=>{ward[+s.dataset.fb].fabric=s.value;save();});
+  el.querySelectorAll("[data-pin]").forEach(b=>b.onclick=()=>{
+    const i=ward[+b.dataset.pin]; i.pin=!i.pin; if(i.pin)i.skip=false; save(); drawWard(); });
+  el.querySelectorAll("[data-skip]").forEach(b=>b.onclick=()=>{
+    const i=ward[+b.dataset.skip]; i.skip=!i.skip; if(i.skip)i.pin=false; save(); drawWard(); });
+  el.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{
+    ward.splice(+b.dataset.rm,1); save(); drawCatPick(); drawWard(); showJust(null); });
+}
+function drawModes(){
+  const el=document.getElementById("modes");
+  el.innerHTML=MODES.map(x=>`<button data-md="${x.k}" class="${x.k===wmode?"on":""}">${esc(u(x.t))}</button>`).join("");
+  el.querySelectorAll("[data-md]").forEach(b=>b.onclick=()=>{
+    wmode=b.dataset.md; try{localStorage.setItem("ql_mode",wmode);}catch(e){}
+    drawModes(); document.getElementById("w-out").innerHTML="";
+  });
+  document.getElementById("t-hint-mode").textContent=u(MODES.find(x=>x.k===wmode).h);
+  document.getElementById("lbl-days").classList.toggle("hide",wmode!=="trip");
+}
+
+/* ---- combination engine ---- */
+const ikey=i=>i.cat+"|"+i.hex+"|"+(i.name||"");
+const CAP=3000;   // scoring is cheap but not free; a very large wardrobe gets truncated
+function allCombos(){
+  const live=ward.filter(i=>!i.skip);
+  const g=k=>{const a=live.filter(i=>i.cat===k), p=a.filter(i=>i.pin);
+    return {use:p.length?p:a, forced:p.length>0};};
+  const T=g("top"), B=g("bottom"), O=g("outer"), S=g("shoe");
+  if(!T.use.length||!B.use.length) return null;
+  const outOpts=O.use.length?(O.forced?O.use:[null,...O.use]):[null];
+  const shoeOpts=S.use.length?S.use:[null];
+  const list=[]; let capped=false;
+  scan:
+  for(const t of T.use) for(const b of B.use) for(const o of outOpts) for(const s of shoeOpts){
+    if(list.length>=CAP){capped=true;break scan;}
+    const picks=[o,t,b,s].filter(Boolean);
+    const res=scoreLook(picks.map(i=>({cat:i.cat,hex:i.hex,fabric:i.fabric||"",name:i.name||""})));
+    if(res) list.push({res,o,t,b,s});
+  }
+  list.sort((a,b)=>b.res.total-a.res.total);
+  return {list,capped};
+}
+// highest scoring outfits that don't reuse the same top or bottom
+function pickDistinct(list,n){
+  const out=[],ut=new Set(),ub=new Set();
+  for(const c of list){ if(out.length>=n)break;
+    const kt=ikey(c.t), kb=ikey(c.b);
+    if(ut.has(kt)||ub.has(kb))continue;
+    out.push(c); ut.add(kt); ub.add(kb);
+  }
+  for(const c of list){ if(out.length>=n)break; if(out.indexOf(c)<0)out.push(c); }
+  return out;
+}
+// one jacket and one pair of shoes for the whole trip: pick the pair whose best
+// N distinct outfits average highest, so the suitcase stays small
+function tripPlan(list,days){
+  const groups=new Map();
+  list.forEach(c=>{
+    const k=(c.o?ikey(c.o):"-")+"::"+(c.s?ikey(c.s):"-");
+    if(!groups.has(k)) groups.set(k,[]);
+    groups.get(k).push(c);
+  });
+  let best=null;
+  groups.forEach(g=>{
+    const pick=pickDistinct(g,days), sum=pick.reduce((s,c)=>s+c.res.total,0);
+    const cand={pick,n:pick.length,avg:pick.length?sum/pick.length:0};
+    if(!best||cand.n>best.n||(cand.n===best.n&&cand.avg>best.avg)) best=cand;
+  });
+  return best;
+}
+
+/* ---- output ---- */
+function comboCard(c,label){
+  return `<div class="combo">
+    <div class="combo-head">
+      <span class="combo-bars">${c.res.items.map(i=>`<i style="background:${i.hex}"></i>`).join("")}</span>
+      <span class="combo-title">${esc(label)} · ${c.res.items.map(i=>esc(i.cname)).join(" / ")}<br>
+        <span class="look-num">${esc(c.res.verdict)}</span></span>
+      <span class="combo-sc">${c.res.total}</span></div>
+    <div class="combo-body">${resultHTML(c.res,true)}</div></div>`;
+}
+function rankRow(c){
+  return `<div class="item">
+    <span class="combo-bars" style="flex:0 0 auto">${c.res.items.map(i=>`<i style="background:${i.hex};width:20px;height:20px"></i>`).join("")}</span>
+    <span class="nm" style="font-size:12.5px">${c.res.items.map(i=>esc(i.cname)).join(" / ")}<br>
+      <span class="fb">${esc(c.res.fix)}</span></span>
+    <span class="fb">${c.res.total}</span></div>`;
+}
+function bindOut(pick,labeller){
+  const out=document.getElementById("w-out");
+  out.querySelectorAll(".combo-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
+  const cp=document.getElementById("cp");
+  if(!cp)return;
+  cp.textContent=u("copy");
+  cp.onclick=()=>{
+    const txt=`${ST().name[L]}\n\n`+pick.map((c,n)=>`${labeller(n+1)} (${c.res.total} · ${c.res.verdict})\n`+
+      c.res.items.map(i=>`  ${i.catName}: ${i.cname} ${i.hex.toUpperCase()}${i.fabric?" / "+fab(i.fabric):""}`).join("\n")+
+      `\n  ${u("suggestion")}: ${c.res.fix}`).join("\n\n");
+    navigator.clipboard.writeText(txt).then(()=>cp.textContent=u("copied")).catch(()=>cp.textContent=u("copyFail"));
+  };
+}
+function generate(){
+  const out=document.getElementById("w-out"), got=allCombos();
+  if(!got){ out.innerHTML=`<div class="panel"><div class="empty">${u("needTB")}</div></div>`; return; }
+  const list=got.list, warn=got.capped?`<p class="hint">${u("tooMany")}</p>`:"";
+
+  if(wmode==="today"){
+    const pick=pickDistinct(list,3);
+    out.innerHTML=`<div class="panel"><h2>${u("hToday")}</h2>
+      <p class="hint">${UI.hintTop[L](list.length)}</p>${warn}
+      ${pick.map((c,n)=>comboCard(c,UI.outfitN[L](n+1))).join("")}
+      <div class="bar"><button class="act ghost" id="cp"></button></div></div>`;
+    bindOut(pick,n=>UI.outfitN[L](n));
+
+  } else if(wmode==="trip"){
+    const days=+document.getElementById("w-days").value;
+    const pick=tripPlan(list,days).pick;
+    const packed=[], seen=new Set();
+    pick.forEach(c=>[c.o,c.t,c.b,c.s].filter(Boolean).forEach(i=>{
+      const k=ikey(i); if(!seen.has(k)){seen.add(k);packed.push(i);} }));
+    out.innerHTML=`<div class="panel"><h2>${UI.hDays[L](pick.length)}</h2>
+      <p class="hint">${UI.hintDays[L](list.length,pick.length)}</p>${warn}
+      ${pick.map((c,n)=>comboCard(c,UI.dayN[L](n+1))).join("")}
+      <div class="bar"><button class="act ghost" id="cp"></button></div></div>
+      <div class="panel wsec"><h2>${u("hPack")}</h2>
+      <p class="hint">${UI.hintPack[L](pick.length)}</p>
+      <div class="pack">${CATS.map(c=>packed.filter(i=>i.cat===c.k).map(i=>
+        `<div class="pkg"><i style="background:${i.hex}"></i><span>${esc(c[L])} · ${esc(cn(i.hex))}${
+          i.fabric?" / "+esc(fab(i.fabric)):""}</span></div>`).join("")).join("")}</div></div>`;
+    bindOut(pick,n=>UI.dayN[L](n));
+
+  } else {
+    const good=list.filter(c=>c.res.total>=70);
+    const bad=list.slice(-6).reverse().filter(c=>c.res.total<70);
+    out.innerHTML=`<div class="panel"><h2>${UI.hRankGood[L](good.length)}</h2>${warn}
+      ${good.length?`<div class="items">`+good.slice(0,60).map(rankRow).join("")+`</div>`
+        :`<div class="empty">${u("noneGood")}</div>`}
+      ${bad.length?`<div class="wsec"><h3>${u("hRankBad")}</h3></div>
+        <div class="items lowlist">`+bad.map(rankRow).join("")+`</div>`:""}</div>`;
+  }
+  if(window.matchMedia("(max-width:880px)").matches)
+    out.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ===================== language / boot ===================== */
+function applyLang(){
+  const S=ST(), sn=S.name[L];
+  document.documentElement.lang = L==="zh"?"zh-Hant":L;
+  document.title=UI.title[L](sn);
+  const set=(id,v)=>document.getElementById(id).textContent=v;
+  set("t-title",UI.title[L](sn)); set("t-sub",UI.sub[L](sn));
+  set("t-style",u("styleLab")); set("t-blurb",S.blurb[L]);
+  set("t-tab1",u("tab1")); set("t-tab2",u("tab2"));
+  set("t-h-look",u("hLook")); set("t-hint-look",u("hintLook"));
+  set("t-h-pal1",u("hPal"));
+  set("t-h-build",u("hBuild")); set("t-hint-build",u("hintBuild"));
+  set("t-h-list",u("hList")); set("t-days",u("days"));
+  set("t-method-s",u("methodS"));
+  set("t-method-p",UI.methodP[L]({st:sn,c:S.chroma,l:S.light,w:S.w,prefer:S.temp.prefer}));
+  ["gen","demo","exp","imp","clr"].forEach(k=>document.getElementById("w-"+k).textContent=u(k));
+  document.getElementById("styles").innerHTML=STYLES.map(s=>
+    `<button data-st="${s.key}" class="${s.key===STK?"on":""}">${esc(s.name[L])}</button>`).join("");
+  document.querySelectorAll("#styles button").forEach(b=>b.onclick=()=>{
+    STK=b.dataset.st; try{localStorage.setItem("ql_style",STK);}catch(e){} applyLang();
+  });
+  document.querySelectorAll("#langs button").forEach(b=>b.classList.toggle("on",b.dataset.l===L));
+  renderPalette(document.getElementById("pal-quick"),hex=>{
+    quick[activeSlot]={hex,fabric:quick[activeSlot]?quick[activeSlot].fabric:""};
+    const order=["top","bottom","outer","shoe"], nxt=order.find(k=>!quick[k]);
+    if(nxt)activeSlot=nxt;
+    drawSlots(); drawQuick();
+  });
+  // one tap on a colour puts the piece straight into the wardrobe — no confirm step
+  renderPalette(document.getElementById("pal-ward"),(hex,sw)=>{
+    const it=norm({cat:addCat,hex});
+    ward.push(it); save(); drawCatPick(); drawWard(); showJust(it);
+    sw.classList.add("added"); setTimeout(()=>sw.classList.remove("added"),450);
+  });
+  drawSlots(); drawQuick(); drawCatPick(); drawModes(); drawWard(); showJust(null);
+  document.getElementById("w-out").innerHTML="";
+}
+document.querySelectorAll("#langs button").forEach(b=>b.onclick=()=>{
+  L=b.dataset.l; try{localStorage.setItem("ql_lang",L);}catch(e){} applyLang();
+});
+document.getElementById("w-demo").onclick=()=>{
+  if(ward.length&&!confirm(u("confirmDemo")))return;
+  ward=SAMPLE.map(norm); save(); drawCatPick(); drawWard(); showJust(null);
+  document.getElementById("w-out").innerHTML="";
+};
+document.getElementById("w-clr").onclick=()=>{ if(confirm(u("confirmClear"))){
+  ward=[]; save(); drawCatPick(); drawWard(); showJust(null);
+  document.getElementById("w-out").innerHTML=""; } };
+document.getElementById("w-exp").onclick=()=>{
+  const blob=new Blob([JSON.stringify(ward,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="wardrobe.json";a.click();
+};
+document.getElementById("w-imp").onclick=()=>document.getElementById("w-file").click();
+document.getElementById("w-file").onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{try{
+    const d=JSON.parse(rd.result);
+    if(Array.isArray(d)){ ward=d.filter(i=>i&&i.hex&&i.cat).map(norm); save(); drawCatPick(); drawWard(); showJust(null); }
+  }catch(err){ alert(u("readErr")); }};
+  rd.readAsText(f);
+};
+document.getElementById("w-gen").onclick=generate;
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
+  onQuickTab=t.dataset.tab==="quick";
+  document.getElementById("tab-quick").classList.toggle("hide",!onQuickTab);
+  document.getElementById("tab-ward").classList.toggle("hide",onQuickTab);
+  drawQuick();
+});
+document.getElementById("mbar").onclick=()=>
+  document.querySelector(".p-out").scrollIntoView({behavior:"smooth",block:"start"});
+applyLang();
+</script>
+</body>
+</html>
