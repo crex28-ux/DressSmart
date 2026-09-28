@@ -39,6 +39,12 @@
     gap:26px;align-items:start}
   .p-slots{grid-area:slots} .p-out{grid-area:out} .p-pal{grid-area:pal}
   .pal-note{font-size:11.5px;color:var(--ink-faint);line-height:1.5;margin:0 0 8px;max-width:480px}
+  /* ---------- schematic figures ---------- */
+  .figs{display:flex;justify-content:center;align-items:flex-end}
+  .figs figure{margin:0;flex:0 1 178px;text-align:center}
+  .figs svg{width:100%;height:auto;display:block}
+  .figcap{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px}
+  .fignote{font-size:11.5px;color:var(--ink-faint);line-height:1.55;margin:14px 0 0}
   #mbar{display:none}
   h2{font-family:Georgia,"Songti TC",serif;font-weight:400;font-size:19px;margin:0 0 4px}
   h3{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin:0 0 10px}
@@ -120,7 +126,7 @@
   /* ---------- style selector ---------- */
   .stylerow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 20px}
   .stylab{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
-  .styles{display:flex;gap:1px;border:1px solid var(--line);background:#fff}
+  .styles{display:flex;flex-wrap:wrap;gap:1px;border:1px solid var(--line);background:#fff}
   .styles button{appearance:none;border:none;background:none;font-family:inherit;font-size:12.5px;
     padding:7px 13px;cursor:pointer;color:var(--ink-soft);white-space:nowrap}
   .styles button.on{background:var(--accent);color:#fff}
@@ -152,6 +158,17 @@
   .item select{font-size:11.5px;padding:3px 4px;max-width:112px}
   .dayslabel{font-size:12.5px;color:var(--ink-soft);display:inline-flex;align-items:center;gap:7px}
   .dayslabel.hide{display:none}
+  .selrow{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin:0 0 9px}
+  .sellab{font-size:12.5px;color:var(--ink-soft);flex:0 0 auto;padding-top:4px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;flex:1 1 220px;min-width:0}
+  .chip2{appearance:none;font-family:inherit;font-size:12px;background:#fff;border:1px solid var(--line);
+    color:var(--ink-soft);padding:4px 9px 4px 5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .chip2 i{width:16px;height:16px;flex:0 0 16px;border:1px solid rgba(0,0,0,.14);display:block}
+  .chip2:hover{border-color:var(--ink-faint);color:var(--ink)}
+  .chip2.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);color:var(--ink)}
+  .selnote{font-size:11.5px;color:var(--ink-faint);margin:2px 0 14px;max-width:620px}
+  .selrow.hide,.selnote.hide{display:none}
+  .short{background:#F5F1E9;border-left:2px solid var(--warn);padding:10px 13px;margin:0 0 14px;font-size:12.5px}
   .pack{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;margin-top:4px}
   .pkg{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:6px 9px;font-size:12.5px}
   .pkg i{width:22px;height:22px;flex:0 0 22px;border:1px solid rgba(0,0,0,.14)}
@@ -177,7 +194,7 @@
     .wgrid{grid-template-columns:1fr;grid-template-areas:"build" "list" "gen" "out";gap:16px}
     .stylerow{gap:8px;margin-bottom:14px}
     .styles{width:100%}
-    .styles button{flex:1;padding:8px 6px;font-size:12px}
+    .styles button{flex:1 1 30%;padding:8px 6px;font-size:12px}
     .blurb{flex:1 1 100%;font-size:11.5px}
     .catpick button,.modes button{flex:1 1 auto;padding:8px 10px;font-size:12px}
     .item select{max-width:none;flex:1 1 92px}
@@ -254,6 +271,9 @@
     <h2 id="t-h-look"></h2>
     <p class="hint" id="t-hint-look"></p>
     <div class="slots" id="slots"></div>
+    <h3 id="t-h-fig" style="margin-top:22px"></h3>
+    <div class="figs" id="figs"></div>
+    <p class="fignote" id="t-fignote"></p>
   </div>
   <div class="panel p-out" id="quick-out"></div>
   <div class="panel p-pal">
@@ -286,10 +306,27 @@
   <div class="panel p-gen">
     <div class="modes" id="modes"></div>
     <p class="hint" id="t-hint-mode"></p>
-    <div class="bar">
-      <label class="dayslabel" id="lbl-days"><span id="t-days"></span>
+    <div class="selrow" id="row-days">
+      <label class="dayslabel"><span id="t-days"></span>
         <select id="w-days"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>7</option></select>
       </label>
+    </div>
+    <div class="selrow" id="row-outer">
+      <label class="dayslabel"><span id="t-nouter"></span>
+        <select id="w-nouter"><option>0</option><option selected>1</option><option>2</option></select>
+      </label>
+      <span class="sellab" id="t-sel-outer"></span>
+      <div class="chips" id="chips-outer"></div>
+    </div>
+    <div class="selrow" id="row-shoe">
+      <label class="dayslabel"><span id="t-nshoe"></span>
+        <select id="w-nshoe"><option selected>1</option><option>2</option></select>
+      </label>
+      <span class="sellab" id="t-sel-shoe"></span>
+      <div class="chips" id="chips-shoe"></div>
+    </div>
+    <p class="selnote" id="t-selnote"></p>
+    <div class="bar">
       <button class="act" id="w-gen"></button>
     </div>
   </div>
@@ -333,6 +370,7 @@ const STYLES=[
   light:{good:25,thin:15,monoMaxC:16,midLo:40,midHi:68},
   hue:{two:0.7,many:0.2,bareMult:0.62},
   temp:{prefer:null},
+  shoe:{near:6,mid:18,fail:0.35,echo:12,echoR:0.78},
   w:{chroma:25,light:25,hue:20,temp:15,shoe:15}},
  {key:"french",
   name:{zh:"法式簡約",en:"French minimal",es:"Minimalismo francés",fr:"Minimalisme français"},
@@ -344,6 +382,7 @@ const STYLES=[
   light:{good:30,thin:20,monoMaxC:10,midLo:42,midHi:66},
   hue:{two:0.85,many:0.3,bareMult:0.8},
   temp:{prefer:null},
+  shoe:{near:8,mid:26,fail:0.5,echo:16,echoR:0.92},
   w:{chroma:18,light:30,hue:17,temp:15,shoe:20}},
  {key:"urban",
   name:{zh:"都會極簡",en:"Urban minimal",es:"Minimalismo urbano",fr:"Minimalisme urbain"},
@@ -355,6 +394,7 @@ const STYLES=[
   light:{good:22,thin:12,monoMaxC:10,midLo:38,midHi:70},
   hue:{two:0.5,many:0.15,bareMult:0.7},
   temp:{prefer:null},
+  shoe:{near:8,mid:24,fail:0.5,echo:16,echoR:0.9},
   w:{chroma:32,light:28,hue:22,temp:5,shoe:13}},
  {key:"warm",
   name:{zh:"暖調自然",en:"Warm natural",es:"Natural cálido",fr:"Naturel chaud"},
@@ -366,7 +406,24 @@ const STYLES=[
   light:{good:22,thin:14,monoMaxC:22,midLo:40,midHi:68},
   hue:{two:0.75,many:0.25,bareMult:0.75},
   temp:{prefer:"warm"},
-  w:{chroma:20,light:22,hue:18,temp:25,shoe:15}}
+  shoe:{near:6,mid:20,fail:0.4,echo:14,echoR:0.82},
+  w:{chroma:20,light:22,hue:18,temp:25,shoe:15}},
+ // athleisure runs on a different grammar: instead of a chroma ceiling on everything,
+ // it allows exactly one loud piece over a quiet base — and that piece is often the shoe.
+ // the `accent` block switches rule 1 from "ceiling" to "one voice only"
+ {key:"sport",
+  name:{zh:"運動休閒",en:"Athleisure",es:"Deportivo urbano",fr:"Sport chic"},
+  blurb:{zh:"無彩底加一個亮點:全身只准一件說話,那一件可以很大聲,而且常常就是鞋。兩件一起亮就破功。",
+   en:"A neutral base plus one accent: exactly one piece may shout, it may shout loudly, and it is often the shoes. Two loud pieces breaks it.",
+   es:"Base neutra más un acento: solo una prenda puede gritar, puede hacerlo fuerte, y a menudo son los zapatos. Dos prendas llamativas lo rompen.",
+   fr:"Une base neutre plus un accent : une seule pièce peut crier, elle peut crier fort, et c'est souvent la chaussure. Deux pièces vives cassent tout."},
+  chroma:{good:12,ok:26,high:40,meanWarn:12,meanBad:20},
+  accent:{loud:30,base:12,baseMax:16,cap:72,none:0.85,over:0.68,two:0.3,many:0.12},
+  light:{good:18,thin:10,monoMaxC:28,midLo:35,midHi:72},
+  hue:{two:0.9,many:0.3,bareMult:0.85},
+  temp:{prefer:null},
+  shoe:{near:8,mid:30,fail:0.45,echo:20,echoR:0.95,pop:70,popC:10},
+  w:{chroma:35,light:20,hue:17,temp:5,shoe:23}}
 ];
 let STK="quiet";
 try{ STK=localStorage.getItem("ql_style")||"quiet"; }catch(e){}
@@ -444,7 +501,10 @@ const FABRICS=[
  {k:"leather",zh:"皮革",en:"Leather",es:"Piel",fr:"Cuir"},
  {k:"denim",zh:"丹寧",en:"Denim",es:"Denim",fr:"Denim"},
  {k:"cord",zh:"燈芯絨",en:"Corduroy",es:"Pana",fr:"Velours côtelé"},
- {k:"suede",zh:"麂皮",en:"Suede",es:"Ante",fr:"Daim"}
+ {k:"suede",zh:"麂皮",en:"Suede",es:"Ante",fr:"Daim"},
+ {k:"jersey",zh:"棉質平織",en:"Jersey",es:"Jersey de algodón",fr:"Jersey"},
+ {k:"fleece",zh:"刷毛",en:"Fleece",es:"Polar",fr:"Polaire"},
+ {k:"tech",zh:"機能布/尼龍",en:"Technical / nylon",es:"Técnico / nylon",fr:"Technique / nylon"}
 ];
 
 const UI={
@@ -511,20 +571,20 @@ const UI={
    en:"The three highest-scoring outfits from your list. Pin a piece in the list to force it in, or skip the ones you don't feel like wearing.",
    es:"Los tres conjuntos con mejor nota de tu lista. Fija una prenda en la lista para forzarla, o excluye lo que no te apetezca.",
    fr:"Les trois tenues les mieux notées de votre liste. Épinglez une pièce pour l'imposer, excluez celles dont vous ne voulez pas."},
- hintTrip:{zh:"用一件外套加一雙鞋撐完整趟行程,每天換上衣下身。工具會挑出讓整趟總分最高的那一組外套和鞋,並列出行李清單。",
-   en:"One jacket and one pair of shoes for the whole trip, changing tops and bottoms each day. The tool picks the jacket-and-shoe pair that scores best across all days and gives you a packing list.",
-   es:"Una chaqueta y un par de zapatos para todo el viaje, cambiando arriba y abajo cada día. La herramienta elige la pareja que mejor puntúa en todos los días y te da la lista de equipaje.",
-   fr:"Une veste et une paire de chaussures pour tout le voyage, en changeant haut et bas chaque jour. L'outil choisit la paire qui obtient la meilleure note sur l'ensemble et fournit la liste de bagage."},
+ hintTrip:{zh:"先決定行李箱裡放幾件外套、幾雙鞋,工具再挑出整趟都站得住的那個組合並列出清單。帶了外套就是每天都穿,換的是裡面的上衣下身;不想每天穿外套就把件數選 0。",
+   en:"Decide how many jackets and pairs of shoes go in the case; the tool finds the set that holds up across the whole trip and lists it. A packed jacket is worn every day — what changes is what's underneath. Choose 0 jackets for days without one.",
+   es:"Decide cuántas chaquetas y cuántos pares de zapatos metes en la maleta; la herramienta busca el conjunto que aguanta todo el viaje y te da la lista. La chaqueta que llevas se usa todos los días: lo que cambia es lo de debajo. Elige 0 si no quieres chaqueta.",
+   fr:"Décidez combien de vestes et de paires de chaussures entrent dans la valise : l'outil cherche l'ensemble qui tient sur tout le voyage et le liste. Une veste emportée se porte chaque jour — ce qui change, c'est ce qu'il y a dessous. Choisissez 0 pour des jours sans veste."},
  hintRank:{zh:"所有組合由高到低。上面是可以穿的,下面那幾套就是別再一起穿的。",
    en:"Every combination, best to worst. The top is what you can wear; the bottom is what to stop putting together.",
    es:"Todas las combinaciones, de mejor a peor. Arriba lo que puedes llevar; abajo lo que no deberías volver a combinar.",
    fr:"Toutes les combinaisons, de la meilleure à la pire. En haut ce qui se porte, en bas ce qu'il faut arrêter d'associer."},
  hToday:{zh:"今天的三個選擇",en:"Three options for today",es:"Tres opciones para hoy",fr:"Trois options pour aujourd'hui"},
  hDays:{zh:d=>`${d} 天,${d} 套`,en:d=>`${d} days, ${d} outfits`,es:d=>`${d} días, ${d} conjuntos`,fr:d=>`${d} jours, ${d} tenues`},
- hintDays:{zh:(n,p)=>`從 ${n} 種可能裡挑出 ${p} 套,盡量不重複上衣與下身。點開看理由。`,
-   en:(n,p)=>`${p} outfits chosen from ${n} possible combinations, avoiding repeating the same top or bottom. Click to expand.`,
-   es:(n,p)=>`${p} conjuntos elegidos entre ${n} combinaciones posibles, evitando repetir prenda. Haz clic para ver el detalle.`,
-   fr:(n,p)=>`${p} tenues choisies parmi ${n} combinaisons, en évitant de répéter une pièce. Cliquez pour le détail.`},
+ hintDays:{zh:(n,p)=>`從 ${n} 種可能裡挑出 ${p} 套 70 分以上的,盡量不重複上衣與下身。分數不到的不會排進來。點開看理由。`,
+   en:(n,p)=>`${p} outfits scoring 70 or above, chosen from ${n} possible combinations and avoiding repeats. Anything that doesn't clear the bar is left out. Click to expand.`,
+   es:(n,p)=>`${p} conjuntos de 70 o más, elegidos entre ${n} combinaciones y evitando repetir prenda. Lo que no llega al umbral queda fuera. Haz clic para el detalle.`,
+   fr:(n,p)=>`${p} tenues à 70 ou plus, choisies parmi ${n} combinaisons et en évitant les répétitions. Ce qui ne passe pas la barre est écarté. Cliquez pour le détail.`},
  hintTop:{zh:n=>`從 ${n} 種可能裡算出來的。點開看每一條規則怎麼判的。`,
    en:n=>`Worked out from ${n} possible combinations. Click to see how each rule scored.`,
    es:n=>`Calculado sobre ${n} combinaciones posibles. Haz clic para ver cada regla.`,
@@ -532,10 +592,27 @@ const UI={
  outfitN:{zh:n=>`第 ${n} 套`,en:n=>`Outfit ${n}`,es:n=>`Conjunto ${n}`,fr:n=>`Tenue ${n}`},
  dayN:{zh:n=>`第 ${n} 天`,en:n=>`Day ${n}`,es:n=>`Día ${n}`,fr:n=>`Jour ${n}`},
  hPack:{zh:"行李清單",en:"Packing list",es:"Lista de equipaje",fr:"Liste de bagage"},
- hintPack:{zh:d=>`這 ${d} 天實際需要帶的件數。外套和鞋各一,其餘按天替換。`,
-   en:d=>`Everything you actually need for ${d} days — one jacket, one pair of shoes, the rest rotating.`,
-   es:d=>`Todo lo que necesitas para ${d} días: una chaqueta, un par de zapatos y el resto rotando.`,
-   fr:d=>`Tout ce qu'il faut pour ${d} jours — une veste, une paire de chaussures, le reste en rotation.`},
+ hintPack:{zh:(d,o,sh)=>`這 ${d} 天實際要帶的:${o?`外套 ${o} 件、`:""}鞋 ${sh} 雙,上衣下身按天替換。`,
+   en:(d,o,sh)=>`What actually goes in the case for ${d} days: ${o?`${o} jacket${o===1?"":"s"}, `:""}${sh} pair${sh===1?"":"s"} of shoes, tops and bottoms rotating.`,
+   es:(d,o,sh)=>`Lo que va en la maleta para ${d} días: ${o?`${o} chaqueta${o===1?"":"s"}, `:""}${sh} par${sh===1?"":"es"} de zapatos, arriba y abajo rotando.`,
+   fr:(d,o,sh)=>`Ce qui entre dans la valise pour ${d} jours : ${o?`${o} veste${o===1?"":"s"}, `:""}${sh} paire${sh===1?"":"s"} de chaussures, hauts et bas en rotation.`},
+ selPick:{zh:"指定顏色",en:"which ones",es:"cuáles",fr:"lesquelles"},
+ selNote:{zh:"點顏色就是「這件一定要帶」,選幾件件數會自動跟上;不選就由工具從衣櫃裡挑。清單裡的「指定」只管「今天穿什麼」,出差看的是這裡;「停用」兩邊都算。",
+   en:"Tap a colour to say \u201cthis one is coming with me\u201d — the count follows your choice. Leave it blank and the tool picks for you. Pins in the list only affect today\u2019s outfits; here the chips decide, and skipped pieces stay out either way.",
+   es:"Toca un color para decir \u201cesta viene conmigo\u201d; la cantidad se ajusta sola. Si no eliges nada, la herramienta decide. Lo fijado en la lista solo afecta a hoy; aquí mandan estos botones, y lo excluido queda fuera en ambos casos.",
+   fr:"Touchez une couleur pour dire \u00ab celle-ci part avec moi \u00bb ; le nombre suit. Sans choix, l\u2019outil décide. Les pièces épinglées dans la liste ne concernent qu\u2019aujourd\u2019hui ; ici ce sont ces puces qui décident, et les pièces exclues restent exclues."},
+ shortDays:{zh:(a,g,r,c)=>`你選了 ${a} 天,但在目前的條件下,這個衣櫃只排得出 ${g} 天 70 分以上的搭法,所以只列 ${g} 套——硬湊出來的那幾套不值得帶。排不進來的多半卡在「${r}」,要補就先補一件${c}。`,
+   en:(a,g,r,c)=>`You asked for ${a} days, but under the current constraints this wardrobe only yields ${g} day${g===1?"":"s"} above 70, so ${g===1?"only one is":`only ${g} are`} listed — the rest would not be worth packing. What gets rejected mostly fails on ${r}, so the piece to add is another ${c.toLowerCase()}.`,
+   es:(a,g,r,c)=>`Pediste ${a} días, pero con las condiciones actuales este armario solo da ${g} día${g===1?"":"s"} por encima de 70, así que ${g===1?"solo se lista uno":`solo se listan ${g}`}: el resto no merecería la maleta. Lo descartado falla sobre todo en ${r}, así que lo que falta es una prenda más de ${c.toLowerCase()}.`,
+   fr:(a,g,r,c)=>`Vous avez demandé ${a} jours, mais dans ces conditions cette garde-robe ne donne que ${g} jour${g===1?"":"s"} au-dessus de 70 ; ${g===1?"un seul est listé":`seuls ${g} sont listés`} — le reste ne vaudrait pas la valise. Ce qui est écarté échoue surtout sur ${r}, donc il faut une pièce de plus en ${c.toLowerCase()}.`},
+ nOuterLab:{zh:"外套",en:"Jackets",es:"Chaquetas",fr:"Vestes"},
+ nShoeLab:{zh:"鞋",en:"Shoes",es:"Zapatos",fr:"Chaussures"},
+ spare:{zh:"帶了但這幾天沒排到",en:"packed but not worn on these days",
+   es:"en la maleta pero sin usar estos días",fr:"dans la valise mais non portée ces jours-ci"},
+ packNote:{zh:(n,o,sh)=>`這 ${n} 套只動用${o?`箱子裡那${o===1?"件":` ${o} 件`}外套和`:"箱子裡"}${sh===1?"那雙鞋":` ${sh} 雙鞋`},每一件都排到了。`,
+   en:(n,o,sh)=>`All ${n} outfits run on ${o?`${o===1?"that one jacket":`those ${o} jackets`} and `:""}${sh===1?"that single pair of shoes":`those ${sh} pairs`} — every packed piece gets worn.`,
+   es:(n,o,sh)=>`Los ${n} conjuntos funcionan con ${o?`${o===1?"esa chaqueta":`esas ${o} chaquetas`} y `:""}${sh===1?"ese único par de zapatos":`esos ${sh} pares`}: todo lo que llevas se usa.`,
+   fr:(n,o,sh)=>`Les ${n} tenues tiennent avec ${o?`${o===1?"cette seule veste":`ces ${o} vestes`} et `:""}${sh===1?"cette seule paire":`ces ${sh} paires`} : tout ce qui est dans la valise est porté.`},
  hRankGood:{zh:n=>`70 分以上:${n} 套`,en:n=>`Scoring 70 or above: ${n}`,
    es:n=>`70 o más: ${n}`,fr:n=>`70 et plus : ${n}`},
  hRankBad:{zh:"最低分的幾套",en:"Lowest scoring",es:"Las peores notas",fr:"Les moins bien notées"},
@@ -564,12 +641,19 @@ const UI={
  rHue:{zh:"色相家族數",en:"Hue families",es:"Familias de tono",fr:"Familles de teintes"},
  rTemp:{zh:"冷暖一致",en:"Warm / cool",es:"Cálido / frío",fr:"Chaud / froid"},
  rShoe:{zh:"鞋的收束",en:"Shoe anchor",es:"Anclaje del calzado",fr:"Ancrage des chaussures"},
+ rAccent:{zh:"單一亮點",en:"Single accent",es:"Acento único",fr:"Accent unique"},
+ hFig:{zh:"穿在身上的比例",en:"On the body",es:"Sobre el cuerpo",fr:"Sur le corps"},
+ figAlt:{zh:"配色示意人形",en:"Colour layout figure",es:"Figura de referencia",fr:"Silhouette de référence"},
+ figNote:{zh:p=>`人形刻意畫成中性,身形和版型都是「${p.st}」的固定示意,不是實際商品;顏色才是你選的。看這個是為了判斷面積——同一個顏色放在下身和放在鞋上,在身上完全是兩件事,色塊排排站看不出來。鞋和外套沒選就不會畫。`,
+  en:p=>`The figure is deliberately neutral, and the cut is a fixed schematic for ${p.st} rather than a real garment; only the colours are yours. It is here to show area — the same colour on the trousers and on the shoes are two completely different things on a body, and a row of chips can't tell you that. Shoes and jacket are only drawn once chosen.`,
+  es:p=>`La figura es deliberadamente neutra y el corte es un esquema fijo de ${p.st}, no una prenda real; solo los colores son tuyos. Está aquí para mostrar la superficie: el mismo color en el pantalón y en el zapato son dos cosas muy distintas sobre el cuerpo, y una fila de muestras no lo dice. El calzado y el abrigo solo se dibujan si los eliges.`,
+  fr:p=>`La silhouette est volontairement neutre et la coupe est un schéma fixe pour ${p.st}, pas un vrai vêtement ; seules les couleurs sont les vôtres. Elle sert à montrer la surface : la même couleur sur le bas et sur la chaussure sont deux choses très différentes sur un corps, et une rangée de pastilles ne le dit pas. Chaussures et veste ne sont dessinées que si elles sont choisies.`},
  methodS:{zh:"判斷依據是什麼",en:"How the scoring works",es:"Cómo funciona la puntuación",fr:"Comment le calcul fonctionne"},
  methodP:{
-  zh:p=>`所有顏色先從 sRGB 轉到 CIELAB,再取 LCH 的明度 L 與彩度 C。以下的數字是「${p.st}」這一組門檻,換風格數字就會換。彩度:整套最高 C 值在 ${p.c.good} 以下最穩、${p.c.ok} 以內可接受、超過 ${p.c.high} 就離開這個風格的語彙;另外全套平均 C 超過 ${p.c.meanBad} 會再打折,因為那表示不只一件在說話。明度:最亮與最暗之差至少 ${p.l.good},低於 ${p.l.thin} 就算層次太薄,並避免每件都落在 L ${p.l.midLo}–${p.l.midHi} 的中間帶,那是糊掉的主因;鞋不算進這個跨度,免得白鞋憑空製造出對比。若全套最高彩度在 ${p.l.monoMaxC} 以下,同色調堆疊可以成立,但層次必須靠質料差異補回來。色相家族:C 值 10 以上算有彩色,色相相差 40 度內視為同家族,家族數超過 2 就超出範圍;若有兩個家族又沒有一件 C 8 以下的近無彩色當底,會再扣一次。冷暖:色相 115 度以下與 335 度以上算暖,150–310 度算冷,兩者同時出現時需要近無彩色橋接。${p.prefer?"這個風格另外以暖調為骨架,整套走冷會扣分。":"這個風格不偏好特定色溫,只要求一致。"}鞋:明度應等於或低於上下身。質料層次為提示而非計分。分數是各規則的加權平均(彩度 ${p.w.chroma}、明度 ${p.w.light}、色相 ${p.w.hue}、冷暖 ${p.w.temp}、鞋 ${p.w.shoe}),沒有鞋時該權重按比例分給其餘規則;另外任何一條嚴重不過,總分會被壓在 58 或 72 以下,避免一條大錯被四條小對平均掉。這是一套明確的規則判斷,不是品味的定論——規則說不行而你穿起來好看,以你為準。`,
-  en:p=>`Every colour is converted from sRGB to CIELAB, then read as LCH lightness (L) and chroma (C). The numbers below belong to "${p.st}" and change with the style. Chroma: the highest C in the outfit is safest below ${p.c.good}, acceptable up to ${p.c.ok}, and past ${p.c.high} it has left this style's vocabulary; an outfit-wide mean above ${p.c.meanBad} takes a further cut, because that means more than one piece is talking. Lightness: aim for at least ${p.l.good} between lightest and darkest, treat anything under ${p.l.thin} as thin layering, and avoid having every piece land in the L ${p.l.midLo}–${p.l.midHi} middle band, the main cause of a look going muddy; shoes are excluded from this span so white trainers can't invent contrast that the clothes don't have. If the outfit's highest chroma stays under ${p.l.monoMaxC}, tonal stacking is legitimate, but the layering then has to come from fabric. Hue families: C 10 and above counts as chromatic, hues within 40 degrees are one family, more than two is out of range, and two families with no near-neutral under C 8 underneath is penalised again. Warm/cool: hue up to 115 and above 335 reads warm, 150–310 reads cool, and both together need a near-neutral bridge. ${p.prefer?"This style is also built on warmth, so a fully cool outfit loses points.":"This style has no temperature preference — it only asks for consistency."} Shoes should sit at or below the lightness of top and bottom. Fabric layering is advice, not scored. The total is a weighted average (chroma ${p.w.chroma}, lightness ${p.w.light}, hue ${p.w.hue}, temperature ${p.w.temp}, shoes ${p.w.shoe}); with no shoes that weight is redistributed, and any badly failing rule caps the total at 58 or 72 so one real mistake can't be averaged away by four passes. This is an explicit rule check, not a verdict on taste — if a rule says no and it looks good on you, trust yourself.`,
-  es:p=>`Cada color se convierte de sRGB a CIELAB y se lee como luminosidad (L) y croma (C) en LCH. Las cifras siguientes corresponden a "${p.st}" y cambian con el estilo. Croma: el C más alto del conjunto es más seguro por debajo de ${p.c.good}, aceptable hasta ${p.c.ok}, y por encima de ${p.c.high} sale del vocabulario de este estilo; una media superior a ${p.c.meanBad} resta otra vez, porque significa que habla más de una prenda. Luminosidad: busca al menos ${p.l.good} entre la prenda más clara y la más oscura, por debajo de ${p.l.thin} la estratificación es débil, y evita que todas caigan en la banda media L ${p.l.midLo}–${p.l.midHi}. El calzado queda fuera de ese cálculo para que unas deportivas blancas no inventen un contraste que la ropa no tiene. Si el croma máximo se queda por debajo de ${p.l.monoMaxC}, el apilado tonal es válido, pero las capas deben venir del tejido. Familias de tono: desde C 10 es cromático, tonos a menos de 40 grados son una familia, más de dos queda fuera, y dos familias sin una prenda casi neutra por debajo de C 8 se penaliza otra vez. Cálido/frío: tono hasta 115 y por encima de 335 es cálido, 150–310 frío, y ambos juntos necesitan un puente neutro. ${p.prefer?"Este estilo se construye además sobre la calidez, así que un conjunto totalmente frío pierde puntos.":"Este estilo no prefiere ninguna temperatura, solo pide coherencia."} El calzado debe ser igual o más oscuro que arriba y abajo. La mezcla de tejidos es consejo, no puntúa. El total es una media ponderada (croma ${p.w.chroma}, luminosidad ${p.w.light}, tono ${p.w.hue}, temperatura ${p.w.temp}, calzado ${p.w.shoe}); sin zapatos ese peso se redistribuye, y cualquier regla que falle claramente limita el total a 58 o 72, para que un error real no se diluya. Esto es una comprobación de reglas, no un veredicto sobre el gusto: si una regla dice que no y a ti te queda bien, hazte caso.`,
-  fr:p=>`Chaque couleur est convertie du sRGB vers CIELAB, puis lue en LCH comme clarté (L) et chroma (C). Les chiffres ci-dessous appartiennent à « ${p.st} » et changent avec le style. Chroma : le C le plus élevé est le plus sûr sous ${p.c.good}, acceptable jusqu'à ${p.c.ok}, et au-delà de ${p.c.high} on sort du vocabulaire de ce style ; une moyenne supérieure à ${p.c.meanBad} pénalise encore, car cela signifie que plusieurs pièces parlent. Clarté : viser au moins ${p.l.good} d'écart, sous ${p.l.thin} la superposition est trop faible, et éviter que toutes les pièces tombent dans la bande médiane L ${p.l.midLo}–${p.l.midHi}. Les chaussures sont exclues de cet écart, pour qu'une paire blanche n'invente pas un contraste absent des vêtements. Si le chroma maximal reste sous ${p.l.monoMaxC}, l'empilement ton sur ton est valable, mais la superposition doit venir de la matière. Familles de teintes : à partir de C 10 une couleur est chromatique, des teintes séparées de moins de 40 degrés font une famille, plus de deux sort de la plage, et deux familles sans pièce quasi neutre sous C 8 sont pénalisées une seconde fois. Chaud/froid : teinte jusqu'à 115 et au-delà de 335 se lit chaude, 150–310 froide, et les deux ensemble exigent un pont neutre. ${p.prefer?"Ce style repose en outre sur la chaleur : une tenue entièrement froide perd des points.":"Ce style n'a pas de préférence de température, il demande seulement de la cohérence."} Les chaussures doivent être d'une clarté égale ou inférieure au haut et au bas. La superposition des matières est un conseil, sans note. Le total est une moyenne pondérée (chroma ${p.w.chroma}, clarté ${p.w.light}, teinte ${p.w.hue}, température ${p.w.temp}, chaussures ${p.w.shoe}) ; sans chaussures ce poids est redistribué, et toute règle nettement en échec plafonne le total à 58 ou 72, afin qu'une vraie erreur ne soit pas noyée. Il s'agit d'une vérification de règles, pas d'un verdict sur le goût — si une règle dit non et que cela vous va bien, faites-vous confiance.`}
+  zh:p=>`所有顏色先從 sRGB 轉到 CIELAB,再取 LCH 的明度 L 與彩度 C。以下的數字是「${p.st}」這一組門檻,換風格數字就會換。${p.acc?`單一亮點:這個風格不設彩度上限,而是給一個亮點的額度——全身只有一件可以到 C ${p.acc.loud} 以上,那一件最高允許到 C ${p.acc.cap};藏青、橄欖、丹寧、鼠尾草這種沉調顏色在運動休閒裡算底色,不佔額度。兩件同時達標是硬扣分,完全沒有亮點則小扣,因為那偏居家服;當底的那幾件平均 C 超過 ${p.acc.baseMax} 也會打折,底要真的是底。`:`彩度:整套最高 C 值在 ${p.c.good} 以下最穩、${p.c.ok} 以內可接受、超過 ${p.c.high} 就離開這個風格的語彙;另外全套平均 C 超過 ${p.c.meanBad} 會再打折,因為那表示不只一件在說話。`}明度:最亮與最暗之差至少 ${p.l.good},低於 ${p.l.thin} 就算層次太薄,並避免每件都落在 L ${p.l.midLo}–${p.l.midHi} 的中間帶,那是糊掉的主因;鞋不算進這個跨度,免得白鞋憑空製造出對比。若全套最高彩度在 ${p.l.monoMaxC} 以下,同色調堆疊可以成立,但層次必須靠質料差異補回來。色相家族:C 值 10 以上算有彩色,色相相差 40 度內視為同家族,家族數超過 2 就超出範圍;若有兩個家族又沒有一件 C 8 以下的近無彩色當底,會再扣一次。冷暖:色相 115 度以下與 335 度以上算暖,150–310 度算冷,兩者同時出現時需要近無彩色橋接。${p.prefer?"這個風格另外以暖調為骨架,整套走冷會扣分。":"這個風格不偏好特定色溫,只要求一致。"}${p.acc?`鞋:有三條合格路徑——比上下身深而收束、成為全身唯一的亮點(C ${p.acc.loud} 以上)、或是 C ${p.sh.popC} 以下且 L ${p.sh.pop} 以上的乾淨淺色斷點(小白鞋走這條)。中間調的鞋才是這個風格真正的失分點。`:`鞋:明度應等於或低於上下身。`}質料層次為提示而非計分。分數是各規則的加權平均(${p.acc?"單一亮點":"彩度"} ${p.w.chroma}、明度 ${p.w.light}、色相 ${p.w.hue}、冷暖 ${p.w.temp}、鞋 ${p.w.shoe}),沒有鞋時該權重按比例分給其餘規則;另外任何一條嚴重不過,總分會被壓在 58 或 72 以下,避免一條大錯被四條小對平均掉。這是一套明確的規則判斷,不是品味的定論——規則說不行而你穿起來好看,以你為準。`,
+  en:p=>`Every colour is converted from sRGB to CIELAB, then read as LCH lightness (L) and chroma (C). The numbers below belong to "${p.st}" and change with the style. ${p.acc?`Single accent: this style sets no chroma ceiling but a budget instead — exactly one piece may reach C ${p.acc.loud}, and that piece is allowed up to C ${p.acc.cap}. Muted colours like navy, olive, denim and sage count as base here and don't spend the budget. Two pieces over the line is a hard deduction; no accent at all takes a small one, because that reads as loungewear; and if the base pieces average above C ${p.acc.baseMax} the rule discounts too — the base has to actually be a base.`:`Chroma: the highest C in the outfit is safest below ${p.c.good}, acceptable up to ${p.c.ok}, and past ${p.c.high} it has left this style's vocabulary; an outfit-wide mean above ${p.c.meanBad} takes a further cut, because that means more than one piece is talking.`} Lightness: aim for at least ${p.l.good} between lightest and darkest, treat anything under ${p.l.thin} as thin layering, and avoid having every piece land in the L ${p.l.midLo}–${p.l.midHi} middle band, the main cause of a look going muddy; shoes are excluded from this span so white trainers can't invent contrast that the clothes don't have. If the outfit's highest chroma stays under ${p.l.monoMaxC}, tonal stacking is legitimate, but the layering then has to come from fabric. Hue families: C 10 and above counts as chromatic, hues within 40 degrees are one family, more than two is out of range, and two families with no near-neutral under C 8 underneath is penalised again. Warm/cool: hue up to 115 and above 335 reads warm, 150–310 reads cool, and both together need a near-neutral bridge. ${p.prefer?"This style is also built on warmth, so a fully cool outfit loses points.":"This style has no temperature preference — it only asks for consistency."} ${p.acc?`Shoes have three passing routes: darker than top and bottom, or the outfit's single accent (at or above C ${p.acc.loud}), or a clean light punctuation under C ${p.sh.popC} and above L ${p.sh.pop} — the white-trainer route. A mid-tone shoe is what actually loses points here.`:`Shoes should sit at or below the lightness of top and bottom.`} Fabric layering is advice, not scored. The total is a weighted average (${p.acc?"accent":"chroma"} ${p.w.chroma}, lightness ${p.w.light}, hue ${p.w.hue}, temperature ${p.w.temp}, shoes ${p.w.shoe}); with no shoes that weight is redistributed, and any badly failing rule caps the total at 58 or 72 so one real mistake can't be averaged away by four passes. This is an explicit rule check, not a verdict on taste — if a rule says no and it looks good on you, trust yourself.`,
+  es:p=>`Cada color se convierte de sRGB a CIELAB y se lee como luminosidad (L) y croma (C) en LCH. Las cifras siguientes corresponden a "${p.st}" y cambian con el estilo. ${p.acc?`Acento único: este estilo no pone techo al croma, sino un presupuesto — solo una prenda puede llegar a C ${p.acc.loud}, y esa puede subir hasta C ${p.acc.cap}. Los colores apagados como marino, oliva, denim o salvia cuentan como base y no gastan el presupuesto. Dos prendas por encima es una penalización fuerte; ningún acento resta un poco, porque se lee como ropa de casa; y si las prendas de base promedian más de C ${p.acc.baseMax} también se descuenta: la base tiene que ser base.`:`Croma: el C más alto del conjunto es más seguro por debajo de ${p.c.good}, aceptable hasta ${p.c.ok}, y por encima de ${p.c.high} sale del vocabulario de este estilo; una media superior a ${p.c.meanBad} resta otra vez, porque significa que habla más de una prenda.`} Luminosidad: busca al menos ${p.l.good} entre la prenda más clara y la más oscura, por debajo de ${p.l.thin} la estratificación es débil, y evita que todas caigan en la banda media L ${p.l.midLo}–${p.l.midHi}. El calzado queda fuera de ese cálculo para que unas deportivas blancas no inventen un contraste que la ropa no tiene. Si el croma máximo se queda por debajo de ${p.l.monoMaxC}, el apilado tonal es válido, pero las capas deben venir del tejido. Familias de tono: desde C 10 es cromático, tonos a menos de 40 grados son una familia, más de dos queda fuera, y dos familias sin una prenda casi neutra por debajo de C 8 se penaliza otra vez. Cálido/frío: tono hasta 115 y por encima de 335 es cálido, 150–310 frío, y ambos juntos necesitan un puente neutro. ${p.prefer?"Este estilo se construye además sobre la calidez, así que un conjunto totalmente frío pierde puntos.":"Este estilo no prefiere ninguna temperatura, solo pide coherencia."} ${p.acc?`El calzado tiene tres vías de aprobado: más oscuro que arriba y abajo, ser el único acento del conjunto (a partir de C ${p.acc.loud}), o una puntuación clara y limpia por debajo de C ${p.sh.popC} y por encima de L ${p.sh.pop} — la vía de las deportivas blancas. Un zapato de tono medio es lo que de verdad resta aquí.`:`El calzado debe ser igual o más oscuro que arriba y abajo.`} La mezcla de tejidos es consejo, no puntúa. El total es una media ponderada (${p.acc?"acento":"croma"} ${p.w.chroma}, luminosidad ${p.w.light}, tono ${p.w.hue}, temperatura ${p.w.temp}, calzado ${p.w.shoe}); sin zapatos ese peso se redistribuye, y cualquier regla que falle claramente limita el total a 58 o 72, para que un error real no se diluya. Esto es una comprobación de reglas, no un veredicto sobre el gusto: si una regla dice que no y a ti te queda bien, hazte caso.`,
+  fr:p=>`Chaque couleur est convertie du sRGB vers CIELAB, puis lue en LCH comme clarté (L) et chroma (C). Les chiffres ci-dessous appartiennent à « ${p.st} » et changent avec le style. ${p.acc?`Accent unique : ce style ne fixe pas de plafond de chroma mais un budget — une seule pièce peut atteindre C ${p.acc.loud}, et celle-là est autorisée jusqu'à C ${p.acc.cap}. Les couleurs sourdes — marine, olive, denim, sauge — comptent comme base et ne consomment pas le budget. Deux pièces au-dessus est une forte pénalité ; aucun accent en coûte un peu, car cela se lit comme un vêtement d'intérieur ; et si les pièces de base dépassent C ${p.acc.baseMax} en moyenne, il y a aussi une décote : la base doit rester une base.`:`Chroma : le C le plus élevé est le plus sûr sous ${p.c.good}, acceptable jusqu'à ${p.c.ok}, et au-delà de ${p.c.high} on sort du vocabulaire de ce style ; une moyenne supérieure à ${p.c.meanBad} pénalise encore, car cela signifie que plusieurs pièces parlent.`} Clarté : viser au moins ${p.l.good} d'écart, sous ${p.l.thin} la superposition est trop faible, et éviter que toutes les pièces tombent dans la bande médiane L ${p.l.midLo}–${p.l.midHi}. Les chaussures sont exclues de cet écart, pour qu'une paire blanche n'invente pas un contraste absent des vêtements. Si le chroma maximal reste sous ${p.l.monoMaxC}, l'empilement ton sur ton est valable, mais la superposition doit venir de la matière. Familles de teintes : à partir de C 10 une couleur est chromatique, des teintes séparées de moins de 40 degrés font une famille, plus de deux sort de la plage, et deux familles sans pièce quasi neutre sous C 8 sont pénalisées une seconde fois. Chaud/froid : teinte jusqu'à 115 et au-delà de 335 se lit chaude, 150–310 froide, et les deux ensemble exigent un pont neutre. ${p.prefer?"Ce style repose en outre sur la chaleur : une tenue entièrement froide perd des points.":"Ce style n'a pas de préférence de température, il demande seulement de la cohérence."} ${p.acc?`La chaussure a trois voies de réussite : plus foncée que le haut et le bas, être l'unique accent de la tenue (à partir de C ${p.acc.loud}), ou une ponctuation claire et nette sous C ${p.sh.popC} et au-dessus de L ${p.sh.pop} — la voie des baskets blanches. C'est la chaussure en demi-teinte qui fait réellement perdre des points ici.`:`Les chaussures doivent être d'une clarté égale ou inférieure au haut et au bas.`} La superposition des matières est un conseil, sans note. Le total est une moyenne pondérée (${p.acc?"accent":"chroma"} ${p.w.chroma}, clarté ${p.w.light}, teinte ${p.w.hue}, température ${p.w.temp}, chaussures ${p.w.shoe}) ; sans chaussures ce poids est redistribué, et toute règle nettement en échec plafonne le total à 58 ou 72, afin qu'une vraie erreur ne soit pas noyée. Il s'agit d'une vérification de règles, pas d'un verdict sur le goût — si une règle dit non et que cela vous va bien, faites-vous confiance.`}
 };
 
 const V={
@@ -601,6 +685,30 @@ const MSG={
   en:p=>`And it is not just one piece talking — average chroma across the outfit is C ${p.mean}, leaving the eye nowhere to rest.`,
   es:p=>`Y no es solo una prenda: el croma medio del conjunto es C ${p.mean}, sin un punto donde descanse la vista.`,
   fr:p=>`Et ce n'est pas une seule pièce — le chroma moyen de la tenue est C ${p.mean}, l'œil n'a nulle part où se reposer.`},
+ acc_one:{zh:p=>`亮點只有一個:${p.cat}的${p.name}(C ${p.c}),其餘都在 C ${p.loud} 以下當底。這就是運動休閒的正確結構——一個焦點,其他退到背景。`,
+  en:p=>`Exactly one accent: the ${p.cat.toLowerCase()} in ${p.name} (C ${p.c}), with everything else under C ${p.loud} holding the base. That is the correct athleisure structure — one focal point, the rest recedes.`,
+  es:p=>`Un solo acento: ${p.cat.toLowerCase()} en ${p.name} (C ${p.c}), con el resto por debajo de C ${p.loud} como base. Esa es la estructura correcta del estilo deportivo: un foco y el resto al fondo.`,
+  fr:p=>`Un seul accent : ${p.cat.toLowerCase()} en ${p.name} (C ${p.c}), le reste sous C ${p.loud} tient la base. C'est la bonne structure sport : un point focal, le reste en retrait.`},
+ acc_base:{zh:p=>`不過當底的那幾件平均彩度 C ${p.mean},高於 ${p.max}——底本身也在說話,亮點就不明顯了。`,
+  en:p=>`That said, the pieces holding the base average C ${p.mean}, above ${p.max} — the base is talking too, which blunts the accent.`,
+  es:p=>`Aun así, las prendas de base promedian C ${p.mean}, por encima de ${p.max}: la base también habla y eso diluye el acento.`,
+  fr:p=>`Cela dit, les pièces de base sont en moyenne à C ${p.mean}, au-dessus de ${p.max} — la base parle aussi, ce qui atténue l'accent.`},
+ acc_over:{zh:p=>`${p.cat}的${p.name}彩度 C ${p.c},超過這個風格給亮點的上限 C ${p.cap}。結構是對的,只是這個顏色連運動休閒都嫌吵。`,
+  en:p=>`The ${p.cat.toLowerCase()} in ${p.name} is at C ${p.c}, past the C ${p.cap} ceiling this style gives its accent. The structure is right; the colour is loud even for athleisure.`,
+  es:p=>`${p.cat} en ${p.name} está en C ${p.c}, por encima del techo de C ${p.cap} que este estilo da al acento. La estructura es correcta; el color grita incluso aquí.`,
+  fr:p=>`${p.cat} en ${p.name} atteint C ${p.c}, au-delà du plafond de C ${p.cap} que ce style accorde à l'accent. La structure est bonne ; la couleur crie même ici.`},
+ acc_none:{zh:p=>`全套沒有任何一件到 C ${p.base},乾淨但沒有焦點。這樣穿不會錯,只是偏居家服——加一個亮點(鞋最省事)才會像是出門的樣子。`,
+  en:p=>`Nothing in the outfit reaches C ${p.base}. Clean, but there is no focal point, which reads closer to loungewear than athleisure — one accent (the shoes are the easiest) is what makes it look deliberate.`,
+  es:p=>`Nada llega a C ${p.base}. Limpio, pero sin foco: se lee más como ropa de estar en casa. Un acento (lo más fácil, los zapatos) es lo que lo hace intencional.`,
+  fr:p=>`Rien n'atteint C ${p.base}. Propre, mais sans point focal : cela se lit plus comme un vêtement d'intérieur. Un accent (les chaussures, le plus simple) rend l'ensemble intentionnel.`},
+ acc_two:{zh:p=>`有兩件在搶焦點(${p.list})。運動休閒只給一個亮點的額度,兩個同時亮就變成配色在打架,而不是一套衣服。`,
+  en:p=>`Two pieces are competing for focus (${p.list}). Athleisure budgets for one accent; two at once reads as colours fighting rather than an outfit.`,
+  es:p=>`Dos prendas compiten por el foco (${p.list}). Este estilo solo presupuesta un acento; dos a la vez parecen colores peleando, no un conjunto.`,
+  fr:p=>`Deux pièces se disputent le focus (${p.list}). Ce style ne budgète qu'un accent ; deux à la fois donnent des couleurs qui se battent, pas une tenue.`},
+ acc_many:{zh:p=>`${p.n} 件都在說話(${p.list})。這已經不是運動休閒,是運動用品店的櫥窗。留一件,其餘換成黑、灰、白、藏青。`,
+  en:p=>`${p.n} pieces are all talking (${p.list}). That is not athleisure any more, it is a sportswear shop window. Keep one and take the rest to black, grey, white or navy.`,
+  es:p=>`${p.n} prendas hablan a la vez (${p.list}). Eso ya no es deportivo urbano, es un escaparate de tienda. Deja una y pasa el resto a negro, gris, blanco o marino.`,
+  fr:p=>`${p.n} pièces parlent en même temps (${p.list}). Ce n'est plus du sport chic, c'est une vitrine de magasin. Gardez-en une et passez le reste au noir, gris, blanc ou marine.`},
  hue_bare:{zh:()=>`而且全套沒有一件近無彩色可以當底,兩個家族直接對話。`,
   en:()=>`There is also no near-neutral piece to sit underneath, so the two families talk to each other directly.`,
   es:()=>`Además no hay ninguna prenda casi neutra como base, así que las dos familias dialogan directamente.`,
@@ -681,10 +789,46 @@ const MSG={
   en:p=>`The shoes (${p.name}, L ${p.l}) are a touch lighter than the bottom — the anchor is vague but it holds.`,
   es:p=>`Los zapatos (${p.name}, L ${p.l}) son algo más claros que el pantalón: el anclaje es débil pero aguanta.`,
   fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont un peu plus claires que le bas : l'ancrage est flou mais tient.`},
- shoe_bad:{zh:p=>`鞋(${p.name} L ${p.l})明顯比上下身亮,視線會被往腳邊帶,整體比例往下垮。`,
-  en:p=>`The shoes (${p.name}, L ${p.l}) are clearly lighter than both top and bottom, pulling the eye to the floor and collapsing the proportions.`,
-  es:p=>`Los zapatos (${p.name}, L ${p.l}) son claramente más claros que el resto: atraen la mirada al suelo y hunden la proporción.`,
-  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont nettement plus claires que le reste : l'œil descend et les proportions s'effondrent.`},
+ shoe_echo:{zh:p=>`鞋(${p.name} L ${p.l})比下身亮,但${p.cat}的${p.ename}(L ${p.el})在上面呼應了同一個亮度,腳下那一塊白不是孤立的亮點,而是把視線帶回上半身。小白鞋就是靠這個成立的。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are lighter than the bottom, but the ${p.cat.toLowerCase()} in ${p.ename} (L ${p.el}) repeats that brightness above. The light at the foot isn't an orphan — it sends the eye back up. This is exactly why white trainers work.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) son más claros que el pantalón, pero ${p.cat.toLowerCase()} en ${p.ename} (L ${p.el}) repite ese brillo arriba. La luz del pie no queda huérfana: devuelve la mirada hacia arriba. Por eso funcionan las deportivas blancas.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont plus claires que le bas, mais ${p.cat.toLowerCase()} en ${p.ename} (L ${p.el}) reprend cette clarté en haut. La lumière au pied n'est pas orpheline : elle ramène l'œil vers le haut. C'est précisément pour cela que les baskets blanches fonctionnent.`},
+ shoe_bad:{zh:p=>`鞋(${p.name} L ${p.l})明顯比上下身亮,而且上半身沒有任何一件接近這個亮度來呼應,腳下會變成孤立的亮點。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are clearly lighter than both top and bottom, and nothing above comes close to that brightness, so the foot becomes an isolated bright spot.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) son claramente más claros que el resto y nada arriba se acerca a ese brillo, así que el pie queda como un punto luminoso aislado.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont nettement plus claires que le reste et rien au-dessus n'approche cette clarté : le pied devient un point lumineux isolé.`},
+ shoe_accent:{zh:p=>`鞋(${p.name} C ${p.c})就是全身唯一的亮點,上下身都在當底。腳下那塊顏色比下身亮在這個風格不是失誤,是設計——視線落在鞋上是刻意的。`,
+  en:p=>`The shoes (${p.name}, C ${p.c}) are the only accent in the outfit, with top and bottom holding the base. Being brighter than the bottom is not a mistake here, it is the design — the eye is meant to land on the shoes.`,
+  es:p=>`Los zapatos (${p.name}, C ${p.c}) son el único acento, con arriba y abajo como base. Ser más claros que el pantalón no es un error aquí, es el diseño: la mirada debe caer en el calzado.`,
+  fr:p=>`Les chaussures (${p.name}, C ${p.c}) sont le seul accent, le haut et le bas tenant la base. Être plus claires que le bas n'est pas une erreur ici, c'est le principe : l'œil doit se poser sur la chaussure.`},
+ shoe_pop:{zh:p=>`鞋(${p.name} L ${p.l})是乾淨的淺色,在深色底上當視覺斷點。運動休閒本來就這樣穿,小白鞋不需要上半身呼應也成立。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are a clean light tone punctuating a darker base. That is how athleisure is actually worn — white trainers hold up here without needing an echo above.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) son un tono claro limpio que puntúa una base oscura. Así se lleva de verdad este estilo: las deportivas blancas funcionan sin necesitar eco arriba.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) sont un ton clair net qui ponctue une base sombre. C'est ainsi que le sport chic se porte — les baskets blanches tiennent sans écho au-dessus.`},
+ shoe_muddy:{zh:p=>`鞋(${p.name} L ${p.l})既不深到能收束,也不亮到能當亮點,彩度又不夠成為焦點。這個風格最怕這種中間值——換成全黑、乾淨白,或是一雙有顏色的球鞋。`,
+  en:p=>`The shoes (${p.name}, L ${p.l}) are neither dark enough to anchor nor light enough to punctuate, and not chromatic enough to be the accent. This in-between is the worst case for this style — go full black, clean white, or a genuinely coloured trainer.`,
+  es:p=>`Los zapatos (${p.name}, L ${p.l}) no son lo bastante oscuros para anclar ni lo bastante claros para puntuar, y tampoco tienen croma para ser el acento. Ese punto medio es lo peor para este estilo: ve a negro, blanco limpio o una deportiva con color de verdad.`,
+  fr:p=>`Les chaussures (${p.name}, L ${p.l}) ne sont ni assez foncées pour ancrer, ni assez claires pour ponctuer, ni assez chromatiques pour être l'accent. Cet entre-deux est le pire cas ici : noir franc, blanc net, ou une basket vraiment colorée.`},
+ fix_accent:{zh:p=>`亮點的額度只有一個。決定要留哪一件說話——鞋最安全,因為面積小、換起來也最便宜——其餘全部換成黑、炭灰、中灰、純白或藏青。彩度控制在 C ${p.base} 以下就算底。`,
+  en:p=>`You get one accent. Decide which piece speaks — the shoes are the safest choice, small in area and the cheapest to swap — and take everything else to black, charcoal, mid grey, white or navy. Under C ${p.base} counts as base.`,
+  es:p=>`Tienes un solo acento. Decide qué prenda habla — los zapatos son lo más seguro, poca superficie y lo más barato de cambiar — y lleva el resto a negro, carbón, gris medio, blanco o marino. Por debajo de C ${p.base} cuenta como base.`,
+  fr:p=>`Vous avez droit à un seul accent. Choisissez la pièce qui parle — la chaussure est le choix le plus sûr, petite surface et le moins cher à remplacer — et passez tout le reste au noir, anthracite, gris moyen, blanc ou marine. Sous C ${p.base}, c'est de la base.`},
+ fix_acc_none:{zh:p=>`結構是乾淨的,缺的是一個焦點。最省事的是換一雙有顏色的球鞋,面積小、風險低;不想動鞋就把上衣換成飽和度夠的一件(C ${p.base} 以上)。只要記得其餘全部留在無彩色。${p.busy?`不過順序要對:現在當底的幾件平均彩度 C ${p.mean},底自己在說話,先把它們壓成黑、灰、白、藏青,再放亮點才看得出來。`:``}`,
+  en:p=>`The structure is clean; what's missing is a focal point. The cheapest move is a coloured trainer — small area, low risk. If you'd rather not change shoes, take the top to something genuinely saturated (C ${p.base} or more) and keep everything else neutral.${p.busy?` Order matters, though: the base pieces currently average C ${p.mean}, so the base is talking too — quiet them to black, grey, white or navy first, or the accent won't read.`:``}`,
+  es:p=>`La estructura está limpia; falta un foco. Lo más barato es una deportiva con color: poca superficie, poco riesgo. Si prefieres no cambiar el calzado, lleva la parte superior a algo realmente saturado (C ${p.base} o más) y deja el resto neutro.${p.busy?` El orden importa: las prendas de base promedian ahora C ${p.mean}, así que la base también habla — pásalas primero a negro, gris, blanco o marino o el acento no se leerá.`:``}`,
+  fr:p=>`La structure est propre ; il manque un point focal. Le plus simple est une basket colorée — petite surface, peu de risque. Sinon, passez le haut à une couleur vraiment saturée (C ${p.base} ou plus) et gardez le reste neutre.${p.busy?` L'ordre compte : les pièces de base sont à C ${p.mean} en moyenne, la base parle aussi — passez-les d'abord au noir, gris, blanc ou marine, sinon l'accent ne se lira pas.`:``}`},
+ fix_acc_over:{zh:p=>`結構對了,只是這個顏色連運動休閒都嫌吵(超過 C ${p.cap})。同色系降一階就好——正紅換酒紅、亮橘換陶土、亮粉換淺粉,或把它搬到鞋上,面積小就吵不起來。`,
+  en:p=>`The structure is right; the colour is loud even for this style (past C ${p.cap}). Drop one step within the same hue — red to wine, orange to terracotta, hot pink to pale pink — or move it onto the shoes, where the small area keeps it in check.`,
+  es:p=>`La estructura es correcta; el color grita incluso aquí (pasa de C ${p.cap}). Baja un paso dentro del mismo tono — rojo a vino, naranja a terracota, rosa fuerte a rosa pálido — o pásalo al calzado, donde la poca superficie lo contiene.`,
+  fr:p=>`La structure est bonne ; la couleur crie même ici (au-delà de C ${p.cap}). Descendez d'un cran dans la même teinte — rouge vers bordeaux, orange vers terre cuite, rose vif vers rose pâle — ou déplacez-la sur la chaussure, où la petite surface la contient.`},
+ fix_acc_base:{zh:p=>`亮點只有一個是對的,但當底的幾件自己也在說話(平均 C ${p.mean})。把它們換成黑、炭灰、中灰、純白或藏青,平均壓到 ${p.max} 以下,亮點才會被看見。`,
+  en:p=>`One accent is correct, but the pieces underneath are talking too (average C ${p.mean}). Take them to black, charcoal, mid grey, white or navy so the average drops under ${p.max} and the accent can actually be seen.`,
+  es:p=>`Un solo acento es correcto, pero las prendas de base también hablan (media C ${p.mean}). Pásalas a negro, carbón, gris medio, blanco o marino para bajar la media de ${p.max} y que el acento se vea.`,
+  fr:p=>`Un seul accent, c'est juste, mais les pièces en dessous parlent aussi (moyenne C ${p.mean}). Passez-les au noir, anthracite, gris moyen, blanc ou marine pour descendre sous ${p.max} et laisser l'accent se voir.`},
+ fix_shoe_sport:{zh:()=>`鞋在這個風格是主角,不要選中間調。三條路:全黑或近黑把重心收在下方、乾淨的白或淺灰當斷點、或者讓鞋成為全身唯一的亮點(這時上下身必須都是無彩色)。`,
+  en:()=>`Shoes carry this style, so don't leave them mid-tone. Three routes: full black or off-black to settle the weight, clean white or light grey as punctuation, or let the shoe be the outfit's only accent — in which case top and bottom must both stay neutral.`,
+  es:()=>`El calzado lleva este estilo, así que no lo dejes en tono medio. Tres caminos: negro o casi negro para asentar el peso, blanco limpio o gris claro como puntuación, o que el zapato sea el único acento — y entonces arriba y abajo deben quedarse neutros.`,
+  fr:()=>`La chaussure porte ce style, ne la laissez pas en demi-teinte. Trois voies : noir ou presque noir pour poser le poids, blanc net ou gris clair comme ponctuation, ou faire de la chaussure le seul accent — auquel cas le haut et le bas restent neutres.`},
  fix_none:{zh:()=>`每一條都過,不需要改。`,en:()=>`Every rule passes. Nothing to change.`,
   es:()=>`Todas las reglas pasan. Nada que cambiar.`,fr:()=>`Toutes les règles passent. Rien à changer.`},
  fix_chroma:{zh:p=>`把${p.cat}的${p.name}換成同色系的低彩度版本,或直接換無彩色。彩度是${p.st}最容易破功的一項。`,
@@ -711,10 +855,10 @@ const MSG={
   en:p=>`${p.st} sits on a warm base. Move one piece to oatmeal, camel, mocha or olive and the whole outfit comes back into the style.`,
   es:p=>`${p.st} se asienta sobre una base cálida. Cambia una prenda a avena, camel, moca u oliva y el conjunto vuelve al estilo.`,
   fr:p=>`${p.st} repose sur une base chaude. Passez une pièce en avoine, camel, moka ou olive et la tenue revient dans le style.`},
- fix_shoe:{zh:()=>`鞋換成全套最深的一階——黑、近黑、深巧克力,依上身色溫選。`,
-  en:()=>`Take the shoes to the darkest step in the outfit — black, off-black or dark chocolate, whichever matches the temperature above.`,
-  es:()=>`Lleva los zapatos al paso más oscuro del conjunto: negro, casi negro o chocolate oscuro, según la temperatura de arriba.`,
-  fr:()=>`Passez les chaussures au ton le plus foncé de la tenue — noir, presque noir ou chocolat foncé, selon la température du haut.`},
+ fix_shoe:{zh:()=>`兩條路。想留住這雙淺色鞋,就在上半身放一件亮度接近的淺色——白襯衫、奶油白針織、米色外套都算,讓腳下那塊亮有東西呼應。不想動上半身,就把鞋換成全套最深的一階:黑、近黑、深巧克力,依上身色溫選。`,
+  en:()=>`Two routes. To keep the light shoes, put something of a similar brightness on top — a white shirt, a cream knit, a beige jacket — so the light at the foot has an echo. If you'd rather not touch the top half, take the shoes to the darkest step in the outfit: black, off-black or dark chocolate, whichever matches the temperature above.`,
+  es:()=>`Dos caminos. Para conservar los zapatos claros, pon arriba algo de brillo similar: una camisa blanca, un punto crema, una chaqueta beige, para que la luz del pie tenga eco. Si prefieres no tocar la parte de arriba, lleva los zapatos al tono más oscuro del conjunto: negro, casi negro o chocolate oscuro, según la temperatura.`,
+  fr:()=>`Deux options. Pour garder les chaussures claires, placez en haut une pièce de clarté voisine — chemise blanche, maille crème, veste beige — afin que la lumière au pied trouve un écho. Sinon, passez les chaussures au ton le plus foncé de la tenue : noir, presque noir ou chocolat foncé, selon la température du haut.`},
  note_same:{zh:p=>`${p.a}和${p.b}同為${p.f}且明度幾乎相同,相疊會失去層次。把其中一件換成不同織法。`,
   en:p=>`${p.a} and ${p.b} are both ${p.f.toLowerCase()} at almost the same lightness — layered together they lose all definition. Change one to a different weave.`,
   es:p=>`${p.a} y ${p.b} son ambos ${p.f.toLowerCase()} con casi la misma luminosidad: superpuestos pierden definición. Cambia uno de tejido.`,
@@ -787,6 +931,36 @@ function scoreLook(items){
   const meanC=+(its.reduce((s,i)=>s+i.C,0)/its.length).toFixed(1);
   const loud=its.slice().sort((a,b)=>b.C-a.C)[0];
   let r;
+  // ---- rule 1, two possible shapes ----
+  // most styles police a ceiling: nothing may be loud. athleisure polices a budget:
+  // exactly one piece may be loud, and it is allowed to be much louder than any
+  // ceiling style would permit. A is null for the ceiling styles.
+  const A=S.accent||null;
+  // "loud" is a real accent, not merely a colour: navy, olive, denim and sage are base
+  // colours in sportswear, so the budget only counts pieces at or above A.loud
+  const louds=A?its.filter(i=>i.C>=A.loud).sort((a,b)=>b.C-a.C):[];
+  const accentItem=A&&louds.length===1?louds[0]:null;
+  let accCase="ok", accMean=0;
+  if(A){
+    const n=louds.length;
+    const rest=its.filter(i=>louds.indexOf(i)<0);
+    const baseMean=rest.length?+(rest.reduce((s,i)=>s+i.C,0)/rest.length).toFixed(1):0;
+    accMean=baseMean;
+    if(n===0){ r=[A.none,"warn","acc_none",{base:A.loud}]; accCase="none"; }
+    else if(n===1) r=louds[0].C<=A.cap
+      ?[1,"good","acc_one",{cat:louds[0].catName,name:louds[0].cname,c:louds[0].C,loud:A.loud}]
+      :(accCase="over",[A.over,"warn","acc_over",{cat:louds[0].catName,name:louds[0].cname,c:louds[0].C,cap:A.cap}]);
+    else if(n===2){ r=[A.two,"bad","acc_two",{list:louds.map(i=>i.catName+" "+i.cname+" C "+i.C).join(" · ")}]; accCase="many"; }
+    else { r=[A.many,"bad","acc_many",{n,list:louds.map(i=>i.cname).join(" / ")}]; accCase="many"; }
+    let aTxt=m(r[2],r[3]), aRatio=r[0], aV=r[1];
+    // the base has to actually be a base: a "one accent" outfit over a busy base isn't one
+    if(rest.length&&baseMean>A.baseMax){
+      aRatio=+(aRatio*0.7).toFixed(3); if(aV==="good")aV="warn";
+      aTxt+=" "+m("acc_base",{mean:baseMean,max:A.baseMax});
+      if(accCase==="ok") accCase="base";
+    }
+    rules.push({key:"accent",name:u("rAccent"),w:W.chroma,ratio:aRatio,v:aV,txt:aTxt});
+  } else {
   if(maxC<=C.good) r=[1,"good","chroma_good",{c:maxC}];
   else if(maxC<=C.ok) r=[0.72,"warn","chroma_ok",{cat:loud.catName,name:loud.cname,c:maxC}];
   else if(maxC<=C.high) r=[0.4,"warn","chroma_high",{cat:loud.catName,name:loud.cname,c:maxC}];
@@ -797,6 +971,7 @@ function scoreLook(items){
     cTxt+=" "+m("chroma_mean",{mean:meanC}); }
   else if(meanC>C.meanWarn){ cRatio=+(cRatio*0.7).toFixed(3); if(cV==="good")cV="warn"; cTxt+=" "+m("chroma_mean",{mean:meanC}); }
   rules.push({key:"chroma",name:u("rChroma"),w:W.chroma,ratio:cRatio,v:cV,txt:cTxt});
+  }
 
   // lightness is read from the garments only — shoes anchor the look but must not
   // be allowed to "create" a lightness range that the clothes themselves don't have
@@ -804,11 +979,14 @@ function scoreLook(items){
   if(gar.length<2) gar=its;
   const Ls=gar.map(i=>i.L), maxL=Math.max(...Ls), minL=Math.min(...Ls), range=+(maxL-minL).toFixed(1);
   const allMid=gar.every(i=>i.L>=LT.midLo&&i.L<=LT.midHi);
+  // the tonal-stacking exemption asks whether the *clothes* are quiet. a bright shoe
+  // is already excluded from the span above, so it must not disqualify them either
+  const garMaxC=Math.max(...gar.map(i=>i.C));
   const lightest=gar.find(i=>i.L===maxL), darkest=gar.find(i=>i.L===minL);
   if(allMid) r=[0.3,"bad","light_mid",{min:minL,max:maxL}];
   else if(range>=LT.good) r=[1,"good","light_good",{r:range,lcat:lightest.catName,lname:lightest.cname,max:maxL,dcat:darkest.catName,dname:darkest.cname,min:minL}];
   else if(range>=LT.thin) r=[0.62,"warn","light_thin",{r:range}];
-  else if(maxC<=LT.monoMaxC) r=[0.55,"warn","light_mono",{r:range}];
+  else if(garMaxC<=LT.monoMaxC) r=[0.55,"warn","light_mono",{r:range}];
   else r=[0.25,"bad","light_flat",{r:range}];
   rules.push({key:"light",name:u("rLight"),w:W.light,ratio:r[0],v:r[1],txt:m(r[2],r[3])});
 
@@ -853,12 +1031,25 @@ function scoreLook(items){
   rules.push({key:"temp",name:u("rTemp"),w:W.temp,ratio:r[0],v:r[1],txt:m(r[2],r[3])});
 
   const shoe=its.find(i=>i.cat==="shoe");
+  let shoeEcho=null;
   if(shoe){
-    const body=its.filter(i=>i.cat==="top"||i.cat==="bottom");
+    const SH=S.shoe, body=its.filter(i=>i.cat==="top"||i.cat==="bottom");
     const minBody=Math.min(...body.map(i=>i.L));
-    if(shoe.L<=minBody+6) r=[1,"good","shoe_good",{name:shoe.cname,l:shoe.L}];
-    else if(shoe.L<=minBody+18) r=[0.6,"warn","shoe_ok",{name:shoe.cname,l:shoe.L}];
-    else r=[0.25,"bad","shoe_bad",{name:shoe.cname,l:shoe.L}];
+    // a light shoe is only an orphan if nothing above repeats its brightness. white
+    // trainers under a white shirt read as an echo, which is why they work in practice
+    shoeEcho=its.filter(i=>i.cat!=="shoe").find(i=>Math.abs(i.L-shoe.L)<=SH.echo)||null;
+    // in athleisure the shoe has two extra legitimate roles beyond anchoring:
+    // it can be the outfit's single chroma accent, or a clean light punctuation
+    // against a dark base — a white trainer under all-black needs no echo above
+    const shoeIsAccent=!!(accentItem&&accentItem.cat==="shoe");
+    const shoePops=!!(SH.pop&&shoe.C<=SH.popC&&shoe.L>=SH.pop);
+    if(shoeIsAccent) r=[1,"good","shoe_accent",{name:shoe.cname,c:shoe.C}];
+    else if(shoe.L<=minBody+SH.near) r=[1,"good","shoe_good",{name:shoe.cname,l:shoe.L}];
+    else if(shoePops) r=[1,"good","shoe_pop",{name:shoe.cname,l:shoe.L}];
+    else if(shoeEcho) r=[SH.echoR,SH.echoR>=0.85?"good":"warn","shoe_echo",
+      {name:shoe.cname,l:shoe.L,cat:shoeEcho.catName,ename:shoeEcho.cname,el:shoeEcho.L}];
+    else if(shoe.L<=minBody+SH.mid) r=[0.6,"warn","shoe_ok",{name:shoe.cname,l:shoe.L}];
+    else r=[SH.fail,"bad",SH.pop?"shoe_muddy":"shoe_bad",{name:shoe.cname,l:shoe.L}];
     rules.push({key:"shoe",name:u("rShoe"),w:W.shoe,ratio:r[0],v:r[1],txt:m(r[2],r[3])});
   }
 
@@ -876,8 +1067,9 @@ function scoreLook(items){
       notes.push(m("note_same",{a:a.catName,b:b.catName,f:fab(a.fabric)}));
   }
   const fabs=[...new Set(its.map(i=>i.fabric).filter(Boolean))];
-  if(fabs.length>=3&&maxC<=C.ok) notes.push(m("note_fab",{n:fabs.length,list:fabs.map(fab).join(" / ")}));
-  its.filter(i=>i.C>C.ok).forEach(i=>{
+  if(fabs.length>=3&&(A||maxC<=C.ok)) notes.push(m("note_fab",{n:fabs.length,list:fabs.map(fab).join(" / ")}));
+  // never suggest muting the one piece the style deliberately allows to be loud
+  its.filter(i=>i.C>C.ok&&i!==accentItem).forEach(i=>{
     const alt=nearestQuiet(i.hex), av=lch(alt);
     notes.push(m("sub_one",{cat:i.catName,name:i.cname,c:i.C,alt:cn(alt),ac:av.C}));
   });
@@ -885,14 +1077,19 @@ function scoreLook(items){
   const worst=rules.slice().sort((a,b)=>a.ratio-b.ratio)[0];
   let fix;
   if(worst.ratio>=0.95) fix=m("fix_none");
+  else if(worst.key==="accent") fix=
+    accCase==="none"?m("fix_acc_none",{base:A.loud,busy:accMean>A.baseMax,mean:accMean}):
+    accCase==="over"?m("fix_acc_over",{cap:A.cap}):
+    accCase==="base"?m("fix_acc_base",{mean:accMean,max:A.baseMax}):
+    m("fix_accent",{base:A.loud});
   else if(worst.key==="chroma") fix=m("fix_chroma",{cat:loud.catName,name:loud.cname});
   else if(worst.key==="light") fix=allMid?m("fix_light_mid",{tgt:LT.good}):m("fix_light",{tgt:LT.good});
   else if(worst.key==="hue") fix=m("fix_hue");
   else if(worst.key==="temp") fix=tempPrefMiss?m("fix_temp_pref"):m("fix_temp");
-  else fix=m("fix_shoe");
+  else fix=m(S.accent?"fix_shoe_sport":"fix_shoe");
 
   const verdict = total>=85?V.v1[L]:total>=70?V.v2[L]:total>=55?V.v3[L]:V.v4[L];
-  return {items:its,rules,total,verdict,notes,fix};
+  return {items:its,rules,total,verdict,notes,fix,worstKey:worst.key,worstName:worst.name};
 }
 
 /* ===================== render helpers ===================== */
@@ -957,6 +1154,244 @@ function drawSlots(){
   });
   el.querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.stopPropagation();quick[b.dataset.del]=null;drawSlots();drawQuick();});
 }
+/* ===================== schematic figure =====================
+   one illustrated figure with the chosen colours filled in. it is deliberately neutral:
+   proportions sit between a men's and a women's block, the cut is the same for everyone,
+   and there is no skirt variant — the moment the drawing declares a gender it starts
+   saying things about the wearer that the score has no opinion about.
+   proportions are fashion-illustration proportions (long leg, small head) because he
+   asked for a good-looking drawing rather than a mirror: the picture flatters, the score
+   does not, and the score is the part that judges.
+   everything is a curve, nothing is outlined, and volume comes from a five-stop gradient
+   built out of the garment's own colour plus fold slivers and contact shadows.
+   deliberately no clipPath and no blur filter: every shadow is placed by geometry we
+   already know, so it renders the same in every engine. pure inline SVG — no images,
+   no network, no cost. */
+const SKIN="#D8D0C4", EMPTY="#E7E2D9", HAIR="#463F37";
+const BODY={sh:23,w:17,h:22.3,hr:10.2,nk:5.8};
+const SY=52, WY=112, HY=154, CY=166;   // shoulder / waist / hip / crotch lines
+const FIGSTY={
+ quiet:{top:{hem:134,sleeve:"long",neck:"crew"},bottom:{type:"straight",ankle:292},shoe:"loafer",outer:{hem:230}},
+ french:{top:{hem:126,sleeve:"long",neck:"v"},bottom:{type:"straight",ankle:278},shoe:"loafer",outer:{hem:190}},
+ urban:{top:{hem:144,sleeve:"long",neck:"crew"},bottom:{type:"wide",ankle:290},shoe:"boot",outer:{hem:246}},
+ warm:{top:{hem:136,sleeve:"long",neck:"crew"},bottom:{type:"wide",ankle:288},shoe:"boot",outer:{hem:216}},
+ sport:{top:{hem:128,sleeve:"short",neck:"crew"},bottom:{type:"jogger",ankle:286},shoe:"sneaker",outer:{hem:152}}
+};
+const LEGW={straight:[14,4.5],wide:[20,1],jogger:[12,4.5],legging:[10,3.5]};
+// mix a colour toward white (pct>0) or black (pct<0). every derived tone — shading, folds,
+// sole, lapel, facing — stays inside the chosen hue, so the figure never invents a colour
+// the outfit does not contain
+function shade(hex,pct){
+  const n=parseInt(hex.slice(1),16), t=pct<0?0:255, p=Math.abs(pct)/100;
+  const v=[(n>>16)&255,(n>>8)&255,n&255].map(c=>Math.round(c+(t-c)*p));
+  return "#"+v.map(c=>c.toString(16).padStart(2,"0")).join("");
+}
+function figSVG(){
+  const B=BODY, cx=60, cfg=FIGSTY[STK]||FIGSTY.quiet;
+  const bt=cfg.bottom, A=bt.ankle, hemT=cfg.top.hem;
+  const N=v=>Math.round(v*10)/10, X=(s,v)=>N(cx+s*v);
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  const defs=[], o=[];
+  const P=(d,f,at)=>`<path d="${d}" fill="${f}"${at||""}/>`;
+  const pg=(s,pts,f,at)=>P("M"+pts.map(p=>X(s,p[0])+","+p[1]).join(" L")+"Z",f,at);
+  const col=k=>quick[k]?quick[k].hex:null;
+  // five stops rather than three: a real cylinder keeps a rim light on its shadow side.
+  // the range is capped (+15%/-22%) so the garment still reads as the colour he picked
+  const vol=(k,hex)=>{
+    const id=`fg-v-${k}`;
+    defs.push(`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2=".12">`+
+      [[0,15],[.17,6],[.46,0],[.8,-12],[1,-22]].map(v=>
+        `<stop offset="${v[0]}" stop-color="${shade(hex,v[1])}"/>`).join("")+`</linearGradient>`);
+    return `url(#${id})`;
+  };
+  // contact shadow: where one layer sits on another, the lower one darkens right under the
+  // edge and recovers within a few units. built as four flat slivers, each one a darker
+  // mix of the cloth it lands on — no alpha and no gradient anywhere, so it renders the
+  // same in every engine and can actually be checked in a headless rasteriser
+  const STEPS=4;
+  const occ=(y,h,w0,w1,hex,d0)=>{
+    let out="";
+    for(let i=0;i<STEPS;i++){
+      const t0=i/STEPS, t1=(i+1)/STEPS, k=(1-t0)*(1-t0);
+      out+=`<path d="M${X(-1,lerp(w0,w1,t0))},${N(y+h*t0)}L${X(1,lerp(w0,w1,t0))},${N(y+h*t0)}`
+        +`L${X(1,lerp(w0,w1,t1))},${N(y+h*t1)}L${X(-1,lerp(w0,w1,t1))},${N(y+h*t1)}Z"`
+        +` fill="${shade(hex,-d0*k)}"/>`;
+    }
+    return out;
+  };
+  const occS=(s,x0,x1,y,h,hex,d0)=>{   // the one-sided version, for shoes
+    let out="";
+    for(let i=0;i<STEPS;i++){
+      const t0=i/STEPS, t1=(i+1)/STEPS, k=(1-t0)*(1-t0);
+      out+=`<path d="M${X(s,x0)},${N(y+h*t0)}L${X(s,x1)},${N(y+h*t0)}`
+        +`L${X(s,x1+.6)},${N(y+h*t1)}L${X(s,x0)},${N(y+h*t1)}Z" fill="${shade(hex,-d0*k)}"/>`;
+    }
+    return out;
+  };
+  // half-width of the bottom at a given height, so a shadow always lands on cloth
+  const bwAt=y=>lerp(B.w,B.h+1,Math.min(1,(y-WY)/(HY+2-WY)));
+  // a fold is a tapered sliver, the same hue as the cloth but d% darker
+  const fold=(s,pts,hex,d)=>pg(s,pts,shade(hex,-(d||10)));
+
+  /* ---- the figure underneath ---- */
+  const la=10.5, lb=4, sk=vol("sk",SKIN);
+  const body=`M${X(-1,B.sh)},${SY}`
+   +`C${X(-1,B.sh+1)},${SY+22} ${X(-1,B.w+2)},${WY-18} ${X(-1,B.w)},${WY}`
+   +`C${X(-1,B.w)},${WY+16} ${X(-1,B.h)},${HY-12} ${X(-1,B.h)},${HY}`
+   +`C${X(-1,B.h)},${HY+50} ${X(-1,la+3)},${A-56} ${X(-1,la)},${A}`
+   +`L${X(-1,lb)},${A}`
+   +`C${X(-1,lb+1)},${A-56} ${X(-1,3)},${CY+40} ${X(-1,2.5)},${CY}`
+   +`L${X(1,2.5)},${CY}`
+   +`C${X(1,3)},${CY+40} ${X(1,lb+1)},${A-56} ${X(1,lb)},${A}`
+   +`L${X(1,la)},${A}`
+   +`C${X(1,la+3)},${A-56} ${X(1,B.h)},${HY+50} ${X(1,B.h)},${HY}`
+   +`C${X(1,B.h)},${HY-12} ${X(1,B.w)},${WY+16} ${X(1,B.w)},${WY}`
+   +`C${X(1,B.w+2)},${WY-18} ${X(1,B.sh+1)},${SY+22} ${X(1,B.sh)},${SY}Z`;
+  const neck=`M${X(-1,B.nk-1.5)},30`
+   +`C${X(-1,B.nk)},41 ${X(-1,B.nk+1)},47 ${X(-1,B.nk+2)},${SY+2}`
+   +`L${X(1,B.nk+2)},${SY+2}`
+   +`C${X(1,B.nk+1)},47 ${X(1,B.nk)},41 ${X(1,B.nk-1.5)},30Z`;
+  const arm=(s,y2,wT,wB,out)=>`M${X(s,B.sh-1)},${SY}`
+   +`C${X(s,B.sh+out)},${SY+26} ${X(s,B.sh+out+1)},${y2-42} ${X(s,B.sh+out)},${y2}`
+   +`Q${X(s,B.sh+out-wB/2)},${y2+3} ${X(s,B.sh+out-wB)},${y2}`
+   +`C${X(s,B.sh-wT+2)},${y2-42} ${X(s,B.sh-wT)},${SY+26} ${X(s,B.sh-wT)},${SY}Z`;
+  const foot=s=>`M${X(s,3)},${A-1}`
+   +`C${X(s,7)},${A-1} ${X(s,10)},${A+1} ${X(s,11.5)},${A+5}`
+   +`Q${X(s,11.5)},${A+8} ${X(s,8)},${A+8}L${X(s,3)},${A+8}Z`;
+  // the panel behind is white, so the contact shadow is just two flat warm greys
+  o.push(`<ellipse cx="${cx}" cy="${A+12}" rx="${B.sh+5}" ry="4.6" fill="#F2F0EC"/>`
+   +`<ellipse cx="${cx}" cy="${A+11.5}" rx="${B.sh-5}" ry="3" fill="#E8E5DF"/>`);
+  o.push(P(neck,sk));
+  o.push(`<ellipse cx="${cx}" cy="21" rx="${B.hr}" ry="12.8" fill="${sk}"/>`);
+  // the jaw throws a shadow down the neck — the cheapest mark that says "this is lit"
+  o.push(P(`M${X(-1,B.nk-1.5)},30Q${cx},38 ${X(1,B.nk-1.5)},30`
+   +`L${X(1,B.nk-0.4)},37Q${cx},45 ${X(-1,B.nk-0.4)},37Z`,shade(SKIN,-7)));
+  // hair: one neutral tone, ear length, no face. not a chooseable colour — hair is not
+  // part of what we are scoring, and a strong cut would gender the figure
+  const hr=B.hr;
+  o.push(P(`M${X(-1,hr+1.1)},24C${X(-1,hr+1.6)},10 ${X(-1,5.5)},6.8 ${cx},6.8`
+   +`C${X(1,5.5)},6.8 ${X(1,hr+1.6)},10 ${X(1,hr+1.1)},24`
+   +`C${X(1,hr+.8)},29 ${X(1,hr-.4)},32 ${X(1,hr-2.4)},33`
+   +`C${X(1,hr-3.4)},29 ${X(1,hr-3.2)},25 ${X(1,hr-4.2)},20`
+   +`C${X(1,4)},15.8 ${X(-1,4)},15.8 ${X(-1,hr-4.2)},20`
+   +`C${X(-1,hr-3.2)},25 ${X(-1,hr-3.4)},29 ${X(-1,hr-2.4)},33`
+   +`C${X(-1,hr-.4)},32 ${X(-1,hr+.8)},29 ${X(-1,hr+1.1)},24Z`,HAIR));
+  o.push(P(`M${X(-1,hr-1)},12.5C${X(-1,hr-3)},8.6 ${X(-1,2)},7.6 ${X(1,1)},9`
+   +`C${X(-1,3)},10.6 ${X(-1,hr-4)},12.6 ${X(-1,hr-3.5)},17.5Z`,shade(HAIR,15)));
+  o.push(P(body,sk));
+  o.push(P(arm(-1,150,9,7,1.5),sk)+P(arm(1,150,9,7,1.5),sk));
+  o.push(P(foot(-1),sk)+P(foot(1),sk));
+
+  /* ---- bottom ---- */
+  const cb=col("bottom"), cbs=cb||EMPTY, fb=vol("bt",cbs);
+  const w=LEGW[bt.type]||LEGW.straight, oa=w[0], ia=w[1], kneeY=Math.round(lerp(HY,A,.48));
+  o.push(P(`M${X(-1,B.w)},${WY}`
+    +`C${X(-1,B.w)},${WY+16} ${X(-1,B.h+1)},${HY-10} ${X(-1,B.h+1)},${HY+2}`
+    +`C${X(-1,B.h+1)},${HY+54} ${X(-1,oa+2)},${A-56} ${X(-1,oa)},${A}`
+    +`L${X(-1,ia)},${A}`
+    +`C${X(-1,ia+1)},${A-60} ${X(-1,3.5)},${CY+44} ${X(-1,3)},${CY+2}`
+    +`L${X(1,3)},${CY+2}`
+    +`C${X(1,3.5)},${CY+44} ${X(1,ia+1)},${A-60} ${X(1,ia)},${A}`
+    +`L${X(1,oa)},${A}`
+    +`C${X(1,oa+2)},${A-56} ${X(1,B.h+1)},${HY+54} ${X(1,B.h+1)},${HY+2}`
+    +`C${X(1,B.h+1)},${HY-10} ${X(1,B.w)},${WY+16} ${X(1,B.w)},${WY}Z`,fb));
+  // front crease, knee fold, hip fold: this is what turns a shape into cloth
+  const mid=(oa+ia)/2;
+  [-1,1].forEach(s=>{
+    o.push(fold(s,[[mid+2.5,HY+16],[mid+3.4,HY+16],[mid+.6,A-2],[mid-.2,A-2]],cbs,7));
+    o.push(fold(s,[[mid+4.2,kneeY],[mid-2.6,kneeY+3],[mid-2.4,kneeY+6.5],[mid+4.6,kneeY+3.5]],cbs,9));
+    o.push(fold(s,[[B.h+.5,HY+4],[B.h-3.5,HY+3],[mid+1,HY+30],[mid+3.5,HY+26]],cbs,6));
+  });
+  if(bt.type==="jogger"&&cb){   // a cuff is what makes a jogger read as a jogger
+    const cuff=[[ia-.5,A-9],[oa+.5,A-9],[oa,A],[ia,A]];
+    o.push(pg(-1,cuff,shade(cbs,-13))+pg(1,cuff,shade(cbs,-13)));
+  }
+
+  /* ---- top, its sleeves, then the shadow it throws on the bottom ---- */
+  const ct=col("top"), cts=ct||EMPTY, ft=vol("tp",cts), tw=B.w+3.5;
+  o.push(P(`M${X(-1,B.sh)},${SY}`
+   +`C${X(-1,B.sh+1)},${SY+24} ${X(-1,tw+1)},${WY-10} ${X(-1,tw)},${hemT}`
+   +`Q${cx},${hemT+5} ${X(1,tw)},${hemT}`
+   +`C${X(1,tw+1)},${WY-10} ${X(1,B.sh+1)},${SY+24} ${X(1,B.sh)},${SY}`
+   +`Q${cx},${SY+12} ${X(-1,B.sh)},${SY}Z`,ft));
+  // neckline: skin showing through, with the collar's own shadow sitting under it
+  const nw=cfg.top.neck==="v"?6.5:7.8, nd=cfg.top.neck==="v"?SY+17:SY+12;
+  o.push(P(`M${X(-1,nw)},${SY+1}Q${cx},${nd} ${X(1,nw)},${SY+1}Q${cx},${SY+4} ${X(-1,nw)},${SY+1}Z`,
+    shade(SKIN,-5)));
+  o.push(P(`M${X(-1,nw+.8)},${SY+1}Q${cx},${nd+3} ${X(1,nw+.8)},${SY+1}`
+   +`L${X(1,nw)},${SY+1}Q${cx},${nd} ${X(-1,nw)},${SY+1}Z`,shade(cts,-11)));
+  const sy=cfg.top.sleeve==="short"?92:147;
+  o.push(P(arm(-1,sy,11,9,2.5),ft)+P(arm(1,sy,11,9,2.5),ft));
+  [-1,1].forEach(s=>{   // shoulder seam, inner-elbow crease, a pull at the waist
+    o.push(fold(s,[[B.sh-1,SY+1],[B.sh-9.5,SY+3],[B.sh-8.6,SY+5],[B.sh-1,SY+3.5]],cts,8));
+    if(cfg.top.sleeve!=="short")
+      o.push(fold(s,[[B.sh-7.5,118],[B.sh-2.5,121],[B.sh-2.6,124],[B.sh-7.8,121]],cts,8));
+    o.push(fold(s,[[tw-1,hemT-26],[tw-5.5,hemT-30],[tw-6,hemT-26],[tw-1.2,hemT-22]],cts,6));
+  });
+  o.push(`<ellipse cx="${X(-1,B.sh-2)}" cy="153" rx="4.2" ry="5.4" fill="${SKIN}"/>`+
+         `<ellipse cx="${X(1,B.sh-2)}" cy="153" rx="4.2" ry="5.4" fill="${SKIN}"/>`);
+  o.push(occ(hemT,10,bwAt(hemT),bwAt(hemT+10),cbs,17));
+
+  /* ---- shoes: optional, so a bare foot shows when nothing is chosen ---- */
+  const cs=col("shoe");
+  if(cs){
+    const fs=vol("sh",cs);
+    const shp={
+      sneaker:s=>`M${X(s,2.5)},${A-5}L${X(s,11)},${A-5}`
+        +`C${X(s,15)},${A-1} ${X(s,16.5)},${A+3} ${X(s,16)},${A+8}`
+        +`Q${X(s,15.5)},${A+12} ${X(s,10)},${A+12}L${X(s,2.5)},${A+12}Z`,
+      loafer:s=>`M${X(s,3)},${A-2}`
+        +`C${X(s,7)},${A-3} ${X(s,10)},${A-1} ${X(s,13)},${A+2}`
+        +`C${X(s,15)},${A+4} ${X(s,15)},${A+8} ${X(s,12)},${A+9}`
+        +`L${X(s,3)},${A+9}Z`,
+      boot:s=>`M${X(s,3)},${A-28}L${X(s,12)},${A-28}`
+        +`C${X(s,13)},${A-10} ${X(s,14)},${A+1} ${X(s,14.5)},${A+6}`
+        +`Q${X(s,14.5)},${A+10} ${X(s,10)},${A+10}L${X(s,3)},${A+10}Z`
+    }[cfg.shoe];
+    o.push(P(shp(-1),fs)+P(shp(1),fs));
+    const top=cfg.shoe==="boot"?A-28:(cfg.shoe==="sneaker"?A-5:A-2);
+    [-1,1].forEach(s=>{
+      // the hem falls across the shoe, and the toe catches the light
+      o.push(occS(s,3,12,top,6,cs,17));
+      o.push(P(`M${X(s,7)},${top+3.5}C${X(s,11)},${top+3.5} ${X(s,13)},${top+5.5} ${X(s,13.4)},${top+8}`
+        +`C${X(s,11)},${top+6.5} ${X(s,8.5)},${top+6} ${X(s,7)},${top+6}Z`,shade(cs,17)));
+    });
+    if(cfg.shoe==="sneaker"){   // a sole in a lighter tone of the same colour, not white
+      const sole=s=>`M${X(s,2.5)},${A+7}L${X(s,16.2)},${A+6}`
+        +`Q${X(s,15.5)},${A+12} ${X(s,10)},${A+12}L${X(s,2.5)},${A+12}Z`;
+      o.push(P(sole(-1),shade(cs,22))+P(sole(1),shade(cs,22)));
+    }
+  }
+
+  /* ---- outer: optional, last because it sits over everything ---- */
+  const co=col("outer");
+  if(co){
+    const fo=vol("ot",co), h=cfg.outer.hem, inX=Math.max(B.w-3.5,8);
+    o.push(P(arm(-1,144,12.5,10,3),fo)+P(arm(1,144,12.5,10,3),fo));
+    // a yoke across the shoulders: without it the two front panels and the two sleeves
+    // meet at a point and the coat grows little wings at the shoulder line
+    o.push(P(`M${X(-1,B.sh+1.5)},${SY-1}Q${cx},${SY-8} ${X(1,B.sh+1.5)},${SY-1}`
+     +`Q${cx},${SY+14} ${X(-1,B.sh+1.5)},${SY-1}Z`,fo));
+    // the panels hang open and stay narrow: a coat that swallows the whole torso hides
+    // the top, and the top is usually the piece the score is arguing about
+    const panel=s=>`M${X(s,B.sh+1)},${SY-2}`
+      +`C${X(s,B.sh+2)},${SY+26} ${X(s,B.w+4)},${WY-6} ${X(s,B.w+3)},${h}`
+      +`Q${X(s,(B.w+3+inX)/2)},${h+5} ${X(s,inX)},${h}`
+      +`C${X(s,inX+1)},${WY-20} ${X(s,13)},${SY+20} ${X(s,14.5)},${SY+1}Z`;
+    o.push(P(panel(-1),fo)+P(panel(1),fo));
+    [-1,1].forEach(s=>{   // folded facing along the open edge, plus two hanging folds
+      o.push(fold(s,[[inX,h],[inX+1.8,h],[16.3,SY+4],[14.5,SY+2]],co,13));
+      o.push(fold(s,[[B.sh-6,SY+30],[B.sh-10.5,SY+26],[B.sh-11,SY+31],[B.sh-6.4,SY+35]],co,7));
+      o.push(fold(s,[[B.sh+1,138],[B.sh-8,141],[B.sh-8.2,144.5],[B.sh+1.4,141.5]],co,8));
+    });
+    const lap=[[B.sh-5,SY-2],[14.5,SY+1],[7,SY+26],[17,SY+4]];
+    o.push(pg(-1,lap,shade(co,-11))+pg(1,lap,shade(co,-11)));
+  }
+  return `<svg viewBox="0 0 120 ${A+20}" role="img" aria-label="${esc(u("figAlt"))}">`+
+    `<defs>${defs.join("")}</defs>${o.join("")}</svg>`;
+}
+function drawFigs(){ document.getElementById("figs").innerHTML=`<figure>${figSVG()}</figure>`; }
+
 let onQuickTab=true;
 function drawQuick(){
   const its=CATS.filter(c=>quick[c.k]).map(c=>({cat:c.k,hex:quick[c.k].hex,fabric:quick[c.k].fabric||"",name:""}));
@@ -964,6 +1399,7 @@ function drawQuick(){
   document.getElementById("quick-out").innerHTML=
     `<h2>${u("hRead")}</h2><p class="hint">${u("hintRead")}</p>`+
     (res?resultHTML(res,true):`<div class="empty">${u("needTwo")}</div>`);
+  drawFigs();
   // mobile sticky readout so the score stays visible while scrolling the colour card
   const bar=document.getElementById("mbar");
   document.getElementById("mbar-chips").innerHTML=its.map(i=>`<i style="background:${i.hex}"></i>`).join("");
@@ -987,6 +1423,27 @@ try{ wmode=localStorage.getItem("ql_mode")||"today"; }catch(e){}
 if(!["today","trip","rank"].includes(wmode)) wmode="today";
 
 const MODES=[{k:"today",t:"mToday",h:"hintToday"},{k:"trip",t:"mTrip",h:"hintTrip"},{k:"rank",t:"mRank",h:"hintRank"}];
+// pieces the user has explicitly decided to pack, by ikey. kept separate from `pin`:
+// pinning forces a garment into every outfit, whereas packing a jacket only means it
+// travels with you — you still get days without it
+let tripSel={outer:[],shoe:[]};
+try{ const raw=localStorage.getItem("ql_tripsel");
+  if(raw){ const o=JSON.parse(raw);
+    tripSel={outer:Array.isArray(o.outer)?o.outer:[],shoe:Array.isArray(o.shoe)?o.shoe:[]}; }
+}catch(e){}
+const saveSel=()=>{ try{localStorage.setItem("ql_tripsel",JSON.stringify(tripSel));}catch(e){} };
+const NUMS=["w-days","w-nouter","w-nshoe"];
+const saveNums=()=>{ try{
+  const o={}; NUMS.forEach(id=>o[id]=document.getElementById(id).value);
+  localStorage.setItem("ql_tripn",JSON.stringify(o));
+}catch(e){} };
+function loadNums(){
+  let o=null; try{ o=JSON.parse(localStorage.getItem("ql_tripn")||"null"); }catch(e){}
+  NUMS.forEach(id=>{ const el=document.getElementById(id);
+    if(o&&o[id]&&[...el.options].some(x=>x.value===o[id])) el.value=o[id];
+    el.onchange=saveNums;
+  });
+}
 const SAMPLE=[
  {cat:"outer",hex:"#2E3A4C",fabric:"wool"},  {cat:"outer",hex:"#9A8770",fabric:"cotton"},
  {cat:"top",hex:"#F3EDE3",fabric:"cotton"},  {cat:"top",hex:"#E0D5C2",fabric:"knit"},
@@ -1017,7 +1474,7 @@ function showJust(it){
 function drawWard(){
   const el=document.getElementById("w-items"), n=ward.length, off=ward.filter(i=>i.skip).length;
   document.getElementById("w-cnt").textContent=n?UI.cntItems[L](n,off):"";
-  if(!n){el.innerHTML=`<div class="empty">${u("emptyWard")}</div>`;return;}
+  if(!n){el.innerHTML=`<div class="empty">${u("emptyWard")}</div>`;drawTripSel();return;}
   el.innerHTML=CATS.filter(c=>ward.some(i=>i.cat===c.k)).map(c=>
     `<div class="wsec"><h3>${esc(c[L])}</h3></div>`+
     ward.map((i,idx)=>i.cat!==c.k?"":`<div class="item${i.skip?" off":""}${i.pin?" pinned":""}">
@@ -1028,13 +1485,51 @@ function drawWard(){
       <button class="ibtn${i.pin?" on":""}" data-pin="${idx}">${u("pinned")}</button>
       <button class="ibtn${i.skip?" on":""}" data-skip="${idx}">${u("skipped")}</button>
       <button class="xbtn" data-rm="${idx}">&times;</button></div>`).join("")).join("");
-  el.querySelectorAll("[data-fb]").forEach(s=>s.onchange=()=>{ward[+s.dataset.fb].fabric=s.value;save();});
+  el.querySelectorAll("[data-fb]").forEach(s=>s.onchange=()=>{
+    const it=ward[+s.dataset.fb], was=ikey(it);
+    it.fabric=s.value;
+    // cloth is part of a garment's identity, so a packed piece keeps its chip when it changes
+    const now=ikey(it), lst=tripSel[it.cat], at=lst?lst.indexOf(was):-1;
+    if(at>=0) lst[at]=now;
+    save(); saveSel(); drawTripSel();
+  });
   el.querySelectorAll("[data-pin]").forEach(b=>b.onclick=()=>{
     const i=ward[+b.dataset.pin]; i.pin=!i.pin; if(i.pin)i.skip=false; save(); drawWard(); });
   el.querySelectorAll("[data-skip]").forEach(b=>b.onclick=()=>{
     const i=ward[+b.dataset.skip]; i.skip=!i.skip; if(i.skip)i.pin=false; save(); drawWard(); });
   el.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{
     ward.splice(+b.dataset.rm,1); save(); drawCatPick(); drawWard(); showJust(null); });
+  drawTripSel();
+}
+// the counts come first and the colour chips sit next to them: you decide how much fits
+// in the case, then say which pieces those are
+function drawTripSel(){
+  const trip=wmode==="trip";
+  document.getElementById("row-days").classList.toggle("hide",!trip);
+  document.getElementById("t-selnote").classList.toggle("hide",!trip);
+  const live=c=>{ const seen=new Set(),out=[];
+    ward.filter(i=>i.cat===c&&!i.skip).forEach(i=>{ const k=ikey(i);
+      if(!seen.has(k)){seen.add(k);out.push(i);} });
+    return out; };
+  [["outer","row-outer","chips-outer"],["shoe","row-shoe","chips-shoe"]].forEach(([c,rowId,chipId])=>{
+    const items=live(c), keys=items.map(ikey);
+    tripSel[c]=tripSel[c].filter(k=>keys.indexOf(k)>=0);   // drop keys for deleted garments
+    document.getElementById(rowId).classList.toggle("hide",!trip||!items.length);
+    const box=document.getElementById(chipId);
+    box.innerHTML=!trip?"":items.map(i=>`<button class="chip2${
+      tripSel[c].indexOf(ikey(i))>=0?" on":""}" data-sel="${c}" data-k="${esc(ikey(i))}" title="${
+      esc(i.hex+(i.fabric?" / "+fab(i.fabric):""))}"><i style="background:${i.hex}"></i>${
+      esc(i.name||cn(i.hex))}</button>`).join("");
+    box.querySelectorAll("[data-sel]").forEach(b=>b.onclick=()=>{
+      const cc=b.dataset.sel, k=b.dataset.k, a=tripSel[cc], at=a.indexOf(k);
+      if(at>=0) a.splice(at,1); else a.push(k);
+      // you can't pack fewer pieces than you just named, so the count follows the chips
+      const sel=document.getElementById(cc==="outer"?"w-nouter":"w-nshoe");
+      if(a.length>+sel.value){ const opt=[...sel.options].find(o=>+o.value>=a.length);
+        if(opt){ sel.value=opt.value; saveNums(); } }
+      saveSel(); drawTripSel();
+    });
+  });
 }
 function drawModes(){
   const el=document.getElementById("modes");
@@ -1044,15 +1539,24 @@ function drawModes(){
     drawModes(); document.getElementById("w-out").innerHTML="";
   });
   document.getElementById("t-hint-mode").textContent=u(MODES.find(x=>x.k===wmode).h);
-  document.getElementById("lbl-days").classList.toggle("hide",wmode!=="trip");
+  drawTripSel();
 }
 
 /* ---- combination engine ---- */
-const ikey=i=>i.cat+"|"+i.hex+"|"+(i.name||"");
+// identity of a garment for rotation purposes: same category, colour, name and cloth is
+// the same shirt twice over, and a second copy adds nothing to a colour plan
+const ikey=i=>i.cat+"|"+i.hex+"|"+(i.name||"")+"|"+(i.fabric||"");
 const CAP=3000;   // scoring is cheap but not free; a very large wardrobe gets truncated
-function allCombos(){
-  const live=ward.filter(i=>!i.skip);
-  const g=k=>{const a=live.filter(i=>i.cat===k), p=a.filter(i=>i.pin);
+// noPin: trip mode ignores the list's "pin" flag, because there the authority is the
+// colour chips — pinning is a today-mode device meaning "I'm wearing this right now"
+function allCombos(noPin){
+  const byK=new Map();
+  // a second copy of the same garment adds nothing, but if the copy is the one you pinned,
+  // that's the one to keep
+  ward.filter(i=>!i.skip).forEach(i=>{ const k=ikey(i), e=byK.get(k);
+    if(!e||(i.pin&&!e.pin)) byK.set(k,i); });
+  const live=[...byK.values()];
+  const g=k=>{const a=live.filter(i=>i.cat===k), p=noPin?[]:a.filter(i=>i.pin);
     return {use:p.length?p:a, forced:p.length>0};};
   const T=g("top"), B=g("bottom"), O=g("outer"), S=g("shoe");
   if(!T.use.length||!B.use.length) return null;
@@ -1080,21 +1584,81 @@ function pickDistinct(list,n){
   for(const c of list){ if(out.length>=n)break; if(out.indexOf(c)<0)out.push(c); }
   return out;
 }
-// one jacket and one pair of shoes for the whole trip: pick the pair whose best
-// N distinct outfits average highest, so the suitcase stays small
-function tripPlan(list,days){
-  const groups=new Map();
-  list.forEach(c=>{
-    const k=(c.o?ikey(c.o):"-")+"::"+(c.s?ikey(c.s):"-");
-    if(!groups.has(k)) groups.set(k,[]);
-    groups.get(k).push(c);
-  });
+// every subset of size n, with `must` (pinned pieces) always included. if the wardrobe
+// can't supply n, it returns the biggest subset it can rather than nothing
+function subsets(arr,n,must){
+  const rest=arr.filter(x=>must.indexOf(x)<0);
+  const need=Math.min(Math.max(0,n-must.length),rest.length);
+  const out=[];
+  (function rec(i,cur){
+    if(cur.length===need){ out.push(must.concat(cur)); return; }
+    if(i>=rest.length) return;
+    rec(i+1,cur.concat([rest[i]])); rec(i+1,cur);
+  })(0,[]);
+  return out.length?out:[must.slice()];
+}
+// like pickDistinct, but every packed piece gets at least one day of its own first —
+// a jacket you carried for three days and never wore is a planning failure, not a plan
+function pickCovering(list,n,must){
+  const out=[],ut=new Set(),ub=new Set();
+  const take=c=>{out.push(c);ut.add(ikey(c.t));ub.add(ikey(c.b));};
+  const free=c=>!ut.has(ikey(c.t))&&!ub.has(ikey(c.b));
+  for(const mi of must){
+    if(out.length>=n)break;
+    const k=ikey(mi), hits=c=>[c.o,c.s].some(i=>i&&ikey(i)===k);
+    // first choice is a day that repeats nothing; but with more days than bottoms you have
+    // to repeat something anyway, and wearing the piece beats keeping the rotation clean
+    const hit=list.find(c=>free(c)&&hits(c))||list.find(c=>out.indexOf(c)<0&&hits(c));
+    if(hit) take(hit);
+  }
+  for(const c of list){ if(out.length>=n)break; if(out.indexOf(c)>=0)continue; if(free(c)) take(c); }
+  for(const c of list){ if(out.length>=n)break; if(out.indexOf(c)<0) out.push(c); }
+  return out.sort((a,b)=>b.res.total-a.res.total);
+}
+const SUBCAP=6;   // only the strongest few outers/shoes enter the subset search
+const OKSCORE=70; // "成立" — a trip plan never offers a day below this
+// the real constraint on a short trip isn't which outfit is best, it's what fits in the
+// case: you commit to a couple of jackets and one or two pairs of shoes, and everything
+// else has to work around them. so we choose the *packed set* first, then the outfits.
+function tripPlan(list,days,nOut,nShoe,selO,selS,floor){
+  const coll=k=>{
+    const m=new Map();
+    list.forEach(c=>{ const it=c[k]; if(!it)return; const key=ikey(it);
+      const e=m.get(key); if(!e||c.res.total>e.best) m.set(key,{it,best:c.res.total}); });
+    return [...m.values()].sort((a,b)=>b.best-a.best).map(x=>x.it);
+  };
+  const outers=coll("o"), shoes=coll("s");
+  // what's committed to the case is exactly what the user picked by colour
+  const must=(arr,keys)=>arr.filter(i=>(keys||[]).indexOf(ikey(i))>=0);
+  const pinO=must(outers,selO), pinS=must(shoes,selS);
+  const trim=(arr,must)=>{
+    const keep=arr.filter(i=>must.indexOf(i)>=0);
+    return keep.concat(arr.filter(i=>must.indexOf(i)<0)).slice(0,Math.max(SUBCAP,keep.length));
+  };
+  const oSets=(nOut<=0&&!pinO.length)?[[]]:subsets(trim(outers,pinO),Math.max(nOut,pinO.length),pinO);
+  const sSets=shoes.length?subsets(trim(shoes,pinS),Math.max(nShoe,pinS.length),pinS):[[]];
   let best=null;
-  groups.forEach(g=>{
-    const pick=pickDistinct(g,days), sum=pick.reduce((s,c)=>s+c.res.total,0);
-    const cand={pick,n:pick.length,avg:pick.length?sum/pick.length:0};
-    if(!best||cand.n>best.n||(cand.n===best.n&&cand.avg>best.avg)) best=cand;
-  });
+  for(const os of oSets) for(const ss of sSets){
+    const ko=new Set(os.map(ikey)), ks=new Set(ss.map(ikey));
+    // if a jacket is in the case it gets worn every day — that's what one jacket for a
+    // short trip actually means. only "0 jackets" produces days without one
+    // candidate days must clear the floor: a packing list is no place for a look you'd
+    // regret. the piece lists above stay unfiltered so an explicit choice is never ignored
+    const sub=list.filter(c=>(os.length?(c.o&&ko.has(ikey(c.o))):!c.o)&&(!c.s||ks.has(ikey(c.s))));
+    const good=sub.filter(c=>c.res.total>=(floor||0));
+    if(!good.length) continue;
+    const pick=pickCovering(good,days,os.concat(ss));
+    const used=new Set();
+    pick.forEach(c=>[c.o,c.s].filter(Boolean).forEach(i=>used.add(ikey(i))));
+    // a jacket that never gets worn is dead weight, so a set that uses everything it
+    // packs beats an equally-scoring set that doesn't
+    const allUsed=os.concat(ss).every(i=>used.has(ikey(i)));
+    const sum=pick.reduce((s,c)=>s+c.res.total,0);
+    const cand={pick,packO:os,packS:ss,n:pick.length,allUsed,avg:pick.length?sum/pick.length:0,
+      rejected:sub.filter(c=>c.res.total<(floor||0))};
+    if(!best||cand.n>best.n||(cand.n===best.n&&(cand.allUsed!==best.allUsed?cand.allUsed:cand.avg>best.avg)))
+      best=cand;
+  }
   return best;
 }
 
@@ -1129,7 +1693,7 @@ function bindOut(pick,labeller){
   };
 }
 function generate(){
-  const out=document.getElementById("w-out"), got=allCombos();
+  const out=document.getElementById("w-out"), got=allCombos(wmode==="trip");
   if(!got){ out.innerHTML=`<div class="panel"><div class="empty">${u("needTB")}</div></div>`; return; }
   const list=got.list, warn=got.capped?`<p class="hint">${u("tooMany")}</p>`:"";
 
@@ -1143,24 +1707,48 @@ function generate(){
 
   } else if(wmode==="trip"){
     const days=+document.getElementById("w-days").value;
-    const pick=tripPlan(list,days).pick;
+    const nOut=+document.getElementById("w-nouter").value;
+    const nShoe=+document.getElementById("w-nshoe").value;
+    const plan=tripPlan(list,days,nOut,nShoe,tripSel.outer,tripSel.shoe,OKSCORE);
+    if(!plan||!plan.pick.length){
+      out.innerHTML=`<div class="panel"><div class="empty">${u("noneGood")}</div></div>`; return; }
+    const pick=plan.pick;
+    const worn=new Set();
+    pick.forEach(c=>[c.o,c.t,c.b,c.s].filter(Boolean).forEach(i=>worn.add(ikey(i))));
     const packed=[], seen=new Set();
+    // the case holds what gets worn plus whatever was committed to up front
     pick.forEach(c=>[c.o,c.t,c.b,c.s].filter(Boolean).forEach(i=>{
       const k=ikey(i); if(!seen.has(k)){seen.add(k);packed.push(i);} }));
+    plan.packO.concat(plan.packS).forEach(i=>{
+      const k=ikey(i); if(!seen.has(k)){seen.add(k);packed.push(i);} });
+    const nO=packed.filter(i=>i.cat==="outer").length, nS=packed.filter(i=>i.cat==="shoe").length;
+    let shortMsg="";
+    if(pick.length<days&&plan.rejected.length){
+      // name the rule that keeps failing and the category that runs out first, so the
+      // shortfall turns into one concrete thing to buy rather than a shrug
+      const tally={};
+      plan.rejected.forEach(c=>{ const k=c.res.worstName; tally[k]=(tally[k]||0)+1; });
+      const worstName=Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0];
+      const dc=k=>new Set(ward.filter(i=>i.cat===k&&!i.skip).map(ikey)).size;
+      const thin=dc("bottom")<=dc("top")?"bottom":"top";
+      shortMsg=`<p class="short">${UI.shortDays[L](days,pick.length,worstName,cat(thin))}</p>`;
+    }
     out.innerHTML=`<div class="panel"><h2>${UI.hDays[L](pick.length)}</h2>
-      <p class="hint">${UI.hintDays[L](list.length,pick.length)}</p>${warn}
+      <p class="hint">${UI.hintDays[L](list.length,pick.length)}</p>${shortMsg}${warn}
       ${pick.map((c,n)=>comboCard(c,UI.dayN[L](n+1))).join("")}
       <div class="bar"><button class="act ghost" id="cp"></button></div></div>
       <div class="panel wsec"><h2>${u("hPack")}</h2>
-      <p class="hint">${UI.hintPack[L](pick.length)}</p>
+      <p class="hint">${UI.hintPack[L](pick.length,nO,nS)}</p>
       <div class="pack">${CATS.map(c=>packed.filter(i=>i.cat===c.k).map(i=>
         `<div class="pkg"><i style="background:${i.hex}"></i><span>${esc(c[L])} · ${esc(cn(i.hex))}${
-          i.fabric?" / "+esc(fab(i.fabric)):""}</span></div>`).join("")).join("")}</div></div>`;
+          i.fabric?" / "+esc(fab(i.fabric)):""}${worn.has(ikey(i))?"":` — ${esc(u("spare"))}`}</span></div>`
+        ).join("")).join("")}</div>
+      <p class="hint">${plan.allUsed?UI.packNote[L](pick.length,nO,nS):""}</p></div>`;
     bindOut(pick,n=>UI.dayN[L](n));
 
   } else {
-    const good=list.filter(c=>c.res.total>=70);
-    const bad=list.slice(-6).reverse().filter(c=>c.res.total<70);
+    const good=list.filter(c=>c.res.total>=OKSCORE);
+    const bad=list.slice(-6).reverse().filter(c=>c.res.total<OKSCORE);
     out.innerHTML=`<div class="panel"><h2>${UI.hRankGood[L](good.length)}</h2>${warn}
       ${good.length?`<div class="items">`+good.slice(0,60).map(rankRow).join("")+`</div>`
         :`<div class="empty">${u("noneGood")}</div>`}
@@ -1182,10 +1770,14 @@ function applyLang(){
   set("t-tab1",u("tab1")); set("t-tab2",u("tab2"));
   set("t-h-look",u("hLook")); set("t-hint-look",u("hintLook"));
   set("t-h-pal1",u("hPal"));
+  set("t-h-fig",u("hFig")); set("t-fignote",UI.figNote[L]({st:sn}));
   set("t-h-build",u("hBuild")); set("t-hint-build",u("hintBuild"));
   set("t-h-list",u("hList")); set("t-days",u("days"));
+  set("t-nouter",u("nOuterLab")); set("t-nshoe",u("nShoeLab"));
+  set("t-sel-outer",u("selPick")); set("t-sel-shoe",u("selPick"));
+  set("t-selnote",u("selNote"));
   set("t-method-s",u("methodS"));
-  set("t-method-p",UI.methodP[L]({st:sn,c:S.chroma,l:S.light,w:S.w,prefer:S.temp.prefer}));
+  set("t-method-p",UI.methodP[L]({st:sn,c:S.chroma,l:S.light,w:S.w,prefer:S.temp.prefer,acc:S.accent||null,sh:S.shoe}));
   ["gen","demo","exp","imp","clr"].forEach(k=>document.getElementById("w-"+k).textContent=u(k));
   document.getElementById("styles").innerHTML=STYLES.map(s=>
     `<button data-st="${s.key}" class="${s.key===STK?"on":""}">${esc(s.name[L])}</button>`).join("");
@@ -1243,6 +1835,7 @@ document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
 });
 document.getElementById("mbar").onclick=()=>
   document.querySelector(".p-out").scrollIntoView({behavior:"smooth",block:"start"});
+loadNums();   // days and counts survive a reload, like everything else here
 applyLang();
 </script>
 </body>
